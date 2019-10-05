@@ -1,2 +1,4 @@
 venv/*
+controller/config.ini
+wallet/config.ini
 .idea
