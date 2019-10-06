@@ -90,7 +90,6 @@ def register_webhook(invoice_id, callback_url):
 
     webhook_info_request = requests.post(charge_url + '/invoice/'+invoice_id+'/webhook',
                                          auth=('api-token', charge_token), data=payload)
-
     if webhook_info_request.status_code == 201:
         return True
     elif webhook_info_request.status_code == 405:
