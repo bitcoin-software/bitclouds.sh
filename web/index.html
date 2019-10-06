@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<style>
+  body {
+  background-color: black;
+  background-image: radial-gradient(
+    rgba(100, 120, 100, 0.75), black 120%
+  );
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  padding: 2rem;
+  color: white;
+  font: 1.3rem Inconsolata, monospace;
+  text-shadow: 0 0 5px #C8C8C8;
+  &::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(black, 0.15),
+      rgba(black, 0.15) 1px,
+      transparent 1px,
+      transparent 2px
+    );
+    pointer-events: none;
+  }
+}
+::selection {
+  background: #0080FF;
+  text-shadow: none;
+}
+pre {
+  margin: 0;
+}
+</style>
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<pre><output>Welcome to the internet of money!
+
+#bitclouds.sh is a programmable VPS platform
+Version: 0.1.0
+
+[you@home ~$] curl -x GET https://bitclouds.sh/images
+{
+  ['freebsd', 'centos', 'debian', 'bitcoind', 'lightningd']
+}
+
+[you@home ~$] curl -x POST https://bitclouds.sh/create -d image="freebsd"
+</output></pre>
+</body>
+</html>
