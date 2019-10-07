@@ -5,7 +5,7 @@ config = configparser.ConfigParser()
 config.read('config.ini')
 
 
-btc = BTC(xpub=config['electrum']['xpub'])
+btc = BTC(xpub=str(config['electrum']['xpub']))
 
 
 @btc.on("new_transaction")
