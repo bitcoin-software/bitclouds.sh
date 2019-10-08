@@ -23,7 +23,7 @@ class elify(Resource):
         #    print(dtime + ' no data' + str(e))
         #    return False
 
-        print(request.headers())
+        print(request.get_data())
 
 
 if __name__ == '__main__':
