@@ -1,33 +1,4 @@
-from flask import Flask
-from flask_restful import Resource, Api, reqparse, request
-import datetime
-from btc_wallet import bstartd, bgetunused, bgetnew, bnotify
-import configparser
+from jsonrpc import ServiceProxy
 
-config = configparser.ConfigParser()
-config.read('config.ini')
-
-app = Flask(__name__)
-ipn = Api(app)
-
-
-class elify(Resource):
-    def post(self):
-        #parser = reqparse.RequestParser()
-        #parser.add_argument('token')
-        #args = parser.parse_args()
-        #dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-        #try:
-        #    token = args['token']
-        #except KeyError as e:
-        #    print(dtime + ' no data' + str(e))
-        #    return False
-
-        print(request.get_data())
-
-
-if __name__ == '__main__':
-    ipn.add_resource(elify, '/elify')
-
-    app.run(debug=False, port=16333)
-
+access = ServiceProxy("http://ae059511:8s5r2X_EwFBrg1l6GMQvFfn2cqXFE73ud7MpPVZUx7I=@rpc.bitbsd.org:8332")
+print(access.getinfo())

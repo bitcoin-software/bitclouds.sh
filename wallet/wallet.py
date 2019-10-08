@@ -44,11 +44,9 @@ class chargify(Resource):
         except KeyError as e:
             print(dtime + ': error on handling callback from charge - ' + str(e))
             return False
-        print(dtime + ": " + id + ' received')
         invoice_data = get_invoice(id=id)
-        print(dtime + ": " + id + ' ' + invoice_data['status'])
 
-        print(dtime + " " + invoice_data['id'] + ": " + invoice_data['status'])
+        print(dtime + " new status [" + invoice_data['status'] + "] for [" + invoice_data['id'] + "]")
 
         return True
 

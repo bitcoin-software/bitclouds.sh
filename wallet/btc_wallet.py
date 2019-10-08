@@ -1,6 +1,10 @@
 import subprocess
 import time
 import json
+from jsonrpc import ServiceProxy
+
+access = ServiceProxy("http://ae059511:8s5r2X_EwFBrg1l6GMQvFfn2cqXFE73ud7MpPVZUx7I=@rpc.bitbsd.org:8332")
+access.getinfo()
 
 btcbinpath = '/usr/local/bin/electrum'
 
@@ -82,12 +86,6 @@ def bvalidate(addr, wallet):
 
 
 def btx(addr, amount, wallet, btcfee):
-    #result = subprocess.run([btcbinpath, 'payto', addr, amount, '-f', btcfee, '-w', wallet], stdout=subprocess.PIPE)
-    #unsigned = json.loads(result.stdout.decode('utf-8'))
-    #result = subprocess.run([btcbinpath, 'signtransaction', unsigned['hex'], '-w', wallet], stdout=subprocess.PIPE)
-    #signed = json.loads(result.stdout.decode('utf-8'))
-    #result = subprocess.run([btcbinpath, 'broadcast', signed['hex'], '-w', wallet], stdout=subprocess.PIPE)
-
     ps = subprocess.Popen((btcbinpath, 'payto', addr, amount, '-f', btcfee, '-w', wallet), stdout=subprocess.PIPE)
     result = subprocess.run((btcbinpath, 'broadcast', '-w', wallet, '-'), stdin=ps.stdout, stdout=subprocess.PIPE)
     ps.wait()
@@ -96,7 +94,6 @@ def btx(addr, amount, wallet, btcfee):
 
 
 def btx_many(recipient_pool, wallet, btcfee):
-
     ps = subprocess.Popen((btcbinpath, 'paytomany', recipient_pool, '-f', btcfee, '-w', wallet), stdout=subprocess.PIPE)
     result = subprocess.run((btcbinpath, 'broadcast', '-w', wallet, '-'), stdin=ps.stdout, stdout=subprocess.PIPE)
     ps.wait()

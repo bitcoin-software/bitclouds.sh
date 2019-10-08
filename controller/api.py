@@ -55,13 +55,17 @@ class TopUp(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('host')
+        parser.add_argument('eur')
         args = parser.parse_args()
-        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        try:
+            amount_eur = args['eur']
+        except KeyError as e:
+            amount_eur = 0.01
+
         try:
             host = args['host']
         except KeyError as e:
-            print(dtime + ' no data' + str(e))
-            return False
+            return {"error": "provide host id (bitcoin address)"}
 
         if host:
             invoice_data = invoice(amount=0.01, cur='EUR', desc=host)
