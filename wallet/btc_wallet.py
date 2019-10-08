@@ -64,8 +64,8 @@ def bnotify(wallet, address, url):
 
 def bgetunused(wallet):
     result = subprocess.run([btcbinpath, 'getunusedaddress', '-w', wallet], stdout=subprocess.PIPE)
-    print(result.stdout.decode('utf-8'))
-    response = json.loads(result.stdout.decode('utf-8'))
+    #print(result.stdout.decode('utf-8'))
+    response = result.stdout.decode('utf-8')
     return response
 
 
