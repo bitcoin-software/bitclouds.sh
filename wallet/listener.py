@@ -27,6 +27,7 @@ class elify(Resource):
 
 
 if __name__ == '__main__':
+    ipn.add_resource(elify, '/elify')
 
     app.run(debug=False, port=16333)
 
