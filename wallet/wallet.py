@@ -27,12 +27,14 @@ class elify(Resource):
 
 
 if __name__ == '__main__':
-    bstartd()
+    wallet = config['electrum']['wallet']
+    wallet_list = [wallet]
+    bstartd(wallet_list)
 
     ipn.add_resource(elify, '/elify')
 
     notifyURL = config['ipn']['url'] + '/elify'
-    print(bgetunused())
+    print(bgetunused(wallet))
     print(bnotify('addr', notifyURL))
 
     app.run(debug=False, port=16333)

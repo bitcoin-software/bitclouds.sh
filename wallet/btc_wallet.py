@@ -2,11 +2,10 @@ import subprocess
 import time
 import json
 
-bwallets = ['/usr/home/bitclouds/.electrum/wallets/default_wallet']
 btcbinpath = '/usr/local/bin/electrum'
 
 
-def bstartd():
+def bstartd(bwallets):
     dproc = subprocess.Popen([btcbinpath, 'daemon', 'start'], stdout=subprocess.PIPE)
     time.sleep(5)
     print(dproc.stdout);
