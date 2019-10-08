@@ -30,6 +30,8 @@ class elify(Resource):
             print(request.get_data())
             return False
 
+        return True
+
 
 class chargify(Resource):
     def post(self):
@@ -54,10 +56,13 @@ class chargify(Resource):
 class getnew(Resource):
     def get(self):
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        address = bgetunused(wallet)
         result = {
-            "address": bgetunused(wallet)
+            "address": address
         }
-        bnotify(wallet, addr, notifyURL)
+        print(dtime)
+        print("new addr:" + address + "\nwill notify:" + notifyURL + ";\n")
+        bnotify(wallet, address, notifyURL)
         return result
 
 
