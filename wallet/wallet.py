@@ -23,7 +23,7 @@ class elify(Resource):
         #    print(dtime + ' no data' + str(e))
         #    return False
 
-        print(request.data)
+        print(str(request.data))
 
 
 if __name__ == '__main__':
