@@ -12,8 +12,6 @@ api = Api(app)
 config = configparser.ConfigParser()
 config.read('config.ini')
 
-wallet = config['electrum']['wallet']
-
 wallet_host = config['wallet']['host']
 project_path = config['paths']['local_path']
 sys.path.insert(1, project_path + '/wallet')
