@@ -34,8 +34,9 @@ if __name__ == '__main__':
     ipn.add_resource(elify, '/elify')
 
     notifyURL = config['ipn']['url'] + '/elify'
-    print(bgetunused(wallet))
-    print(bnotify(wallet, 'addr', notifyURL))
+    addr = bgetunused(wallet)
+    print(addr)
+    print(bnotify(wallet, addr, notifyURL))
 
     app.run(debug=False, port=16333)
 
