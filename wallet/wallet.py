@@ -56,12 +56,12 @@ class chargify(Resource):
 class getnew(Resource):
     def get(self):
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-        address = bgetunused(wallet)
+        address = bgetunused(wallet).rstrip()
         result = {
             "address": address
         }
         print(dtime)
-        print("new addr:" + address + "\nwill notify:" + notifyURL + ";\n")
+        print("new addr:" + address + ";\nwill notify:" + notifyURL + ";\n")
         bnotify(wallet, address, notifyURL)
         return result
 
