@@ -22,8 +22,8 @@ class elify(Resource):
         args = parser.parse_args()
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         try:
-            status = args['status']
-            address = args['address']
+            status = '['+str(args['status'])+']'
+            address = '['+str(args['address'])+']'
             print(dtime + " new status " + status + " for " + address)
         except KeyError as e:
             print(dtime + ' no data' + str(e))
