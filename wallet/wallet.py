@@ -55,7 +55,7 @@ class getnew(Resource):
     def get(self):
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         result = {
-            "address": bgetnew(wallet)
+            "address": bgetunused(wallet)
         }
         bnotify(wallet, addr, notifyURL)
         return result

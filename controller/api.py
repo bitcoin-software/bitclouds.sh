@@ -10,6 +10,7 @@ app = Flask(__name__)
 api = Api(app)
 
 config = configparser.ConfigParser()
+
 config.read('../controller/config.ini')
 
 wallet_host = config['wallet']['host']
