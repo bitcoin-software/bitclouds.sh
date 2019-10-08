@@ -56,7 +56,7 @@ class chargify(Resource):
 class getnew(Resource):
     def get(self):
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-        address = bgetunused(wallet).rstrip()
+        address = str(bgetunused(wallet).rstrip())
         result = {
             "address": address
         }
