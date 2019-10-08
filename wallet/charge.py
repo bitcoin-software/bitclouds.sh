@@ -4,7 +4,7 @@ import datetime
 import configparser
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('../wallet/config.ini')
 
 #invoice_info_request = requests.post('https://charge.ysx.in/', data={"bolt": plain_invoice},
 #                                     auth=('api-token', 'eih4veijichaiya1oh3aeS3fa4ieb8'))

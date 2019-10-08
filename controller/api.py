@@ -10,7 +10,7 @@ app = Flask(__name__)
 api = Api(app)
 
 config = configparser.ConfigParser()
-config.read('config.ini')
+config.read('../controller/config.ini')
 
 wallet_host = config['wallet']['host']
 project_path = config['paths']['local_path']
