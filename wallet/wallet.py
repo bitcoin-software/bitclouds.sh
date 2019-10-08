@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_restful import Resource, Api, reqparse, request
 import datetime
-from btc_wallet import bstartd, bgetunused, bgetnew, bnotify
+from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd
 import configparser
 from charge import get_invoice
 
@@ -63,6 +63,7 @@ class getnew(Resource):
 
 if __name__ == '__main__':
     wallet_list = [wallet]
+    bstopd()
     bstartd(wallet_list)
 
     ipn.add_resource(elify, '/elify')
