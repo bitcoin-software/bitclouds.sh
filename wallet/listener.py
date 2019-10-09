@@ -14,10 +14,10 @@ arg = sys.argv[1]
 
 if arg == 'list':
     for host in hosts:
-        print(json.dumps(host))
+        print(host)
 
     for tx in txs:
-        print(json.dumps(tx))
+        print(tx)
 elif arg == 'del':
     dbclient.drop_database(mongo_db)
 
