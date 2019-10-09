@@ -84,7 +84,7 @@ class Status(Resource):
             if host['address'] == addr:
                 result = {
                     "ip": host['ipv4'],
-                    "pwd": host['pwd']
+                    "pwd": host['pwd'],
                     "status": "subscribed"
                 }
 
