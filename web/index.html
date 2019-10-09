@@ -50,13 +50,13 @@ pre {
 
     #only one plan available: [20 GB SSD, 2GB RAM, 1vCPU, 15TB traffic] = 66 sat/hour
 
-    [you@home ~$] curl -x GET https://bitclouds.sh/images
+    [you@home ~$] curl -X GET https://bitclouds.sh/images
 
-    [you@home ~$] curl -x POST https://bitclouds.sh/create -d image="linux"
+    [you@home ~$] curl -X POST https://bitclouds.sh/create -d image="linux"
 
-    [you@home ~$] curl -x POST https://bitclouds.sh/topup -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
+    [you@home ~$] curl -X POST https://bitclouds.sh/topup -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
 
-    [you@home ~$] curl -x POST https://bitclouds.sh/status -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
+    [you@home ~$] curl -X POST https://bitclouds.sh/status -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
 
 
 </output></pre>
