@@ -114,10 +114,11 @@ class TopUp(Resource):
         parser.add_argument('host')
         parser.add_argument('eur')
         args = parser.parse_args()
+
         try:
             amount_eur = args['eur']
         except KeyError as e:
-            amount_eur = 0.01
+            amount_eur = 0.03
 
         try:
             host = args['host']
@@ -125,7 +126,7 @@ class TopUp(Resource):
             return {"error": "provide host id (bitcoin address)"}
 
         if host:
-            invoice_data = invoice(amount=0.1, cur='EUR', desc=host)
+            invoice_data = invoice(amount=amount_eur, cur='EUR', desc=host)
 
             id = invoice_data['id']
             bolt = invoice_data['payreq']
