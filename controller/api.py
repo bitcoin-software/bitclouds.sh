@@ -42,9 +42,14 @@ class CreateVPS(Resource):
             if addr_info.status_code == 200:
                 info = addr_info.json()
 
+            invoice_data = invoice(amount=0.03, cur='EUR', desc=info['address'])
+
+            bolt = invoice_data['payreq']
+
+
             result = {
                 "host": info['address'],
-                "ip": "123.123.123.123"
+                "paytostart": bolt
             }
 
             return result
