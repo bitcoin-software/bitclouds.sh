@@ -5,7 +5,7 @@ from hcloud.images.domain import Image
 from hcloud.server_types.domain import ServerType
 from hcloud.ssh_keys.client import SSHKeysClient
 
-from dbops import add_hetzner, get_hetzner
+from ctrldbops import add_hetzner, get_hetzner
 
 import configparser
 
