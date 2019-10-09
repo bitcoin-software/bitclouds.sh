@@ -75,11 +75,11 @@ def add_tx(address, txhash, amount_sats, status='paid', chargeid='none', prev_ou
                 "amount": amount_sats,
                 "txhash": txhash,
                 "chargeid": chargeid,
-                "prev_outhash": outhash,
-                "status": status,
+                "prev_outhash": prev_outhash,
+                "status": status
                 }
 
-    log_acc(address, status + " tx " + txid)
+    log_acc(address, status + " tx " + txhash)
 
     recordID = mongo.txs.insert_one(txdata)
 
