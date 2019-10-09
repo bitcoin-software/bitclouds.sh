@@ -59,7 +59,7 @@ class elify(Resource):
                                 update_tx(address, outhash, 'confirmed')
                                 hours = convert_sats2hours(address, amount_sats)
                                 subscribe_host(address, hours)
-                                print("\n\n" + find_host(address) + "\n\n")
+                                print("\n\n" + str(find_host(address)) + "\n\n")
                             else:
                                 print(dtime + ' ' + outhash + 'tx already confirmed')
                         else:
@@ -91,7 +91,7 @@ class chargify(Resource):
                    prev_outhash='none')
             hours = convert_sats2hours(address, amount_sats)
             subscribe_host(address, hours)
-        print("\n\n" + find_host(address) + "\n\n")
+        print("\n\n" + str(find_host(address)) + "\n\n")
         return True
 
 
