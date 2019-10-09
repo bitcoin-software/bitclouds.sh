@@ -83,7 +83,7 @@ class chargify(Resource):
         #print(invoice_data)
         address = invoice_data['description']
         status = invoice_data['status']
-        amount_sats = int(invoice_data['status']/1000)
+        amount_sats = int(invoice_data['msatoshi']/1000)
         bolt = invoice_data['payreq']
         print(dtime + " new status [" + status + "] for [" + id + "]")
         if status == 'paid':
