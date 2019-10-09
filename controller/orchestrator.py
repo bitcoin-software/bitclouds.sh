@@ -14,7 +14,7 @@ def new_server(address, image="freebsd"):
 
 
 def del_server(address):
-    servers = get_hetzner
+    servers = get_hetzner()
 
     for serv in servers:
         if serv['address'] == address:
