@@ -54,6 +54,8 @@ def deleteServer(id):
 
     servers = client.servers.get_all()
     for server in servers:
-        print(server)
+        if server.id == id:
+            print(str(id) + " to be deleted")
+            server.delete()
 
     return True
