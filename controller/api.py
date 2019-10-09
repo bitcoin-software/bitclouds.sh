@@ -43,9 +43,9 @@ class CreateVPS(Resource):
                 info = addr_info.json()
 
             invoice_data = invoice(amount=0.03, cur='EUR', desc=info['address'])
-
+            id = invoice_data['id']
             bolt = invoice_data['payreq']
-
+            register_webhook(id, wallet_host + '/chargify')
 
             result = {
                 "host": info['address'],
