@@ -8,8 +8,8 @@ mongo = dbclient[mongo_db]
 dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
 
-def find_user():
-    ex_user = mongo.users.find_one({"platform": platform, "user": userid})
+def find_host(address):
+    ex_user = mongo.hosts.find_one({"address": address})
 
     if ex_user:
         return ex_user
@@ -17,11 +17,25 @@ def find_user():
         return False
 
 
-def create_user():
-    userdata = {"created_date": dtime,
-                "platform": 'telegram',
-                "userhash": userhash,
-                "balance": 0,
-                "user": userid
+def subscribe_host(address, hours):
+    mongo.hosts.update_one(
+    {"address": address},
+        {
+            "$set":
+                {
+                    "status": "subscribed",
+                    "balance": hours
                 }
-    recordID = mongo.users.insert_one(userdata)
+        }
+    )
+
+
+def add_tx(address, tx):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    hostdata = {"timestamp": dtime,
+                "address": address,
+                "tx": tx
+                }
+
+    recordID = mongo.hosts.insert_one(hostdata)
