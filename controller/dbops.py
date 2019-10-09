@@ -17,25 +17,3 @@ def find_host(address):
         return False
 
 
-def subscribe_host(address, hours):
-    mongo.hosts.update_one(
-    {"address": address},
-        {
-            "$set":
-                {
-                    "status": "subscribed",
-                    "balance": hours
-                }
-        }
-    )
-
-
-def add_tx(address, tx):
-    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-
-    hostdata = {"timestamp": dtime,
-                "address": address,
-                "tx": tx
-                }
-
-    recordID = mongo.hosts.insert_one(hostdata)
