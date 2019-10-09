@@ -10,6 +10,10 @@ hosts = mongo.hosts.find()
 
 txs = mongo.txs.find()
 
+
+hetzners = mongo.hetzner.find()
+
+
 arg = sys.argv[1]
 
 if arg == 'list':
@@ -18,6 +22,10 @@ if arg == 'list':
 
     for tx in txs:
         print(tx)
+
+    for server in hetzners:
+        print(server)
+
 elif arg == 'del':
     dbclient.drop_database(mongo_db)
 
