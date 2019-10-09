@@ -27,11 +27,11 @@ from ctrldbops import get_hetzner, find_hosts
 class CreateVPS(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument('type')
+        parser.add_argument('image')
         args = parser.parse_args()
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         try:
-            host_type = args['type']
+            host_type = args['image']
         except KeyError as e:
             print(dtime + ' no data ' + str(e))
             return False
