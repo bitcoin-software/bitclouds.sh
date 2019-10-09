@@ -9,19 +9,19 @@ import configparser
 app = Flask(__name__)
 api = Api(app)
 
-config = configparser.ConfigParser()
+api_config = configparser.ConfigParser()
 
-config.read('../controller/config.ini')
+api_config.read('../controller/config.ini')
 
-wallet_host = config['wallet']['host']
-project_path = config['paths']['local_path']
+wallet_host = api_config['wallet']['host']
+project_path = api_config['paths']['local_path']
 sys.path.insert(1, project_path + '/wallet')
 
 # charge.py
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
 from charge import invoice, register_webhook
-
+from hetzner import createServer, deleteServer
 
 class CreateVPS(Resource):
     def post(self):

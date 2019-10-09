@@ -5,14 +5,20 @@ from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd, blistunspe
 import configparser
 from charge import get_invoice
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
+import sys
 
-config = configparser.ConfigParser()
-config.read('config.ini')
+wallet_config = configparser.ConfigParser()
+wallet_config.read('config.ini')
 
-wallet = config['electrum']['wallet']
+wallet = wallet_config['electrum']['wallet']
 
 app = Flask(__name__)
 ipn = Api(app)
+
+api_config = configparser.ConfigParser()
+api_config.read('../controller/config.ini')
+project_path = api_config['paths']['local_path']
+sys.path.insert(1, project_path + '/controller')
 
 
 def convert_sats2hours(address, sats):
@@ -124,7 +130,7 @@ if __name__ == '__main__':
     ipn.add_resource(chargify, '/chargify')
     ipn.add_resource(getnew, '/newaddr')
 
-    notifyURL = config['ipn']['url'] + '/elify'
+    notifyURL = wallet_config['ipn']['url'] + '/elify'
     addr = bgetunused(wallet)
 
     app.run(debug=False, port=16333)
