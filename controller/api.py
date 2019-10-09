@@ -43,13 +43,64 @@ class CreateVPS(Resource):
                 info = addr_info.json()
 
             result = {
-                "address": info['address'],
+                "host": info['address'],
                 "ip": "123.123.123.123"
             }
 
             return result
         else:
             return False
+
+
+class Images(Resource):
+    def get(self):
+        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+        result = {
+            "images": ['linux']
+        }
+        return result
+
+
+class Status(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument('host')
+        args = parser.parse_args()
+        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+        hosts = get_hetzner()
+
+        try:
+            addr = args['host']
+            result = {
+                "status": "wrong host"
+            }
+        except KeyError as e:
+            return {"error": "need a host (btc addr)"}
+
+
+        for host in hosts:
+            if host['address'] == addr:
+                result = {
+                    "ip": host['ipv4'],
+                    "pwd": host['pwd']
+                    "status": "subscribed"
+                }
+
+        accs = find_hosts()
+
+        for acc in accs:
+            if acc['address'] == addr:
+                balance = acc['balance']
+                if balance > 0:
+                    result['hours_left'] = balance
+                else:
+                    result = {
+                        "status": "pending payment"
+                    }
+
+        return result
 
 
 class TopUp(Resource):
@@ -69,7 +120,7 @@ class TopUp(Resource):
             return {"error": "provide host id (bitcoin address)"}
 
         if host:
-            invoice_data = invoice(amount=0.01, cur='EUR', desc=host)
+            invoice_data = invoice(amount=0.1, cur='EUR', desc=host)
 
             id = invoice_data['id']
             bolt = invoice_data['payreq']
@@ -87,6 +138,8 @@ class TopUp(Resource):
 #e-mail or telegram id
 api.add_resource(CreateVPS, '/create')
 api.add_resource(TopUp, '/topup')
+api.add_resource(Images, '/images')
+api.add_resource(Status, '/status')
 
 if __name__ == '__main__':
     app.run(debug=False, port=16444)

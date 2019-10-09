@@ -44,16 +44,29 @@ pre {
 </head>
 <body>
 <pre><output>Welcome to the internet of money!
+    #<a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+    #Version: 0.1.0 beta
 
-#bitclouds.sh is a programmable VPS platform
-#Version: 0.1.0
+    #only one plan available: [20 GB SSD, 2GB RAM, 1vCPU, 15TB traffic] = 66 sat/hour
 
-[you@home ~$] curl -x GET https://bitclouds.sh/images
-{
-  ['freebsd', 'centos', 'debian', 'bitcoind', 'lightningd']
-}
+    [you@home ~$] curl -x GET https://bitclouds.sh/images
 
-[you@home ~$] curl -x POST https://bitclouds.sh/create -d image="freebsd"
+    {
+    ['linux']
+    }
+
+    [you@home ~$] curl -x POST https://bitclouds.sh/create -d image="linux"
+
+    {"host": "3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S", "ip": "123.123.123.123"}
+
+    [you@home ~$] curl -x POST https://bitclouds.sh/topup -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
+
+    {"invoice": "lnbc1303340p1pwemmlxpp5j5jm5wadglhew5c68shh7lt4w9sj9azaa9pld9vwpm4anuqr02vsdphxdr9xetxxaayyjzefex4wd26xf58ymmgg3yy572yfpuk74rydgerv5cxqzjccqp2rzjq0hpsr5wupl3l8yeslvckh2aanmt447stz7a3036m97gurwjehrm5zxy4cqq0scqqqqqqqpgqqqqqpqq
+zsqvnc78zs4487agadprkkalv9k6xh6x3975pgl0ndckncphexxaq3tjrl6zryz06p4pn0rxzlqjvsvjrlg0qjjnwwsfyth5lzxwc6twqqsuxdzs"}
+
+    [you@home ~$] curl -x POST https://bitclouds.sh/status -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
+
+
 </output></pre>
 </body>
 </html>
