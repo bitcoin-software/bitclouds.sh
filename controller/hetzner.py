@@ -51,11 +51,9 @@ def createServer(name, snapid="8322744"):
 
 
 def deleteServer(id):
-    mykeys = list()
-    for key in sshClient.get_all():
-        mykeys.append(key)
 
-    response = client.servers.delete(id=id)
-    server = response.server
+    servers = client.servers.get_all()
+    for server in servers:
+        print(server)
 
-    return server
+    return True
