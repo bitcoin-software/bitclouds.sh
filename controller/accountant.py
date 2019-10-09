@@ -4,8 +4,8 @@ config = configparser.ConfigParser()
 
 config.read('../controller/config.ini')
 
-from dbops import find_hosts, deduct_host
-from hetzner import createServer, deleteServer
+from ctrldbops import find_hosts, deduct_host, get_suspended, delete_host
+from orchestrator import del_server
 
 hosts = find_hosts()
 for host in hosts:
@@ -14,8 +14,7 @@ for host in hosts:
         print(host['address'] + "is subscribed; balance: " + str(host['balance']))
     last = host['address']
 
-serverdata = createServer('NAMENAME')
 
-print("created: " + str(serverdata))
-
-deleteServer(serverdata['id'])
+for host in get_suspended():
+    delete_host(host['address'])
+    del_server(host['address'])

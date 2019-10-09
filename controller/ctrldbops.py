@@ -17,6 +17,29 @@ def find_hosts():
         return False
 
 
+def get_suspended():
+    hosts = mongo.hosts.find({"status": "suspended"})
+
+    if hosts:
+        return hosts
+    else:
+        return False
+
+
+def delete_host(address):
+    host = mongo.hosts.find_one({"address": address})
+
+    mongo.hosts.update_one(
+        {"address": address},
+        {
+            "$set":
+                {
+                    "status": "deleted",
+                }
+        }
+    )
+
+
 def deduct_host(address):
     host = mongo.hosts.find_one({"address": address})
     balance = host['balance']
@@ -28,12 +51,11 @@ def deduct_host(address):
             {
                 "$set":
                     {
-                        "status": "subscribed",
                         "balance": balance - 1
                     }
             }
         )
-    else:
+    elif status == "subscribed":
         mongo.hosts.update_one(
             {"address": address},
             {
