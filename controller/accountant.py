@@ -12,6 +12,7 @@ for host in hosts:
     if host['status'] == 'subscribed':
         deduct_host(host['address'])
         print(host['address'] + "is subscribed; balance: " + str(host['balance']))
+    last = host['address']
 
 serverdata = createServer('NAMENAME')
 

@@ -5,6 +5,7 @@ from hcloud.images.domain import Image
 from hcloud.server_types.domain import ServerType
 from hcloud.ssh_keys.client import SSHKeysClient
 
+from dbops import add_hetzner, get_hetzner
 
 import configparser
 
@@ -35,17 +36,17 @@ def getServers():
 
 
 def createServer(name, snapid="8322744"):
-    mykeys = list()
-    for key in sshClient.get_all():
-        mykeys.append(key)
 
-    response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(type="snapshot", id=snapid), ssh_keys=mykeys)
+    response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(type="snapshot", id=snapid))
     server = response.server
 
     serverData = dict()
 
     serverData['id'] = server.id
     serverData['ip'] = server.public_net.ipv4.ip
+    serverData['pwd'] = response.root_password
+
+    add_hetzner(name, server.id, server.public_net.ipv4.ip, "cx11", response.root_password)
 
     return serverData
 

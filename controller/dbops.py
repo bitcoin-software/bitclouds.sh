@@ -44,3 +44,28 @@ def deduct_host(address):
                     }
             }
         )
+
+
+def get_hetzner():
+    hosts = mongo.hetzner.find()
+
+    if hosts:
+        return hosts
+    else:
+        return False
+
+
+def add_hetzner(address, hetzner_id, ipv4, plan, pwd):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    hostdata = {"created_date": dtime,
+                "address": address,
+                "plan": plan,
+                "id": hetzner_id,
+                "ipv4": ipv4,
+                "pwd": pwd
+                }
+
+    recordID = mongo.hetzner.insert_one(hostdata)
+
+
