@@ -99,6 +99,12 @@ class getnew(Resource):
     def get(self):
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         address = str(bgetunused(wallet).rstrip())
+        if find_host(address):
+            print('unused addr: ' + address)
+            address = str(bgetnew(wallet).rstrip())
+        else:
+            pass
+
         result = {
             "address": address
         }
