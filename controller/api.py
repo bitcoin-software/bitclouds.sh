@@ -35,7 +35,7 @@ class CreateVPS(Resource):
             return False
 
         if host_type:
-            addr_info = requests.get(wallet_host + '/newaddr')
+            addr_info = requests.post(wallet_host + '/newaddr', data={"image": host_type})
 
             if addr_info.status_code == 200:
                 info = addr_info.json()

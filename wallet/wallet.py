@@ -19,8 +19,7 @@ api_config = configparser.ConfigParser()
 api_config.read('../controller/config.ini')
 project_path = api_config['paths']['local_path']
 sys.path.insert(1, project_path + '/controller')
-from hetzner import createServer, deleteServer
-
+from orchestrator import new_server
 
 def convert_sats2hours(address, sats):
         hours = int(sats / 66) - 1
@@ -67,7 +66,7 @@ class elify(Resource):
                                 new_host = find_host(address)
                                 if new_host:
                                     if new_host['status'] == 'new':
-                                        serverData = createServer(address)
+                                        serverData = new_server(address)
 
                                 update_tx(address, outhash, 'confirmed')
                                 hours = convert_sats2hours(address, amount_sats)
@@ -103,7 +102,7 @@ class chargify(Resource):
             new_host = find_host(address)
             if new_host:
                 if new_host['status'] == 'new':
-                    serverData = createServer(address)
+                    serverData = new_server(address)
             add_tx(address=address, txhash=bolt, amount_sats=amount_sats, status='confirmed', chargeid=id,
                    prev_outhash='none')
             hours = convert_sats2hours(address, amount_sats)
@@ -113,9 +112,13 @@ class chargify(Resource):
 
 
 class getnew(Resource):
-    def get(self):
+    def post(self):
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
         address = str(bgetunused(wallet).rstrip())
+        parser = reqparse.RequestParser()
+        parser.add_argument('image')
+        args = parser.parse_args()
+        image = args['image']
         if find_host(address):
             print('unused addr: ' + address)
             address = str(bgetnew(wallet).rstrip())
@@ -128,7 +131,7 @@ class getnew(Resource):
         print(dtime)
         print("new addr:" + address + ";\nwill notify:" + notifyURL + ";\n")
         bnotify(wallet, address, notifyURL)
-        create_host(address)
+        create_host(address, "basic", )
         return result
 
 
