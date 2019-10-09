@@ -19,6 +19,7 @@ api_config = configparser.ConfigParser()
 api_config.read('../controller/config.ini')
 project_path = api_config['paths']['local_path']
 sys.path.insert(1, project_path + '/controller')
+from hetzner import createServer, deleteServer
 
 
 def convert_sats2hours(address, sats):
@@ -62,6 +63,12 @@ class elify(Resource):
                         existing_tx = find_tx(outhash)
                         if existing_tx:
                             if existing_tx['status'] == 'paid':
+
+                                new_host = find_host(address)
+                                if new_host:
+                                    if new_host['status'] == 'new':
+                                        serverData = createServer(address)
+
                                 update_tx(address, outhash, 'confirmed')
                                 hours = convert_sats2hours(address, amount_sats)
                                 subscribe_host(address, hours)
@@ -93,6 +100,10 @@ class chargify(Resource):
         bolt = invoice_data['payreq']
         print(dtime + " new status [" + status + "] for [" + id + "]")
         if status == 'paid':
+            new_host = find_host(address)
+            if new_host:
+                if new_host['status'] == 'new':
+                    serverData = createServer(address)
             add_tx(address=address, txhash=bolt, amount_sats=amount_sats, status='confirmed', chargeid=id,
                    prev_outhash='none')
             hours = convert_sats2hours(address, amount_sats)
