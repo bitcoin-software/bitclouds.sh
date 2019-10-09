@@ -36,8 +36,9 @@ def getServers():
 
 
 def createServer(name, snapid="8322744"):
-
-    response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(type="snapshot", id=snapid))
+    #freebsd = snapid="8322744"
+    #image=Image(type="snapshot", id=snapid)
+    response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(name="debian-10"))
     server = response.server
 
     serverData = dict()
