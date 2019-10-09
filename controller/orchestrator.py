@@ -8,8 +8,10 @@ sys.path.insert(1, project_path + '/controller')
 from hetzner import createServer, deleteServer
 from ctrldbops import get_hetzner
 
+
 def new_server(address, image="freebsd"):
     createServer(address)
+
 
 def del_server(address):
     servers = get_hetzner
