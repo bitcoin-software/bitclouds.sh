@@ -21,6 +21,8 @@ sys.path.insert(1, project_path + '/wallet')
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
 from charge import invoice, register_webhook
+from ctrldbops import get_hetzner, find_hosts
+
 
 class CreateVPS(Resource):
     def post(self):
