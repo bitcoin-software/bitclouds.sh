@@ -48,7 +48,7 @@ def createServer(name, image):
         snap_id = "8322744"
         sysImage = False
     elif image == "ubuntu":
-        image_name = "ubuntu"
+        image_name = "ubuntu-18.04"
 
     if sysImage:
         response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(name=image_name))
