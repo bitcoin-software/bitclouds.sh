@@ -119,6 +119,8 @@ class TopUp(Resource):
         parser.add_argument('eur')
         args = parser.parse_args()
 
+        amount_eur = 0.03
+
         try:
             amount_eur = args['eur']
         except KeyError as e:
