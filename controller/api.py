@@ -116,10 +116,10 @@ class TopUp(Resource):
     def post(self):
         parser = reqparse.RequestParser()
         parser.add_argument('host')
-        parser.add_argument('eur')
+        parser.add_argument('sats')
         args = parser.parse_args()
 
-        iseur = False
+        isamount = False
 
         try:
             host = args['host']
@@ -127,17 +127,19 @@ class TopUp(Resource):
             return {"error": "provide host id (bitcoin address)"}
 
         try:
-            amount_eur = args['eur']
-            iseur = True
+            sats = args['sats']
+            isamount = True
         except KeyError as e:
             #error
             pass
 
         if host:
-            if not iseur:
-                amount_eur = 0.03
             print("generating invoice for " + str(amount_eur) + " desc=" + host)
-            invoice_data = invoice(amount=amount_eur, cur='EUR', desc=str(host))
+            if not isamount:
+                invoice_data = invoice(amount=0.03, cur='EUR', desc=str(host))
+            elif isamount:
+                invoice_data = invoice(msat=sats*1000, desc=str(host))
+
             print(invoice_data)
             id = invoice_data['id']
             bolt = invoice_data['payreq']
