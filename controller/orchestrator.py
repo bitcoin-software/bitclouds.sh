@@ -12,11 +12,10 @@ from ctrldbops import get_bitbsd
 
 
 def new_server(address, image="debian"):
-    if (image is not "freebsd") and (image is not "bitcoind") and (image is not "lightningd"):
+    if image == "ubuntu" or image == "centos" or image == "debian":
         createServer(address, image)
-    else:
-        if image=="bitcoind":
-            createbitcoind(address)
+    elif image=="bitcoind":
+        createbitcoind(address)
 
 
 def del_server(address):
