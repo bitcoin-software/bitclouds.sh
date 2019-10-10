@@ -119,7 +119,7 @@ class TopUp(Resource):
         parser.add_argument('eur')
         args = parser.parse_args()
 
-        #amount_eur = 0.03
+        amount_eur = 0.03
 
         try:
             host = args['host']
