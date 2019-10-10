@@ -126,8 +126,14 @@ class TopUp(Resource):
             return {"error": "provide host id (bitcoin address)"}
 
         sats = args['sats']
-        if sats > 0:
-            isamount = True
+
+        try:
+            if int(sats) > 0:
+                isamount = True
+            else:
+                isamount = False
+        except Exception as e:
+            pass
 
         if host:
             if not isamount:
