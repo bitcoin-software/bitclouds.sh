@@ -32,7 +32,7 @@ def password_to_hmac(salt, password):
 
 
 def createbitcoind(address):
-    id = generate_salt(4)
+    id = 'bd'+generate_salt(4)
 
     ipv4 = '188.165.223.61'
 
