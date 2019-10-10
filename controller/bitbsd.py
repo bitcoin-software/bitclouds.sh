@@ -67,7 +67,7 @@ def createbitcoind(address):
     rpc_pass = password
     rpc_user = username
 
-    pwd = generate_salt(4)
+    pwd = getpass.getpass()
 
     add_bitbsd(address, id, ipv4, ssh_port, rpc_port, authline, plan, pwd)
     pwd_sha = sha512_crypt.using(rounds=5000).hash(pwd)
