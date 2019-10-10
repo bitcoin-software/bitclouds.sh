@@ -8,7 +8,7 @@ project_path = api_config['paths']['local_path']
 sys.path.insert(1, project_path + '/controller')
 from bitbsd import createbitcoind
 from hetzner import createServer, deleteServer
-from ctrldbops import get_hetzner
+from ctrldbops import get_bitbsd
 
 
 def new_server(address, image="debian"):
