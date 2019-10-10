@@ -1,0 +1,17 @@
+- hosts: bitbsd
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: stop bitcoin1
+    shell: cbsd jstop bitcoin1
+
+  - name: create cloned jail
+    shell: cbsd jclone old=bitcoin1 new=clientbtc host_hostname="client.bitclouds.sh" ip4_addr=DHCP
+
+  - name: start bitcoin1
+    shell: cbsd jstart bitcoin1
+
+  - name: start cloned jail
+    shell: cbsd jstart clientbtc
+
