@@ -45,12 +45,12 @@ def createbitcoind(address):
 
     plan = 'bitcoind'
 
-    ssh_port = random.randrange(64002, 64998)
-    rpc_port = random.randrange(55002, 55998)
+    ssh_port = random.randrange(60002, 64998)
+    rpc_port = random.randrange(50002, 54998)
     while ssh_port in ssh_ports:
-        ssh_port = random.randrange(64002, 64998)
+        ssh_port = random.randrange(60002, 64998)
     while rpc_port in rpc_ports:
-        rpc_port = random.randrange(64002, 64998)
+        rpc_port = random.randrange(50002, 54998)
 
 
     password = generate_password()
