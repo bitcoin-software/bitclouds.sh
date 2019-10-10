@@ -133,7 +133,7 @@ class TopUp(Resource):
 
         if host:
             invoice_data = invoice(amount=amount_eur, cur='EUR', desc=host)
-
+            print(invoice_data)
             id = invoice_data['id']
             bolt = invoice_data['payreq']
             register_webhook(id, wallet_host + '/chargify')
