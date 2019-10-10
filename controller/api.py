@@ -132,7 +132,7 @@ class TopUp(Resource):
             amount_eur = "0.03"
 
         if host:
-            invoice_data = invoice(amount=amount_eur, cur='EUR', desc=host)
+            invoice_data = invoice(amount=amount_eur, cur='EUR', desc=str(host))
             print(invoice_data)
             id = invoice_data['id']
             bolt = invoice_data['payreq']
