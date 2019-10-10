@@ -8,8 +8,6 @@ from binascii import hexlify
 from os import urandom, system
 
 from passlib.hash import sha512_crypt
-import crypt
-import getpass;
 
 import configparser
 
@@ -69,6 +67,8 @@ def createbitcoind(address):
     rpc_user = username
 
     pwd = generate_salt(4)
+    pwd_hash = sha512_crypt.encrypt(pwd)
+
     print(pwd)
     add_bitbsd(address, id, ipv4, ssh_port, rpc_port, authline, plan, pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' pwd='+pwd+'"')
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' pwd='+pwd_hash+'"')
