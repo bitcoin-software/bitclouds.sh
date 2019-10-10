@@ -23,7 +23,7 @@
 
   - name: Setup alternate RPC port
     lineinfile:
-      remote_dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
       regexp: "^rpcbind"
       line: "rpcbind=0.0.0.0:{{ rpcport }}"
 
@@ -34,7 +34,9 @@
       line: "{{ rpcauthline }}"
 
   - name: set bitcoin user password
-    raw: "echo -e \"{{ pwd }}\n{{ pwd }}\" | passwd bitcoin"
+    user:
+      name: bitcoin
+      password: "{{ pwd }}"
 
   - name: Setup ssh on start
     lineinfile:

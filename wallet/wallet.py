@@ -66,7 +66,7 @@ class elify(Resource):
                                 new_host = find_host(address)
                                 if new_host:
                                     if new_host['status'] == 'new':
-                                        serverData = new_server(address)
+                                        serverData = new_server(address, new_host['image'])
 
                                 update_tx(address, outhash, 'confirmed')
                                 hours = convert_sats2hours(address, amount_sats)
@@ -102,7 +102,7 @@ class chargify(Resource):
             new_host = find_host(address)
             if new_host:
                 if new_host['status'] == 'new':
-                    serverData = new_server(address)
+                    serverData = new_server(address, new_host['image'])
             add_tx(address=address, txhash=bolt, amount_sats=amount_sats, status='confirmed', chargeid=id,
                    prev_outhash='none')
             hours = convert_sats2hours(address, amount_sats)
