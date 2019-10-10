@@ -91,3 +91,29 @@ def add_hetzner(address, hetzner_id, ipv4, plan, pwd):
     recordID = mongo.hetzner.insert_one(hostdata)
 
 
+def get_bitbsd():
+    hosts = mongo.bitbsd.find()
+
+    if hosts:
+        return hosts
+    else:
+        return False
+
+
+def add_bitbsd(address, bitbsd_id, ipv4, ssh_port, rpc_port, rpc_authline, plan, pwd):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    hostdata = {"created_date": dtime,
+                "address": address,
+                "plan": plan,
+                "id": bitbsd_id,
+                "ipv4": ipv4,
+                "ssh_port": ssh_port,
+                "rpc_port": rpc_port,
+                "rpc_authline": rpc_authline,
+                "pwd": pwd
+                }
+
+    recordID = mongo.bitbsd.insert_one(hostdata)
+
+

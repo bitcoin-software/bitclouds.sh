@@ -15,3 +15,39 @@
   - name: start cloned jail
     shell: "cbsd jstart {{ cname }}"
 
+  - name: Setup alternate SSH port
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
+      regexp: "^#Port"
+      line: "Port {{ sshport }}"
+
+  - name: Setup alternate RPC port
+    lineinfile:
+      remote_dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcbind"
+      line: "rpcbind=0.0.0.0:{{ rpcport }}"
+
+  - name: Add RPC auth
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcauth"
+      line: "{{ rpcauthline }}"
+
+  - name: set bitcoin user password
+    raw: "echo -e \"{{ pwd }}\n{{ pwd }}\" | passwd bitcoin"
+
+  - name: Setup ssh on start
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
+      regexp: "^sshd_enable"
+      line: "sshd_enable=YES"
+
+  - name: stop cloned jail
+    shell: "cbsd jstop {{ cname }}"
+
+  - name: start cloned jail
+    shell: "cbsd jstart {{ cname }}"
+
+
+
+
