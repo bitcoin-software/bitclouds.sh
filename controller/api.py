@@ -141,7 +141,7 @@ class TopUp(Resource):
                 print("generating invoice for 0.03 EUR desc=" + host)
             elif isamount:
                 print(sats)
-                invoice_data = invoice(msat=sats*1000, desc=str(host))
+                invoice_data = invoice(msat=int(sats)*1000, desc=str(host))
                 print("generating invoice for " + str(sats) + " sats desc=" + str(host))
 
             print(invoice_data)
