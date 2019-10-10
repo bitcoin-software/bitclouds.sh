@@ -33,8 +33,8 @@
       regexp: "^rpcauth"
       line: "{{ rpcauthline }}"
 
-  - name: set bitcoin user password
-    raw: "jexec {{ cname }} echo bitcoin:{{ pwd }} | chpasswd"
+#  - name: set bitcoin user password
+#    raw: "jexec {{ cname }} echo bitcoin:{{ pwd }} | chpasswd"
 
   - name: Setup ssh on start
     lineinfile:
