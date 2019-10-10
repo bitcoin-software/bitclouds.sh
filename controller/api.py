@@ -126,7 +126,7 @@ class TopUp(Resource):
             return {"error": "provide host id (bitcoin address)"}
 
         sats = args['sats']
-        if sats:
+        if sats > 0:
             isamount = True
 
         if host:
@@ -134,8 +134,9 @@ class TopUp(Resource):
                 invoice_data = invoice(amount=0.03, cur='EUR', desc=str(host))
                 print("generating invoice for 0.03 EUR desc=" + host)
             elif isamount:
+                print(sats)
                 invoice_data = invoice(msat=sats*1000, desc=str(host))
-                print("generating invoice for " + str(sats) + " sats desc=" + host)
+                print("generating invoice for " + str(sats) + " sats desc=" + str(host))
 
             print(invoice_data)
             id = invoice_data['id']
