@@ -66,7 +66,7 @@ def createbitcoind(address):
     rpc_pass = password
     rpc_user = username
 
-    pwd = generate_salt(4)
+    pwd = 'kie6IZ4Doo'
     pwd_hash = sha512_crypt.encrypt(pwd)
 
     print(pwd)
