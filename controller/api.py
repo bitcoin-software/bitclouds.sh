@@ -121,17 +121,13 @@ class TopUp(Resource):
 
         isamount = False
 
-        try:
-            host = args['host']
-        except KeyError as e:
+        host = args['host']
+        if not host:
             return {"error": "provide host id (bitcoin address)"}
 
-        try:
-            sats = args['sats']
+        sats = args['sats']
+        if sats:
             isamount = True
-        except KeyError as e:
-            #error
-            pass
 
         if host:
             if not isamount:
