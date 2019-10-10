@@ -13,5 +13,5 @@
     shell: cbsd jstart bitcoin1
 
   - name: start cloned jail
-    shell: cbsd jstart clientbtc
+    shell: "cbsd jstart {{ cname }}"
 
