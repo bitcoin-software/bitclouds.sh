@@ -1,6 +1,7 @@
 import pymongo
 import json
 import sys
+import charge
 
 dbclient = pymongo.MongoClient('localhost')
 mongo_db = "hosting"
@@ -28,4 +29,9 @@ if arg == 'list':
 
 elif arg == 'del':
     dbclient.drop_database(mongo_db)
+
+
+elif arg == 'inv':
+    invoice_data = invoice(msat=1000, desc="test")
+    print(invoice_data)
 
