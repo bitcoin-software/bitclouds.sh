@@ -122,14 +122,14 @@ class TopUp(Resource):
         amount_eur = 0.03
 
         try:
-            amount_eur = args['eur']
-        except KeyError as e:
-            amount_eur = 0.03
-
-        try:
             host = args['host']
         except KeyError as e:
             return {"error": "provide host id (bitcoin address)"}
+
+        try:
+            amount_eur = args['eur']
+        except KeyError as e:
+            amount_eur = 0.03
 
         if host:
             invoice_data = invoice(amount=amount_eur, cur='EUR', desc=host)
