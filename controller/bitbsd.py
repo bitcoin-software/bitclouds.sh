@@ -33,8 +33,7 @@ def password_to_hmac(salt, password):
 
 
 def createbitcoind(address):
-    hasher= hashlib.sha1(address.encode('utf-8'))
-    id = base64.urlsafe_b64encode(hasher.digest()[:10])
+    id = generate_salt(4)
 
     ipv4 = '188.165.223.61'
 
@@ -61,7 +60,7 @@ def createbitcoind(address):
     # Create 16 byte hex salt
     salt = generate_salt(16)
     password_hmac = password_to_hmac(salt, password)
-    username = generate_salt(4)
+    username = id
     authline = 'rpcauth={0}:{1}${2}'.format(username, salt, password_hmac)
 
     #system("echo '" + authline + "' >> /usr/local/etc/bitcoin.conf")
