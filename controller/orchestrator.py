@@ -10,8 +10,8 @@ from ctrldbops import get_hetzner
 
 
 def new_server(address, image="debian"):
-    if (image is not "freebsd") or (image is not "bitcoind") or (image is not "lightningd"):
-        createServer(address)
+    if (image is not "freebsd") and (image is not "bitcoind") and (image is not "lightningd"):
+        createServer(address, image)
 
 
 def del_server(address):
