@@ -36,7 +36,7 @@
   - name: set bitcoin user password
     user:
       name: bitcoin
-      password: "{{ pwd | password_hash('sha512') }}"
+      raw: "echo {{ pwd }}\n{{ pwd }}\n | passwd bitcoin }}"
 
   - name: Setup ssh on start
     lineinfile:
