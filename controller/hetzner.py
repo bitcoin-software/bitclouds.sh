@@ -35,10 +35,26 @@ def getServers():
     return servers
 
 
-def createServer(name, snapid="8322744"):
+def createServer(name, image):
     #freebsd = snapid="8322744"
     #image=Image(type="snapshot", id=snapid)
-    response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(name="debian-10"))
+    sysImage = True
+
+    if image=="debian":
+        image_name = "debian-10"
+    elif image == "centos":
+        image_name = "centos-8"
+    elif image == "freebsd":
+        snap_id = "8322744"
+        sysImage = False
+    elif image == "ubuntu":
+        image_name = "ubuntu"
+
+    if sysImage:
+        response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(name=image_name))
+    else:
+        response = client.servers.create(name=name, server_type=ServerType("cx11"), image=Image(type="snapshot", id=snap_id))
+
     server = response.server
 
     serverData = dict()

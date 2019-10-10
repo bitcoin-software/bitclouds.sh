@@ -128,10 +128,11 @@ class getnew(Resource):
         result = {
             "address": address
         }
+
         print(dtime)
         print("new addr:" + address + ";\nwill notify:" + notifyURL + ";\n")
         bnotify(wallet, address, notifyURL)
-        create_host(address, "basic", )
+        create_host(address, "basic", image)
         return result
 
 

@@ -62,8 +62,9 @@ class Images(Resource):
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
         result = {
-            "images": ['linux']
+            "images": ['debian', 'centos', 'ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
         }
+
         return result
 
 
@@ -98,6 +99,9 @@ class Status(Resource):
         for acc in accs:
             if acc['address'] == addr:
                 balance = acc['balance']
+                image = acc['image']
+                if (image == 'freebsd') or (image == 'bitcoind') or (image == 'lightningd'):
+                    result['login_username'] = "bsd"
                 if balance > 0:
                     result['hours_left'] = balance
                 else:

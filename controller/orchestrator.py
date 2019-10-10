@@ -9,13 +9,13 @@ from hetzner import createServer, deleteServer
 from ctrldbops import get_hetzner
 
 
-def new_server(address, image="freebsd"):
-    createServer(address)
+def new_server(address, image="debian"):
+    if (image is not "freebsd") or (image is not "bitcoind") or (image is not "lightningd"):
+        createServer(address)
 
 
 def del_server(address):
     servers = get_hetzner()
-
     for serv in servers:
         if serv['address'] == address:
             deleteServer(serv['id'])

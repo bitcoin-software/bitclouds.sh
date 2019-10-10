@@ -15,7 +15,7 @@ def find_host(address):
         return False
 
 
-def create_host(address, plan="basic", image="freebsd"):
+def create_host(address, plan="basic", image="debian"):
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
     hostdata = {"created_date": dtime,
