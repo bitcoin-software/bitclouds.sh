@@ -1,4 +1,4 @@
-import hashlib
+
 import random
 import hmac
 from ctrldbops import get_bitbsd, add_bitbsd
@@ -6,6 +6,9 @@ from ctrldbops import get_bitbsd, add_bitbsd
 from base64 import urlsafe_b64encode
 from binascii import hexlify
 from os import urandom, system
+
+import base64
+import hashlib
 
 
 import configparser
@@ -30,7 +33,9 @@ def password_to_hmac(salt, password):
 
 
 def createbitcoind(address):
-    id = int(hashlib.sha1(address).hexdigest(), 16) % (10 ** 8)
+    hasher= hashlib.sha1("The quick brown fox")
+    id = base64.urlsafe_b64encode(hasher.digest()[:10])
+
     ipv4 = '188.165.223.61'
 
     ssh_ports = list()
