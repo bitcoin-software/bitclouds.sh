@@ -33,7 +33,7 @@ def password_to_hmac(salt, password):
 
 
 def createbitcoind(address):
-    hasher= hashlib.sha1("The quick brown fox")
+    hasher= hashlib.sha1(address)
     id = base64.urlsafe_b64encode(hasher.digest()[:10])
 
     ipv4 = '188.165.223.61'
