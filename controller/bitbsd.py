@@ -68,8 +68,7 @@ def createbitcoind(address):
     rpc_pass = password
     rpc_user = username
 
-    pwd = id
-    pwd_sha = crypt.crypt(pwd)
-    add_bitbsd(address, id, ipv4, ssh_port, rpc_port, authline, plan, pwd)
+    pwd = generate_salt(4)
     print(pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' pwd='+pwd_sha+'"')
+    add_bitbsd(address, id, ipv4, ssh_port, rpc_port, authline, plan, pwd)
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' pwd='+pwd+'"')

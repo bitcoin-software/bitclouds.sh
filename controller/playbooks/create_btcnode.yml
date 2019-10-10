@@ -24,8 +24,8 @@
   - name: Setup alternate RPC port
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
-      regexp: "^rpcbind"
-      line: "rpcbind=0.0.0.0:{{ rpcport }}"
+      regexp: "^rpcport"
+      line: "rpcport={{ rpcport }}"
 
   - name: Add RPC auth
     lineinfile:
@@ -36,7 +36,7 @@
   - name: set bitcoin user password
     user:
       name: bitcoin
-      password: "{{ pwd }}"
+      password: "{{ pwd | password_hash('sha512') }}"
 
   - name: Setup ssh on start
     lineinfile:
