@@ -21,7 +21,7 @@ sys.path.insert(1, project_path + '/wallet')
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
 from charge import invoice, register_webhook
-from ctrldbops import get_hetzner, find_hosts
+from ctrldbops import get_hetzner, find_hosts, get_bitbsd
 
 
 class CreateVPS(Resource):
@@ -75,7 +75,8 @@ class Status(Resource):
         args = parser.parse_args()
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
-        hosts = get_hetzner()
+        hetz_hosts = get_hetzner()
+        bit_hosts = get_bitbsd()
 
         try:
             addr = args['host']
@@ -85,14 +86,26 @@ class Status(Resource):
         except KeyError as e:
             return {"error": "need a host (btc addr)"}
 
-
-        for host in hosts:
+        for host in hetz_hosts:
             if host['address'] == addr:
                 result = {
                     "ip": host['ipv4'],
                     "pwd": host['pwd'],
                     "status": "subscribed"
                 }
+
+        for host in bit_hosts:
+            if host['address'] == addr:
+                result = {
+                    "ip": 'bitbsd.org',
+                    "ssh_pwd": host['pwd'],
+                    "ssh_usr": 'bitcoin',
+                    "rpc_user": host['rpc_user'],
+                    "rpc_pwd": host['rpc_pwd'],
+                    "rpc_port": host['rpc_port'],
+                    "ssh_port": host['ssh_port']
+                }
+
 
         accs = find_hosts()
 

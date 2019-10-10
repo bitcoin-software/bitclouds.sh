@@ -100,7 +100,7 @@ def get_bitbsd():
         return False
 
 
-def add_bitbsd(address, bitbsd_id, ipv4, ssh_port, rpc_port, rpc_authline, plan, pwd):
+def add_bitbsd(address, bitbsd_id, ipv4, ssh_port, rpc_port, rpc_authline, rpc_user, rpc_pwd, plan, pwd):
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
     hostdata = {"created_date": dtime,
@@ -110,6 +110,8 @@ def add_bitbsd(address, bitbsd_id, ipv4, ssh_port, rpc_port, rpc_authline, plan,
                 "ipv4": ipv4,
                 "ssh_port": ssh_port,
                 "rpc_port": rpc_port,
+                "rpc_user": rpc_user,
+                "rpc_pwd": rpc_pwd,
                 "rpc_authline": rpc_authline,
                 "pwd": pwd
                 }
