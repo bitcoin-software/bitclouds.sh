@@ -73,4 +73,4 @@ def createbitcoind(address):
 
     add_bitbsd(address, id, ipv4, ssh_port, rpc_port, authline, plan, pwd)
 
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/create_btcnode.yml --extra-vars="cname='+id+' sshport='+ssh_port+' rpcport='+rpc_port+' rpcauthline='+authline+' pwd='+pwd+'"')
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/create_btcnode.yml --extra-vars="cname='+id+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' pwd='+pwd+'"')
