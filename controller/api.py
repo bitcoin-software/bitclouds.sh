@@ -119,7 +119,7 @@ class TopUp(Resource):
         parser.add_argument('eur')
         args = parser.parse_args()
 
-        amount_eur = 0.03
+        iseur = False
 
         try:
             host = args['host']
@@ -128,10 +128,14 @@ class TopUp(Resource):
 
         try:
             amount_eur = args['eur']
+            iseur = True
         except KeyError as e:
-            amount_eur = "0.03"
+            #error
+            pass
 
         if host:
+            if not iseur:
+                amount_eur = 0.03
             print("generating invoice for " + str(amount_eur) + " desc=" + host)
             invoice_data = invoice(amount=amount_eur, cur='EUR', desc=str(host))
             print(invoice_data)
