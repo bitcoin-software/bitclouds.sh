@@ -1,4 +1,6 @@
 import configparser
+import os
+import datetime
 
 config = configparser.ConfigParser()
 
@@ -11,7 +13,8 @@ hosts = find_hosts()
 for host in hosts:
     if host['status'] == 'subscribed':
         deduct_host(host['address'])
-        print(host['address'] + "is subscribed; balance: " + str(host['balance']))
+        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        os.system("echo '" + dtime + ": " + host['address'] + "is subscribed; balance: " + str(host['balance']) + "' >> /tmp/acc.log")
     last = host['address']
 
 
