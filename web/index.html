@@ -45,20 +45,15 @@ pre {
 <body>
 <pre><output>
     Welcome to the internet of money!
-    #<a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
-    #Version: 0.1.0 beta
+    # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+    # Version: 0.1.0 beta
 
-    #only one plan available: [20 GB SSD, 2GB RAM, 1vCPU, 15TB traffic] = 66 sat/hour
+    # only one plan available: [20 GB SSD, 2GB RAM, 1vCPU, 15TB traffic] = 66 sat/hour
 
-    [you@home ~$] curl -X GET https://bitclouds.sh/images
-
-    [you@home ~$] curl -X POST https://bitclouds.sh/create -d image="ubuntu"
-
-    [you@home ~$] curl -X POST https://bitclouds.sh/topup -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S [-d sats=1000]
-
-    [you@home ~$] curl -X POST https://bitclouds.sh/status -d host=3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
-
-
+    [you@home ~$] curl https://bitclouds.sh/images
+    [you@home ~$] curl https://bitclouds.sh/create/ubuntu
+    [you@home ~$] curl https://bitclouds.sh/3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S/topup/1000
+    [you@home ~$] curl https://bitclouds.sh/3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S/status
 </output></pre>
 </body>
 </html>
