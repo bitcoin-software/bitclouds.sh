@@ -1,3 +1,12 @@
 [hetznet]
 
-api_key = JTtV7d13fLuHFs0HK1avYaiQR4wV1NJYAXD8hqSbfWTOoZcLrNkcx7TJcEDbTVN
+api_key = JTtV7d13fLuH_YOUR_OWN_KEY_cx7TJcEDbTVN
+
+[paths]
+
+local_path = /usr/home/dir/bitclouds
+
+[wallet]
+
+host = http://192.168.0.101:4444
+
