@@ -39,7 +39,7 @@ def create_vps(self, image):
 
 
 @app.route('/images')
-def get(self):
+def get():
     result = {
         "images": ['debian', 'centos', 'ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
     }
