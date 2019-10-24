@@ -1,8 +1,6 @@
 from flask import Flask
-from flask_restful import Resource, Api, reqparse, request
-from hashlib import blake2b
+from flask_restful import Resource, Api
 import requests
-import datetime
 import sys
 import configparser
 
@@ -25,42 +23,27 @@ from ctrldbops import get_hetzner, find_hosts, get_bitbsd
 
 
 class CreateVPS(Resource):
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('image')
-        args = parser.parse_args()
-        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-        try:
-            host_type = args['image']
-        except KeyError as e:
-            print(dtime + ' no data ' + str(e))
-            return False
+    def get(self, image):
+        addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
+        if addr_info.status_code != 200:
+            return
+        
+        info = addr_info.json()
+        invoice_data = invoice(amount=0.03, cur='EUR', desc=info['address'])
+        id = invoice_data['id']
+        bolt = invoice_data['payreq']
+        register_webhook(id, wallet_host + '/chargify')
 
-        if host_type:
-            addr_info = requests.post(wallet_host + '/newaddr', data={"image": host_type})
+        result = {
+            "host": info['address'],
+            "paytostart": bolt
+        }
 
-            if addr_info.status_code == 200:
-                info = addr_info.json()
-
-            invoice_data = invoice(amount=0.03, cur='EUR', desc=info['address'])
-            id = invoice_data['id']
-            bolt = invoice_data['payreq']
-            register_webhook(id, wallet_host + '/chargify')
-
-            result = {
-                "host": info['address'],
-                "paytostart": bolt
-            }
-
-            return result
-        else:
-            return False
+        return result
 
 
 class Images(Resource):
     def get(self):
-        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-
         result = {
             "images": ['debian', 'centos', 'ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
         }
@@ -69,33 +52,20 @@ class Images(Resource):
 
 
 class Status(Resource):
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('host')
-        args = parser.parse_args()
-        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-
+    def get(self, host):
         hetz_hosts = get_hetzner()
         bit_hosts = get_bitbsd()
 
-        try:
-            addr = args['host']
-            result = {
-                "status": "wrong host"
-            }
-        except KeyError as e:
-            return {"error": "need a host (btc addr)"}
-
-        for host in hetz_hosts:
-            if host['address'] == addr:
+        for hh in hetz_hosts:
+            if hh['address'] == host:
                 result = {
                     "ip": host['ipv4'],
                     "pwd": host['pwd'],
                     "status": "subscribed"
                 }
 
-        for host in bit_hosts:
-            if host['address'] == addr:
+        for bh in bit_hosts:
+            if bh['address'] == host:
                 result = {
                     "ip": 'bitbsd.org',
                     "ssh_pwd": host['pwd'],
@@ -110,7 +80,7 @@ class Status(Resource):
         accs = find_hosts()
 
         for acc in accs:
-            if acc['address'] == addr:
+            if acc['address'] == host:
                 balance = acc['balance']
                 image = acc['image']
                 if (image == 'freebsd') or (image == 'bitcoind') or (image == 'lightningd'):
@@ -126,27 +96,14 @@ class Status(Resource):
 
 
 class TopUp(Resource):
-    def post(self):
-        parser = reqparse.RequestParser()
-        parser.add_argument('host')
-        parser.add_argument('sats')
-        args = parser.parse_args()
-
-        isamount = False
-
-        host = args['host']
-        if not host:
-            return {"error": "provide host id (bitcoin address)"}
-
-        sats = args['sats']
-
+    def get(self, host, sats):
         try:
             if int(sats) > 0:
                 isamount = True
             else:
                 isamount = False
-        except Exception as e:
-            pass
+        except Exception:
+            isamount = False
 
         if host:
             if not isamount:
@@ -172,10 +129,10 @@ class TopUp(Resource):
 
 
 #e-mail or telegram id
-api.add_resource(CreateVPS, '/create')
-api.add_resource(TopUp, '/topup')
 api.add_resource(Images, '/images')
-api.add_resource(Status, '/status')
+api.add_resource(CreateVPS, '/create/<string:image>')
+api.add_resource(TopUp, '/<string:host>/topup/<int:sats>')
+api.add_resource(Status, '/<string:host>/status')
 
 if __name__ == '__main__':
     app.run(debug=False, port=16444)
