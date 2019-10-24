@@ -75,7 +75,7 @@ def elify():
 
 
 @app.route('/chargify', methods=['POST'])
-def chargify(self):
+def chargify():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
     try:
         id = request.form['id']
