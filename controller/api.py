@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, jsonify
 import requests
 import sys
 import configparser
@@ -35,7 +35,7 @@ def create_vps(image):
         "paytostart": bolt
     }
 
-    return result
+    return jsonify(result)
 
 
 @app.route('/images')
@@ -44,7 +44,7 @@ def get():
         "images": ['debian', 'centos', 'ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
     }
 
-    return result
+    return jsonify(result)
 
 
 @app.route('/<host>/status')
@@ -101,27 +101,24 @@ def topup(host, sats):
     except Exception:
         isamount = False
 
-    if host:
-        if not isamount:
-            invoice_data = invoice(amount=0.03, cur='EUR', desc=str(host))
-            print("generating invoice for 0.03 EUR desc=" + host)
-        elif isamount:
-            print(sats)
-            invoice_data = invoice(msat=int(sats)*1000, desc=str(host))
-            print("generating invoice for " + str(sats) + " sats desc=" + str(host))
+    if not isamount:
+        invoice_data = invoice(amount=0.03, cur='EUR', desc=str(host))
+        print("generating invoice for 0.03 EUR desc=" + host)
+    elif isamount:
+        print(sats)
+        invoice_data = invoice(msat=int(sats)*1000, desc=str(host))
+        print("generating invoice for " + str(sats) + " sats desc=" + str(host))
 
-        print(invoice_data)
-        id = invoice_data['id']
-        bolt = invoice_data['payreq']
-        register_webhook(id, wallet_host + '/chargify')
+    print(invoice_data)
+    id = invoice_data['id']
+    bolt = invoice_data['payreq']
+    register_webhook(id, wallet_host + '/chargify')
 
-        result = {
-            "invoice": bolt
-        }
+    result = {
+        "invoice": bolt
+    }
 
-        return result
-    else:
-        return False
+    return jsonify(result)
 
 
 if __name__ == '__main__':

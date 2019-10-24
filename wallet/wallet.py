@@ -1,4 +1,4 @@
-from flask import Flask, request
+from flask import Flask, request, jsonify
 import datetime
 from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd, blistunspent
 import configparser
@@ -30,18 +30,13 @@ def convert_sats2hours(address, sats):
 @app.route('/elify', methods=['POST'])
 def elify():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-    try:
-        status = '['+request.form['status']+']'
-        address = '['+request.form['address']+']'
-    except KeyError as e:
-        print(dtime + ' no data' + str(e))
-        print(request.get_data())
-        return False
+    status = '['+request.form['status']+']'
+    address = '['+request.form['address']+']'
 
     print(dtime + " new status " + status + " for " + address)
     if status != '':
         unspents = blistunspent(wallet)
-    #print(unspents)
+        #print(unspents)
         for unspent in unspents:
             if address == unspent['address']:
                 amount_sats = unspent['value']*100000000
@@ -71,17 +66,13 @@ def elify():
                     else:
                         print(dtime + ' ' + outhash + ' tx not found but confirmed')
 
-    return True
+    return ''
 
 
 @app.route('/chargify', methods=['POST'])
 def chargify():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-    try:
-        id = request.form['id']
-    except KeyError as e:
-        print(dtime + ': error on handling callback from charge - ' + str(e))
-        return False
+    id = request.form['id']
     invoice_data = get_invoice(id=id)
     #print(invoice_data)
     address = invoice_data['description']
@@ -99,7 +90,7 @@ def chargify():
         hours = convert_sats2hours(address, amount_sats)
         subscribe_host(address, hours)
     print("\n\n" + str(find_host(address)) + "\n\n")
-    return True
+    return ''
 
 
 @app.route('/newaddr', methods=['POST'])
@@ -122,7 +113,8 @@ def newaddr():
     print("new addr:" + address + ";\nwill notify:" + notifyURL + ";\n")
     bnotify(wallet, address, notifyURL)
     create_host(address, "basic", image)
-    return result
+
+    return jsonify(result)
 
 
 if __name__ == '__main__':
