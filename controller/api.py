@@ -19,7 +19,7 @@ from charge import invoice, register_webhook
 from ctrldbops import get_hetzner, find_hosts, get_bitbsd
 
 @app.route('/create/<image>')
-def create_vps(self, image):
+def create_vps(image):
     addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
     if addr_info.status_code != 200:
         return
@@ -48,7 +48,7 @@ def get():
 
 
 @app.route('/<host>/status')
-def status(self, host):
+def status(host):
     hetz_hosts = get_hetzner()
     bit_hosts = get_bitbsd()
 
@@ -92,7 +92,7 @@ def status(self, host):
 
 
 @app.route('/<host>/topup/<int:sats>')
-def topup(self, host, sats):
+def topup(host, sats):
     try:
         if int(sats) > 0:
             isamount = True
