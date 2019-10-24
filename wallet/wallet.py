@@ -28,7 +28,7 @@ def convert_sats2hours(address, sats):
 
 
 @app.route('/elify', methods=['POST'])
-def elify(self):
+def elify():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
     try:
         status = '['+request.form['status']+']'
@@ -103,7 +103,7 @@ def chargify(self):
 
 
 @app.route('/newaddr', methods=['POST'])
-def newaddr(self):
+def newaddr():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
     address = str(bgetunused(wallet).rstrip())
 
