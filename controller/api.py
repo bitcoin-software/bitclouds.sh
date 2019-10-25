@@ -5,6 +5,9 @@ import configparser
 
 app = Flask(__name__)
 
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
+app.url_map.strict_slashes = False
+
 api_config = configparser.ConfigParser()
 api_config.read('../controller/config.ini')
 
@@ -39,24 +42,24 @@ def create_vps(image):
 
 
 @app.route('/images')
-def get():
+def images():
     result = {
         "images": ['debian', 'centos', 'ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
     }
 
     return jsonify(result)
 
-
-@app.route('/<host>/status')
+@app.route('/status/<host>')
 def status(host):
+    print('xyz')
     hetz_hosts = get_hetzner()
     bit_hosts = get_bitbsd()
 
     for hh in hetz_hosts:
         if hh['address'] == host:
             result = {
-                "ip": host['ipv4'],
-                "pwd": host['pwd'],
+                "ip": hh['ipv4'],
+                "pwd": hh['pwd'],
                 "status": "subscribed"
             }
 
@@ -64,12 +67,12 @@ def status(host):
         if bh['address'] == host:
             result = {
                 "ip": 'bitbsd.org',
-                "ssh_pwd": host['pwd'],
+                "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'bitcoin',
-                "rpc_user": host['rpc_user'],
-                "rpc_pwd": host['rpc_pwd'],
-                "rpc_port": host['rpc_port'],
-                "ssh_port": host['ssh_port']
+                "rpc_user": bh['rpc_user'],
+                "rpc_pwd": bh['rpc_pwd'],
+                "rpc_port": bh['rpc_port'],
+                "ssh_port": bh['ssh_port']
             }
 
 
@@ -91,20 +94,13 @@ def status(host):
     return result
 
 
-@app.route('/<host>/topup/<int:sats>')
+@app.route('/topup/<host>', defaults={'sats': 0})
+@app.route('/topup/<host>/<int:sats>')
 def topup(host, sats):
-    try:
-        if int(sats) > 0:
-            isamount = True
-        else:
-            isamount = False
-    except Exception:
-        isamount = False
-
-    if not isamount:
+    if sats == 0:
         invoice_data = invoice(amount=0.03, cur='EUR', desc=str(host))
         print("generating invoice for 0.03 EUR desc=" + host)
-    elif isamount:
+    else:
         print(sats)
         invoice_data = invoice(msat=int(sats)*1000, desc=str(host))
         print("generating invoice for " + str(sats) + " sats desc=" + str(host))
