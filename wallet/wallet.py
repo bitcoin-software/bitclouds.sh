@@ -30,8 +30,9 @@ def convert_sats2hours(address, sats):
 @app.route('/elify', methods=['POST'])
 def elify():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-    status = '['+request.form['status']+']'
-    address = '['+request.form['address']+']'
+    data = request.get_json()
+    status = '['+data['status']+']'
+    address = '['+data['address']+']'
 
     print(dtime + " new status " + status + " for " + address)
     if status != '':
@@ -72,7 +73,7 @@ def elify():
 @app.route('/chargify', methods=['POST'])
 def chargify():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-    id = request.form['id']
+    id = request.get_json()['id']
     invoice_data = get_invoice(id=id)
     #print(invoice_data)
     address = invoice_data['description']
