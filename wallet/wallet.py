@@ -147,11 +147,11 @@ def newaddr():
 
 
 if __name__ == '__main__':
-    wallet_list = [wallet]
-    bstopd()
-    bstartd(wallet_list)
+#    wallet_list = [wallet]
+#    bstopd()
+#    bstartd(wallet_list)
 
     notifyURL = wallet_config['ipn']['url'] + '/elify'
-    addr = bgetunused(wallet)
+#    addr = bgetunused(wallet)
 
     app.run(debug=False, port=16333)
