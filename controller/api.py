@@ -73,7 +73,8 @@ def status(host):
                 "rpc_user": bh['rpc_user'],
                 "rpc_pwd": bh['rpc_pwd'],
                 "rpc_port": bh['rpc_port'],
-                "ssh_port": bh['ssh_port']
+                "ssh_port": bh['ssh_port'],
+                "status": "subscribed"
             }
 
 
