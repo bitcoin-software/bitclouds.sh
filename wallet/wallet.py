@@ -140,7 +140,7 @@ def newaddr():
 
     print(dtime)
     print("new addr:" + address + ";\nwill notify:" + notifyURL + ";\n")
-    bnotify(wallet, address, notifyURL)
+    #bnotify(wallet, address, notifyURL)
     create_host(address, "basic", image)
 
     return jsonify(result)
