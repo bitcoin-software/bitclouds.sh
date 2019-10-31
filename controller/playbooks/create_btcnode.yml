@@ -34,7 +34,7 @@
       line: "{{ rpcauthline }}"
 
   - name: set bitcoin user password
-    raw: "jexec {{ cname }} 'echo \"{{ pwd }}\" | pw usermod bitcoin -h 0'"
+    raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod bitcoin -h0'"
 
   - name: Setup ssh on start
     lineinfile:
