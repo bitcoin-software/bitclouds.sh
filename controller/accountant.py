@@ -1,6 +1,7 @@
 import configparser
 import os
 import datetime
+import time
 
 config = configparser.ConfigParser()
 
@@ -21,3 +22,4 @@ for host in hosts:
 for host in get_suspended():
     del_server(host['address'])
     delete_host(host['address'])
+    time.sleep(30)
