@@ -2,6 +2,7 @@ import configparser
 import os
 import datetime
 import time
+import sys
 
 config = configparser.ConfigParser()
 
@@ -12,6 +13,6 @@ from orchestrator import del_server
 
 hosts = find_hosts()
 for host in hosts:
-    if host['status'] == 'subscribed':
+    if host['status'] == sys.argv[1]:
         print(host)
 
