@@ -3,7 +3,7 @@ import datetime
 from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd, blistunspent
 import configparser
 from charge import get_invoice
-from start import getStar
+from stars import getStar
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
 import sys
 import time
