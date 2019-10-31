@@ -77,6 +77,12 @@ def createbitcoind(address):
 
 
 def delete_jail(address):
+    jails = get_bitbsd()
+
+    for jail in jails:
+        if jail['address'] == address:
+            toremove = jail['id']
+    print('now removing ')
     system(
         '/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/remove_btcnode.yml --extra-vars="cname=' + str(
-            address) + '"')
+            toremove) + '"')
