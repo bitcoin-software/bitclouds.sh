@@ -5,6 +5,7 @@ import configparser
 from charge import get_invoice
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
 import sys
+import time
 import random, string
 
 wallet_config = configparser.ConfigParser()
@@ -18,6 +19,9 @@ api_config = configparser.ConfigParser()
 api_config.read('../controller/config.ini')
 project_path = api_config['paths']['local_path']
 sys.path.insert(1, project_path + '/controller')
+
+task_running = False
+
 from orchestrator import new_server
 
 def convert_sats2hours(address, sats):
@@ -57,7 +61,13 @@ def elify():
                             new_host = find_host(address)
                             if new_host:
                                 if new_host['status'] == 'new':
-                                    _ = new_server(address, new_host['image'])
+                                    global task_running
+                                    while task_running:
+                                        time.sleep(30)
+                                    task_running = True
+                                    if task_running:
+                                        _ = new_server(address, new_host['image'])
+                                    task_running = False
 
                             update_tx(address, outhash, 'confirmed')
                             hours = convert_sats2hours(address, amount_sats)
