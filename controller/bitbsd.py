@@ -14,7 +14,7 @@ import configparser
 bitbsd_config = configparser.ConfigParser()
 bitbsd_config.read('/home/bitclouds/bitclouds/controller/config.ini')
 
-host_ip = bitbsd_config['bitbsd']['hos_ip']
+host_ip = bitbsd_config['bitbsd']['host_ip']
 
 
 def generate_salt(size):
