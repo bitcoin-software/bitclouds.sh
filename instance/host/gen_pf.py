@@ -78,7 +78,8 @@ while True:
             os.system("echo 'PORT_JAIL=\"{" + record['port'] +"}\"' >> " + dyn_path)
             os.system("echo 'rdr pass on $IF_PUBLIC proto tcp from any to $IP_PUBLIC port $PORT_JAIL -> $IP_JAIL' >> " + dyn_path)
 
-    os.system('pfctl -f /etc/pf.conf')
-    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-    print(dtime + ': PF reloaded')
+        os.system('pfctl -f /etc/pf.conf')
+        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        print(dtime + ': PF reloaded')
+
     time.sleep(5)
