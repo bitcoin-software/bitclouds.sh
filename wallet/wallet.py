@@ -5,6 +5,7 @@ import configparser
 from charge import get_invoice
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
 import sys
+import random, string
 
 wallet_config = configparser.ConfigParser()
 wallet_config.read('config.ini')
@@ -94,17 +95,27 @@ def chargify():
     return ''
 
 
+def randomString(stringLength=10):
+    """Generate a random string of fixed length """
+    letters = string.ascii_lowercase
+    return ''.join(random.choice(letters) for i in range(stringLength))
+
+
 @app.route('/newaddr', methods=['POST'])
 def newaddr():
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-    address = str(bgetunused(wallet).rstrip())
+
+    #address = str(bgetunused(wallet).rstrip())
 
     image = request.form['image']
-    if find_host(address):
-        print('unused addr: ' + address)
-        address = str(bgetnew(wallet).rstrip())
-    else:
-        pass
+
+    address = randomString(20)
+
+    #if find_host(address):
+    #    print('unused addr: ' + address)
+    #    address = str(bgetnew(wallet).rstrip())
+    #else:
+    #    pass
 
     result = {
         "address": address
