@@ -68,6 +68,7 @@ def createbitcoind(address):
     rpc_pass = password
     rpc_user = username
 
+    #gen user pwd
     pwd = generate_salt(8)
 
     print(pwd)
