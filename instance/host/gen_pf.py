@@ -1,6 +1,6 @@
 import os
 import time
-
+import datetime
 
 def get_ssh():
     result = list()
@@ -37,9 +37,10 @@ def get_rpc():
 
     return result
 
+state = dict()
 
-ssh_state = get_ssh()
-rpc_state = get_rpc()
+state['ssh'] = get_ssh()
+state['rpc'] = get_rpc()
 
 ## Jail BITCOIN_RPC port forward
 #IP_JAIL="192.168.0.2"
@@ -48,21 +49,36 @@ rpc_state = get_rpc()
 
 dyn_path = '/etc/pf_dyn.conf'
 
-try:
-    os.remove(dyn_path)
-except Exception:
-    pass
+while True:
 
-for record in ssh_state:
-    os.system("echo '## Jail BITCOIN_SSH port forward' >> " + dyn_path)
-    os.system("echo 'IP_JAIL=\""+ record['host'] +"\"' >> " + dyn_path)
-    os.system("echo 'PORT_JAIL=\"{" + record['port'] +"}\"' >> " + dyn_path)
-    os.system("echo 'rdr pass on $IF_PUBLIC proto tcp from any to $IP_PUBLIC port $PORT_JAIL -> $IP_JAIL' >> " + dyn_path)
+    new_state = dict()
+    new_state['ssh'] = get_ssh()
+    new_state['rpc'] = get_rpc()
 
+    if new_state != state:
 
-for record in rpc_state:
-    os.system("echo '## Jail BITCOIN_RPC port forward' >> " + dyn_path)
-    os.system("echo 'IP_JAIL=\""+ record['host'] +"\"' >> " + dyn_path)
-    os.system("echo 'PORT_JAIL=\"{" + record['port'] +"}\"' >> " + dyn_path)
-    os.system("echo 'rdr pass on $IF_PUBLIC proto tcp from any to $IP_PUBLIC port $PORT_JAIL -> $IP_JAIL' >> " + dyn_path)
+        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        print(dtime + ': state changed... overwriting PF rules...')
+        state = new_state
 
+        try:
+            os.remove(dyn_path)
+        except Exception:
+            pass
+
+        for record in new_state['ssh']:
+            os.system("echo '## Jail BITCOIN_SSH port forward' >> " + dyn_path)
+            os.system("echo 'IP_JAIL=\""+ record['host'] +"\"' >> " + dyn_path)
+            os.system("echo 'PORT_JAIL=\"{" + record['port'] +"}\"' >> " + dyn_path)
+            os.system("echo 'rdr pass on $IF_PUBLIC proto tcp from any to $IP_PUBLIC port $PORT_JAIL -> $IP_JAIL' >> " + dyn_path)
+
+        for record in new_state['rpc']:
+            os.system("echo '## Jail BITCOIN_RPC port forward' >> " + dyn_path)
+            os.system("echo 'IP_JAIL=\""+ record['host'] +"\"' >> " + dyn_path)
+            os.system("echo 'PORT_JAIL=\"{" + record['port'] +"}\"' >> " + dyn_path)
+            os.system("echo 'rdr pass on $IF_PUBLIC proto tcp from any to $IP_PUBLIC port $PORT_JAIL -> $IP_JAIL' >> " + dyn_path)
+
+    os.system('pfctl -f /etc/pf.conf')
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+    print(dtime + ': PF reloaded')
+    time.sleep(5)
