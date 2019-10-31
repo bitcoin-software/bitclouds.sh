@@ -84,8 +84,6 @@ def status(host):
         if acc['address'] == host:
             balance = acc['balance']
             image = acc['image']
-            if (image == 'freebsd') or (image == 'bitcoind') or (image == 'lightningd'):
-                result['login_username'] = "bsd"
             if balance > 0:
                 result['hours_left'] = balance
             else:
