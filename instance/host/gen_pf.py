@@ -66,6 +66,8 @@ while True:
         except Exception:
             pass
 
+        os.system("echo '## PF configuration for jails >> " + dyn_path)
+
         for record in new_state['ssh']:
             os.system("echo '## Jail BITCOIN_SSH port forward' >> " + dyn_path)
             os.system("echo 'IP_JAIL=\""+ record['host'] +"\"' >> " + dyn_path)
