@@ -19,5 +19,5 @@ for host in hosts:
 
 
 for host in get_suspended():
-    delete_host(host['address'])
     del_server(host['address'])
+    delete_host(host['address'])

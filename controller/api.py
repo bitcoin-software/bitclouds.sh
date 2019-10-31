@@ -21,6 +21,7 @@ sys.path.insert(1, project_path + '/wallet')
 from charge import invoice, register_webhook
 from ctrldbops import get_hetzner, find_hosts, get_bitbsd
 
+
 @app.route('/create/<image>')
 def create_vps(image):
     addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
