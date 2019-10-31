@@ -3,6 +3,7 @@ import datetime
 from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd, blistunspent
 import configparser
 from charge import get_invoice
+from start import getStar
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
 import sys
 import time
@@ -23,6 +24,7 @@ sys.path.insert(1, project_path + '/controller')
 task_running = False
 
 from orchestrator import new_server
+
 
 def convert_sats2hours(address, sats):
         hours = int(sats / 66) - 1
@@ -96,7 +98,13 @@ def chargify():
         new_host = find_host(address)
         if new_host:
             if new_host['status'] == 'new':
-                _ = new_server(address, new_host['image'])
+                global task_running
+                while task_running:
+                    time.sleep(30)
+                task_running = True
+                if task_running:
+                    _ = new_server(address, new_host['image'])
+                task_running = False
         add_tx(address=address, txhash=bolt, amount_sats=amount_sats, status='confirmed', chargeid=id,
                prev_outhash='none')
         hours = convert_sats2hours(address, amount_sats)
@@ -119,13 +127,11 @@ def newaddr():
 
     image = request.form['image']
 
-    address = randomString(20)
-
-    #if find_host(address):
-    #    print('unused addr: ' + address)
-    #    address = str(bgetnew(wallet).rstrip())
-    #else:
-    #    pass
+    address = getStar()
+    inc = 0
+    while find_host(address):
+        inc+=1
+        address = getStar()+'-'+str(inc)
 
     result = {
         "address": address
