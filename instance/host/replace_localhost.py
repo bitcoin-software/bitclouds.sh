@@ -28,11 +28,13 @@ def replace_hosts(jail):
 def check_hosts(jail):
     hasline = os.popen('jexec ' + str(jail['jid']) + ' sh -c "cat /etc/hosts | egrep -o \'127.0.0.1\'"').read()
 
-    return hasline
+    return hasline.splitlines()
 
 
 jails = get_jails()
 
 for jail in jails:
-    print(check_hosts(jail))
+    for line in check_hosts(jail):
+        if line == '127.0.0.1':
+            replace_hosts(jail)
 
