@@ -33,6 +33,19 @@
       regexp: "^rpcauth"
       line: "{{ rpcauthline }}"
 
+
+  - name: Add RPC user to bitcoin-cli
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcuser="
+      line: "rpcuser={{ rpcusr }}"
+
+  - name: Add RPC pass to bitcoin-cli
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcpassword="
+      line: "rpcpassword={{ rpcpwd }}"
+
   - name: set bitcoin user password
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod bitcoin -h0'"
 

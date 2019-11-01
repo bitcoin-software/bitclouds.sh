@@ -73,7 +73,7 @@ def createbitcoind(address):
 
     print(pwd)
     add_bitbsd(address, jail_id, ipv4, ssh_port, rpc_port, authline, rpc_user, rpc_pass, plan, pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' pwd='+pwd+'"')
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
 
 
 def delete_jail(address):
