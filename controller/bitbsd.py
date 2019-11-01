@@ -47,12 +47,12 @@ def createbitcoind(address):
 
     plan = 'bitcoind'
 
-    ssh_port = random.randrange(60002, 64998)
-    rpc_port = random.randrange(50002, 54998)
+    ssh_port = random.randrange(60002, 61000)
+    rpc_port = random.randrange(50002, 51000)
     while ssh_port in ssh_ports:
-        ssh_port = random.randrange(60002, 64998)
+        ssh_port = random.randrange(60002, 61000)
     while rpc_port in rpc_ports:
-        rpc_port = random.randrange(50002, 54998)
+        rpc_port = random.randrange(51002, 51000)
 
     rpc_password = generate_password()
 
@@ -90,12 +90,12 @@ def createlightningd(address):
 
     plan = 'lightningd'
 
-    ssh_port = random.randrange(67002, 69998)
-    app_port = random.randrange(57002, 59998)
+    ssh_port = random.randrange(61002, 62000)
+    app_port = random.randrange(51002, 52000)
     while ssh_port in ssh_ports:
-        ssh_port = random.randrange(67002, 69998)
+        ssh_port = random.randrange(61002, 62000)
     while app_port in app_ports:
-        rpc_port = random.randrange(57002, 59998)
+        rpc_port = random.randrange(51002, 52000)
 
     creds = getrpc()
 
