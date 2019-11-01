@@ -84,7 +84,6 @@ def status(host):
                 "ip": 'bitbsd.org',
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'lightning',
-                "app_port": bh['app_port'],
                 "ssh_port": bh['ssh_port']
             }
 
