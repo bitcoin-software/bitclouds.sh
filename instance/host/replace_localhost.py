@@ -11,7 +11,9 @@ def get_ips():
     lines = jlist.splitlines()
 
     for line in lines:
-        print(line)
+        jid = line.split('  ')[0]
+        jip = line.split('  ')[1]
+        print(jid + " has " + jip)
 
 
 get_ips()
