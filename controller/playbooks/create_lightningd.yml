@@ -59,6 +59,12 @@
       regexp: "^alias="
       line: "alias={{ alias }}"
 
+  - name: Bridge SSH to .onion
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/torrc"
+      regexp: "^HiddenServicePort 22 localhost:22"
+      line: "HiddenServicePort 22 localhost:{{ sshport }}"
+
   - name: Read onion address in jail
     shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
     register: onion
