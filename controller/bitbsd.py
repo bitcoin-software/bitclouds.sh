@@ -75,6 +75,50 @@ def createbitcoind(address):
     system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
 
 
+def createlightningd(address):
+    jail_id = 'cln'+generate_salt(4)
+
+    ipv4 = host_ip
+
+    ssh_ports = list()
+    rpc_ports = list()
+
+    hosts = get_bitbsd()
+    for host in hosts:
+        ssh_ports.append(host['ssh_port'])
+        rpc_ports.append(host['ssh_port'])
+
+    plan = 'lightningd'
+
+    ssh_port = random.randrange(67002, 69998)
+    rpc_port = random.randrange(57002, 59998)
+    while ssh_port in ssh_ports:
+        ssh_port = random.randrange(67002, 69998)
+    while rpc_port in rpc_ports:
+        rpc_port = random.randrange(57002, 59998)
+
+    rpc_password = generate_password()
+
+    # Create 16 byte hex salt
+    salt = generate_salt(16)
+    password_hmac = password_to_hmac(salt, rpc_password)
+    username = jail_id
+    authline = 'rpcauth={0}:{1}${2}'.format(username, salt, password_hmac)
+
+    #system("echo '" + authline + "' >> /usr/local/etc/bitcoin.conf")
+
+    rpc_pass = rpc_password
+    rpc_user = username
+
+    #gen user pwd
+    pwd = generate_salt(8)
+
+    print(pwd)
+    add_bitbsd(address, jail_id, ipv4, ssh_port, rpc_port, authline, rpc_user, rpc_pass, plan, pwd)
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
+
+
+
 def delete_jail(address):
     jails = get_bitbsd()
 
