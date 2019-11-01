@@ -45,7 +45,7 @@ def create_vps(image):
 @app.route('/images')
 def images():
     result = {
-        "images": ['debian', 'centos', 'ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
+        "images": ['debian', 'centos', 'ubuntu', 'bitcoind', 'lightningd'] #'freebsd', 'bitcoind', 'lightningd'
     }
 
     return jsonify(result)
@@ -89,7 +89,7 @@ def status(host):
                 result['hours_left'] = balance
             else:
                 result = {
-                    "status": "pending payment"
+                    "status": "awaiting payment! if you paid already wait until your instance is created."
                 }
 
     return result
