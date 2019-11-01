@@ -1,7 +1,7 @@
 
 import random
 import hmac
-from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln
+from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, find_hosts
 
 from base64 import urlsafe_b64encode
 from binascii import hexlify
@@ -115,7 +115,12 @@ def createlightningd(address):
 
 
 def delete_jail(address):
-    jails = get_bitbsd()
+    hosts = find_hosts()
+    for host in hosts:
+        if address == host['address']:
+            image = host['image']
+
+    jails = get_bitbsd(image)
 
     for jail in jails:
         if jail['address'] == address:

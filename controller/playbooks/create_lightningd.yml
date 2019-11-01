@@ -23,6 +23,12 @@
   - name: start cloned jail
     shell: "cbsd jstart {{ cname }}"
 
+  - name: enable TOR in jail
+      shell: "jexec {{ cname }} sysrc tor_enable=YES"
+
+  - name: start TOR
+      shell: "jexec {{ cname }} service tor start"
+
   - name: Setup alternate SSH port
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
@@ -46,6 +52,23 @@
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
       regexp: "^rpcpassword="
       line: "rpcpassword={{ rpcpwd }}"
+
+  - name: Set alias on LN
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^alias="
+      line: "alias={{ alias }}"
+
+  - name: Read onion address in jail
+    shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
+    register: onion
+
+  - name: Change line in jails /etc/hosts
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/hosts"
+      regexp: "^announce-addr="
+      line: "announce-addr={{ onion.stdout }}"
+
 
   - name: set lightning user password
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
