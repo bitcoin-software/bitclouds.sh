@@ -67,7 +67,7 @@
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^announce-addr="
-      line: "announce-addr={{ onion.stdout }}"
+      line: "announce-addr={{ onion.stdout }}:9735"
 
   - name: set lightning user password
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
