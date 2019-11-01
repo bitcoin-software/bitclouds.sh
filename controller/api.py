@@ -55,6 +55,7 @@ def status(host):
     print('xyz')
     hetz_hosts = get_hetzner()
     bit_hosts = get_bitbsd()
+    cln_hosts = get_bitbsd('lightningd')
 
     result = dict()
 
@@ -77,6 +78,15 @@ def status(host):
                 "ssh_port": bh['ssh_port']
             }
 
+    for bh in cln_hosts:
+        if bh['address'] == host:
+            result = {
+                "ip": 'bitbsd.org',
+                "ssh_pwd": bh['pwd'],
+                "ssh_usr": 'lightning',
+                "app_port": bh['app_port'],
+                "ssh_port": bh['ssh_port']
+            }
 
     accs = find_hosts()
 
