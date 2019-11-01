@@ -71,9 +71,13 @@ def createServer(name, image):
 def deleteServer(id):
 
     servers = client.servers.get_all()
+    found = False
     for server in servers:
         if server.id == id:
-            print(str(id) + " to be deleted")
+            found = True
+            print(str(id) + " to be deleted from hetzner")
             server.delete()
+        if not found:
+            print(str(id) + " not found or already deleted")
 
     return True
