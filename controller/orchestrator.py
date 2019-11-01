@@ -8,7 +8,7 @@ project_path = api_config['paths']['local_path']
 sys.path.insert(1, project_path + '/controller')
 from bitbsd import createbitcoind, createlightningd, delete_jail
 from hetzner import createServer, deleteServer, getServers
-from ctrldbops import get_bitbsd
+from ctrldbops import get_bitbsd, find_hosts
 
 
 def new_server(address, image="debian"):
@@ -21,7 +21,12 @@ def new_server(address, image="debian"):
 
 
 def del_server(address):
-    bitbsd_servers = get_bitbsd()
+    hosts = find_hosts()
+    for host in hosts:
+        if address == host['address']:
+            image = host['image']
+
+    bitbsd_servers = get_bitbsd(image)
     for serv in bitbsd_servers:
         if serv['address'] == address:
             delete_jail(address)

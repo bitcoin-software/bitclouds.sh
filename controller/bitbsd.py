@@ -99,8 +99,8 @@ def createlightningd(address):
 
     creds = getrpc()
 
-    rpc_pass = creds['user']
-    rpc_user = creds['password']
+    rpc_user = creds['user']
+    rpc_pass = creds['password']
 
     authline = 'None'
 
