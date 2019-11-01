@@ -87,10 +87,6 @@ def status(host):
             result['status'] = acc['status']
             if balance > 0:
                 result['hours_left'] = balance
-            if check_paid(host):
-                result = {
-                    "status": "creating instance"
-                }
             else:
                 result = {
                     "status": "pending payment"
