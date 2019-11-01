@@ -53,9 +53,8 @@
   - name: Change line in jails /etc/hosts
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/hosts"
-      regexp: "^127.0.01"
+      regexp: "^127.0.0.1"
       line: "{{ jailip.stdout }} localhost"
-
 
   - name: set bitcoin user password
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod bitcoin -h0'"
