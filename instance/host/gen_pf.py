@@ -5,7 +5,7 @@ import datetime
 def get_ssh():
     result = list()
 
-    socklist = os.popen("sockstat -l4 | egrep -o '192.168.0.[0-9]+:6[0-9]+'").read()
+    socklist = os.popen("sockstat -l4 | egrep -o '192.168.0.[0-9]+:6[0-9][0-9][0-9][0-9]'").read()
 
     lines = socklist.splitlines()
 
@@ -23,7 +23,7 @@ def get_ssh():
 def get_rpc():
     result = list()
 
-    socklist = os.popen("sockstat -l4 | egrep -o '192.168.0.[0-9]+:5[0-9]+'").read()
+    socklist = os.popen("sockstat -l4 | egrep -o '192.168.0.[0-9]+:5[0-9][0-9][0-9][0-9]'").read()
 
     lines = socklist.splitlines()
 
@@ -41,11 +41,6 @@ state = dict()
 
 state['ssh'] = get_ssh()
 state['rpc'] = get_rpc()
-
-## Jail BITCOIN_RPC port forward
-#IP_JAIL="192.168.0.2"
-#PORT_JAIL="{8332}"
-#rdr pass on $IF_PUBLIC proto tcp from any to $IP_PUBLIC port $PORT_JAIL -> $IP_JAIL
 
 dyn_path = '/etc/pf_dyn.conf'
 
@@ -66,7 +61,7 @@ while True:
         except Exception:
             pass
 
-        os.system("echo '## PF configuration for jails >> " + dyn_path)
+        os.system("echo '## PF configuration for jails' >> " + dyn_path)
 
         for record in new_state['ssh']:
             os.system("echo '## Jail BITCOIN_SSH port forward' >> " + dyn_path)
