@@ -24,10 +24,10 @@
     shell: "cbsd jstart {{ cname }}"
 
   - name: enable TOR in jail
-      shell: "jexec {{ cname }} sysrc tor_enable=YES"
+    shell: "jexec {{ cname }} sysrc tor_enable=YES"
 
   - name: start TOR
-      shell: "jexec {{ cname }} service tor start"
+    shell: "jexec {{ cname }} service tor start"
 
   - name: Setup alternate SSH port
     lineinfile:
@@ -63,12 +63,11 @@
     shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
     register: onion
 
-  - name: Change line in jails /etc/hosts
+  - name: Change LN announce-addr
     lineinfile:
-      dest: "/zroot/jails/jails/{{ cname }}/etc/hosts"
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^announce-addr="
       line: "announce-addr={{ onion.stdout }}"
-
 
   - name: set lightning user password
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
