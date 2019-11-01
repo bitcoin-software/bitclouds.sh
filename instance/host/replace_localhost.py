@@ -30,12 +30,15 @@ def check_hosts(jail):
 
     return hasline.splitlines()
 
+
 while True:
     jails = get_jails()
 
     for jail in jails:
         for line in check_hosts(jail):
             if line == '127.0.0.1':
+                dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+                print(dtime + 'replacing for ' + str(jail['jid']) + ' to ' + jail['jip'])
                 replace_hosts(jail)
 
     time.sleep(30)
