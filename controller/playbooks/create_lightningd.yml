@@ -9,7 +9,7 @@
     raw: "jexec lightning1 sh -c 'cd /tmp/bitbsd-clouds/ && git pull'"
 
   - name: make executables in tools directory
-    raw: "jexec lightning1 chmod +x /tmp/bitbsd-clouds/lightningd/*.sh"
+    raw: "jexec lightning1 sh -c 'chmod +x /tmp/bitbsd-clouds/lightningd/*.sh'"
 
   - name: make scripts global on lightning1
     shell: "jexec lightning1 sh -c 'ln -sf /tmp/bitbsd-clouds/lightningd/*.sh /usr/local/bin/'"
