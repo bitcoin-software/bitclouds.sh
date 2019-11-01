@@ -15,7 +15,6 @@ def get_jails():
     for line in lines:
         jid = line.split('  ')[0]
         jip = line.split('  ')[1]
-        print(jid + " has " + jip)
         jails.append({"jid": jid, "jip":jip})
 
     return jails
