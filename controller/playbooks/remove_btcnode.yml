@@ -4,5 +4,5 @@
 
   tasks:
   - name: remove cloned jail
-    shell: "cbsd jremove {{ cname }}"
+    shell: "cbsd jremove {{ jname }}"
 
