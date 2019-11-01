@@ -81,8 +81,10 @@ def delete_jail(address):
 
     for jail in jails:
         if jail['address'] == address:
+            starname = jail['address']
             jname = jail['id']
-    print('now removing from bitbsd ' + jail['address'] + "(" + jail['id'] + ")")
+
+    print('now removing from bitbsd ' + starname + "(" + jname + ")")
     system(
         '/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/remove_btcnode.yml --extra-vars="jname=' + str(
             jname) + '"')
