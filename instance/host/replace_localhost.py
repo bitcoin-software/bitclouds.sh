@@ -30,11 +30,13 @@ def check_hosts(jail):
 
     return hasline.splitlines()
 
+while True:
+    jails = get_jails()
 
-jails = get_jails()
+    for jail in jails:
+        for line in check_hosts(jail):
+            if line == '127.0.0.1':
+                replace_hosts(jail)
 
-for jail in jails:
-    for line in check_hosts(jail):
-        if line == '127.0.0.1':
-            replace_hosts(jail)
+    time.sleep(30)
 
