@@ -1,0 +1,87 @@
+- hosts: bitbsd
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: stop bitcoin1
+    shell: cbsd jstop bitcoin1
+
+  - name: create cloned jail
+    shell: "cbsd jclone old=bitcoin1 new={{ cname }} host_hostname='{{ cname }}.bitclouds.sh' ip4_addr=DHCP"
+
+  - name: start bitcoin1
+    shell: cbsd jstart bitcoin1
+
+  - name: start cloned jail
+    shell: "cbsd jstart {{ cname }}"
+
+  - name: Setup alternate SSH port
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
+      regexp: "^#Port"
+      line: "Port {{ sshport }}"
+
+  - name: Setup alternate RPC port
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcport"
+      line: "rpcport={{ rpcport }}"
+
+  - name: Add RPC auth user
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcuser"
+      line: "rpcuser={{ rpcusr }}"
+
+  - name: Add RPC auth password
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcpassword"
+      line: "rpcpassword={{ rpcpwd }}"
+
+  - name: Add RPC host to bitcoin-cli
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcconnect=localhost"
+      line: "rpcconnect=localhost:{{ rpcport }}"
+
+  - name: Add RPC user to bitcoin-cli
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcuser="
+      line: "rpcuser={{ rpcusr }}"
+
+  - name: Add RPC pass to bitcoin-cli
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcpassword="
+      line: "rpcpassword={{ rpcpwd }}"
+
+#  - name: get jail ip addr
+#    shell: "jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'"
+#    register: jailip
+
+#  - name: Change line in jails /etc/hosts
+#    lineinfile:
+#      dest: "/zroot/jails/jails/{{ cname }}/etc/hosts"
+#      regexp: "^127.0.0.1"
+#      line: "{{ jailip.stdout }} localhost"
+
+  - name: set bitcoin user password
+    raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod bitcoin -h0'"
+
+  - name: Setup ssh on start
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
+      regexp: "^sshd_enable"
+      line: "sshd_enable=YES"
+
+  - name: stop cloned jail
+    shell: "cbsd jstop {{ cname }}"
+
+  - name: start cloned jail
+    shell: "cbsd jstart {{ cname }}"
+
+
+
+
