@@ -38,7 +38,7 @@ while True:
             if line == '127.0.0.1' and jail['jip'] != '192.168.0.1':
                 dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
                 print(dtime + 'replacing for ' + str(jail['jid']) + ' to ' + jail['jip'])
-                replace_hosts(jail)
+                replace_hosts(jail, '127.0.0.1')
 
     time.sleep(30)
 
