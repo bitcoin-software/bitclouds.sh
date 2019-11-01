@@ -1,8 +1,8 @@
 import random
 
-credentials = {
+credentials = [
     {'user': 'rpcusr', 'password': 'rpcpwd'}
-    }
+    ]
 
 def getrpc():
     return random.choice(credentials)
