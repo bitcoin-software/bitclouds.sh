@@ -84,7 +84,8 @@ def status(host):
                 "ip": 'bitbsd.org',
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'lightning',
-                "ssh_port": bh['ssh_port']
+                "ssh_port": bh['ssh_port'],
+                "ssh2onion": "you can ssh directly to your .onion domain on port 22"
             }
 
     accs = find_hosts()
