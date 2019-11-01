@@ -79,7 +79,7 @@
       line: "announce-addr={{ onion.stdout }}:9735"
 
   - name: keep .onion in userdir
-    raw: "jexec {{ cname }} echo {{ onion.stdout }} > /home/lightning/onion.domain"
+    raw: "jexec {{ cname }} sh -c 'echo {{ onion.stdout }} > /home/lightning/onion.domain'"
 
   - name: set lightning user password
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
