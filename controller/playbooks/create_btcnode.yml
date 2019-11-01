@@ -31,13 +31,13 @@
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
       regexp: "^rpcuse"
-      line: "rpcuser={{ rpc_user }}"
+      line: "rpcuser={{ rpcusr }}"
 
   - name: Add RPC auth password
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
       regexp: "^rpcuse"
-      line: "rpcpassword={{ rpc_pass }}"
+      line: "rpcpassword={{ rpcpwd }}"
 
   - name: Add RPC host to bitcoin-cli
     lineinfile:
