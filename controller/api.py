@@ -86,6 +86,7 @@ def status(host):
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'lightning',
                 "ssh_port": bh['ssh_port'],
+                "app_port": bh['app_port'],
                 "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22"
             }
 
