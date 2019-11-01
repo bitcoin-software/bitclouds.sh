@@ -12,3 +12,6 @@ def get_ips():
 
     for line in lines:
         print(line)
+
+
+get_ips()
