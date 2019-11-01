@@ -1,7 +1,7 @@
 import os
 import random
 
-with open("hnr1.abc","r") as fi:
+with open("/zroot/jails/jails-data/bitcoin_rpc-data/usr/local/etc/bitcoin.conf","r") as fi:
     lines = []
     for ln in fi:
         if ln.startswith("#guest_rpc"):
