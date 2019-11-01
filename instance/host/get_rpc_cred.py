@@ -1,8 +1,11 @@
 import os
 import random
 
-lines = os.popen('cat /zroot/jails/jails-data/bitcoin_rpc-data/usr/local/etc/bitcoin.conf | grep #guest_rpc').read().splitlines()
-
+with open("hnr1.abc","r") as fi:
+    lines = []
+    for ln in fi:
+        if ln.startswith("#guest_rpc"):
+            id.append(ln[2:])
 
 line = random.choice(lines)
 
