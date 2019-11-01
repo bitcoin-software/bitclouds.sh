@@ -2,9 +2,13 @@ import os
 import time
 import datetime
 
-def get_ssh():
+
+def get_ips():
     result = list()
 
-    socklist = os.popen("sockstat -l4 | egrep -o '192.168.0.[0-9]+:6[0-9]+'").read()
+    jlist = os.popen("jls | egrep -o '[0-9]+.*192.168.0.[0-9]+'").read()
 
-    lines = socklist.splitlines()
+    lines = jlist.splitlines()
+
+    for line in lines:
+        print(line)
