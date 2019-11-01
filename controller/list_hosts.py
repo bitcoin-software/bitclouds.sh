@@ -17,7 +17,7 @@ if sys.argv[1] in ['new', 'subscribed', 'deleted', 'suspended']:
         if host['status'] == sys.argv[1]:
             print(host)
 elif sys.argv[1] == 'housekeeper':
-    hosts = find_hosts
+    hosts = find_hosts()
     for host in hosts:
         if host['status'] == 'deleted':
             del_server(host['address'])
