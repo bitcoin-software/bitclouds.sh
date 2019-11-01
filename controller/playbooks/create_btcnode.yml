@@ -37,8 +37,8 @@
   - name: Add RPC host to bitcoin-cli
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
-      regexp: "^rpcconnect=localhost:{{rpcport}}"
-      line: "rpcuser={{ rpcusr }}"
+      regexp: "^rpcconnect=localhost"
+      line: "rpcconnect=localhost:{{ rpcport }}"
 
   - name: Add RPC user to bitcoin-cli
     lineinfile:
