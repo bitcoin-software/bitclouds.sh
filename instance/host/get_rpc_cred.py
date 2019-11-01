@@ -5,7 +5,7 @@ with open("/zroot/jails/jails-data/bitcoin_rpc-data/usr/local/etc/bitcoin.conf",
     lines = []
     for ln in fi:
         if ln.startswith("#guest_rpc"):
-            lines.append(ln[2:])
+            lines.append(ln)
 
 line = random.choice(lines)
 
