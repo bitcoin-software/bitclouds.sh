@@ -9,7 +9,7 @@
     raw: "jexec lightning1 sh -c 'cd /tmp/bitbsd-clouds/ && git pull'"
 
   - name: make scripts global on lightning1
-    shell: "jexec lightning1 sh -c 'ln -s /tmp/bitbsd-clouds/lightningd/*.sh /usr/local/bin/'"
+    shell: "jexec lightning1 sh -c 'ln -sf /tmp/bitbsd-clouds/lightningd/*.sh /usr/local/bin/'"
 
   - name: stop lightning1
     shell: cbsd jstop lightning1
