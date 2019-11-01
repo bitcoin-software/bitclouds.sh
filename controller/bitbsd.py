@@ -54,18 +54,17 @@ def createbitcoind(address):
     while rpc_port in rpc_ports:
         rpc_port = random.randrange(50002, 54998)
 
-
-    password = generate_password()
+    rpc_password = generate_password()
 
     # Create 16 byte hex salt
     salt = generate_salt(16)
-    password_hmac = password_to_hmac(salt, password)
+    password_hmac = password_to_hmac(salt, rpc_password)
     username = jail_id
     authline = 'rpcauth={0}:{1}${2}'.format(username, salt, password_hmac)
 
     #system("echo '" + authline + "' >> /usr/local/etc/bitcoin.conf")
 
-    rpc_pass = password
+    rpc_pass = rpc_password
     rpc_user = username
 
     #gen user pwd

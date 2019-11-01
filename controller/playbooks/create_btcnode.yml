@@ -27,12 +27,11 @@
       regexp: "^rpcport"
       line: "rpcport={{ rpcport }}"
 
-  - name: Add RPC auth
-    lineinfile:
-      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
-      regexp: "^rpcauth"
-      line: "{{ rpcauthline }}"
-
+#  - name: Add RPC auth
+#    lineinfile:
+#      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+#      regexp: "^rpcauth"
+#      line: "{{ rpcauthline }}"
 
   - name: Add RPC host to bitcoin-cli
     lineinfile:
