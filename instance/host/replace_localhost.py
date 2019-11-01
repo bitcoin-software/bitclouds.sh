@@ -20,8 +20,8 @@ def get_jails():
     return jails
 
 
-def replace_hosts(jail):
-    os.system('jexec ' + str(jail['jid']) + ' sh -c "cat /etc/hosts | sed \'s/127.0.0.1/' + jail['jip'] + '/g\' > /etc/hosts_new && mv /etc/hosts_new /etc/hosts"')
+def replace_hosts(jail, origip):
+    os.system('jexec ' + str(jail['jid']) + ' sh -c "cat /etc/hosts | sed \'s/' + origip + '/' + jail['jip'] + '/g\' > /etc/hosts_new && mv /etc/hosts_new /etc/hosts"')
 
 
 def check_hosts(jail):
@@ -35,7 +35,7 @@ while True:
 
     for jail in jails:
         for line in check_hosts(jail):
-            if line == '127.0.0.1':
+            if line == '127.0.0.1' and jail['jip'] != '192.168.0.1':
                 dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
                 print(dtime + 'replacing for ' + str(jail['jid']) + ' to ' + jail['jip'])
                 replace_hosts(jail)
