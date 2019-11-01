@@ -85,7 +85,7 @@ def status(host):
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'lightning',
                 "ssh_port": bh['ssh_port'],
-                "ssh2onion": "you can ssh directly to your .onion domain on port 22"
+                "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22"
             }
 
     accs = find_hosts()
