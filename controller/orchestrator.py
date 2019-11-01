@@ -18,6 +18,8 @@ def new_server(address, image="debian"):
         createbitcoind(address)
     elif image=="lightningd":
         createlightningd(address)
+    elif image=="rootshell":
+        createlightningd(address)
 
 
 def del_server(address):

@@ -56,6 +56,7 @@ def status(host):
     hetz_hosts = get_hetzner()
     bit_hosts = get_bitbsd()
     cln_hosts = get_bitbsd('lightningd')
+    rs_hosts = get_bitbsd('rootshell')
 
     result = dict()
 
@@ -87,6 +88,16 @@ def status(host):
                 "ssh_port": bh['ssh_port'],
                 "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22"
             }
+
+    for bh in rs_hosts:
+        if bh['address'] == host:
+            result = {
+                "ip": 'bitbsd.org',
+                "ssh_pwd": bh['pwd'],
+                "ssh_usr": 'satoshi',
+                "ssh_port": bh['ssh_port']
+            }
+
 
     accs = find_hosts()
 

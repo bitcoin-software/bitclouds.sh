@@ -1,7 +1,7 @@
 
 import random
 import hmac
-from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, find_hosts
+from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, add_bitbsd_rs, find_hosts
 
 from base64 import urlsafe_b64encode
 from binascii import hexlify
@@ -95,7 +95,7 @@ def createlightningd(address):
     while ssh_port in ssh_ports:
         ssh_port = random.randrange(61002, 62000)
     while app_port in app_ports:
-        rpc_port = random.randrange(51002, 52000)
+        app_port = random.randrange(51002, 52000)
 
     creds = getrpc()
 
@@ -112,6 +112,45 @@ def createlightningd(address):
     print(pwd)
     add_bitbsd_cln(address, jail_id, ipv4, ssh_port, app_port, alias, rpc_user, rpc_pass, plan, pwd)
     system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lightningd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
+
+
+def createrootshell(address):
+    jail_id = 'cln'+generate_salt(4)
+
+    ipv4 = host_ip
+
+    ssh_ports = list()
+    app_ports = list()
+
+    hosts = get_bitbsd('rootshell')
+    for host in hosts:
+        ssh_ports.append(host['ssh_port'])
+        app_ports.append(host['app_port'])
+
+    plan = 'rootshell'
+
+    ssh_port = random.randrange(62002, 63000)
+    app_port = random.randrange(52002, 53000)
+    while ssh_port in ssh_ports:
+        ssh_port = random.randrange(62002, 63000)
+    while app_port in app_ports:
+        app_port = random.randrange(52002, 53000)
+
+    creds = getrpc()
+
+    rpc_user = creds['user']
+    rpc_pass = creds['password']
+
+    authline = 'None'
+
+    alias = address + " [bitclouds.sh]"
+
+    #gen user pwd
+    pwd = generate_salt(8)
+
+    print(pwd)
+    add_bitbsd_rs(address, jail_id, ipv4, ssh_port, app_port, plan, pwd)
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_rootshell.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' pwd='+pwd+'"')
 
 
 def delete_jail(address):

@@ -148,4 +148,21 @@ def add_bitbsd_cln(address, bitbsd_id, ipv4, ssh_port, app_port, alias, rpc_user
     return hostdata
 
 
+def add_bitbsd_rs(address, bitbsd_id, ipv4, ssh_port, app_port, plan, pwd):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    hostdata = {"created_date": dtime,
+                "address": address,
+                "plan": plan,
+                "id": bitbsd_id,
+                "ipv4": ipv4,
+                "ssh_port": ssh_port,
+                "app_port": app_port,
+                "pwd": pwd
+                }
+
+    _ = mongo.bitbsd.insert_one(hostdata)
+    return hostdata
+
+
 

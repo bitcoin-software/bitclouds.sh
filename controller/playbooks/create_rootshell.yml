@@ -1,0 +1,44 @@
+- hosts: bitbsd
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+
+  - name: update software on rootshell1
+    raw: "jexec rootshell1 sh -c 'cd /tmp/bitbsd-clouds/ && git pull'"
+
+  - name: make scripts global on rootshell1
+    shell: "jexec rootshell1 sh -c 'ln -sf /tmp/bitbsd-clouds/rootshell/*.sh /usr/local/bin/'"
+
+  - name: stop rootshell1
+    shell: cbsd jstop rootshell1
+
+  - name: create cloned jail
+    shell: "cbsd jclone old=rootshell1 new={{ cname }} host_hostname='{{ cname }}.bitclouds.sh' ip4_addr=DHCP"
+
+  - name: start rootshell1
+    shell: cbsd jstart rootshell1
+
+  - name: start cloned jail
+    shell: "cbsd jstart {{ cname }}"
+
+  - name: Setup alternate SSH port
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
+      regexp: "^#Port"
+      line: "Port {{ sshport }}"
+
+  - name: set satoshi user password
+    raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod satoshi -h0'"
+
+  - name: Setup ssh on start
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
+      regexp: "^sshd_enable"
+      line: "sshd_enable=YES"
+
+  - name: stop cloned jail
+    shell: "cbsd jstop {{ cname }}"
+
+  - name: start cloned jail
+    shell: "cbsd jstart {{ cname }}"
