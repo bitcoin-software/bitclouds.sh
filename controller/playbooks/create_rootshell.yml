@@ -8,7 +8,7 @@
     raw: "jexec rootshell1 sh -c 'cd /tmp/bitbsd-clouds/ && git pull'"
 
   - name: make executables in tools directory
-    raw: "jexec rootshell1 chmod +x /tmp/bitbsd-clouds/rootshell/*.sh"
+    raw: "jexec rootshell1 sh -c 'chmod +x /tmp/bitbsd-clouds/rootshell/*.sh'"
 
   - name: make scripts global on rootshell1
     shell: "jexec rootshell1 sh -c 'ln -sf /tmp/bitbsd-clouds/rootshell/*.sh /usr/local/bin/'"
