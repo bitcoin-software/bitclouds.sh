@@ -6,6 +6,9 @@
   - name: update software on bitcoin1
     raw: "jexec bitcoin1 sh -c 'cd /tmp/bitbsd-clouds/ && git pull'"
 
+  - name: make executables in tools directory
+    raw: "jexec bitcoin1 chmod +x /tmp/bitbsd-clouds/bitcoind/*.sh"
+
   - name: make scripts global on bitcoin1
     shell: "jexec bitcoin1 sh -c 'ln -sf /tmp/bitbsd-clouds/bitcoind/*.sh /usr/local/bin/'"
 
