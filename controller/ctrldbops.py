@@ -15,6 +15,15 @@ def find_hosts():
         return False
 
 
+def check_paid(address):
+    ex_tx = mongo.txs.find_one({"address": address})
+
+    if ex_tx:
+        return ex_tx
+    else:
+        return False
+
+
 def get_suspended():
     hosts = mongo.hosts.find({"status": "suspended"})
 

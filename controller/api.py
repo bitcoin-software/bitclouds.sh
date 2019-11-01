@@ -19,7 +19,7 @@ sys.path.insert(1, project_path + '/wallet')
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
 from charge import invoice, register_webhook
-from ctrldbops import get_hetzner, find_hosts, get_bitbsd
+from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid
 
 
 @app.route('/create/<image>')
@@ -56,12 +56,13 @@ def status(host):
     hetz_hosts = get_hetzner()
     bit_hosts = get_bitbsd()
 
+    result = dict()
+
     for hh in hetz_hosts:
         if hh['address'] == host:
             result = {
                 "ip": hh['ipv4'],
-                "pwd": hh['pwd'],
-                "status": "subscribed"
+                "pwd": hh['pwd']
             }
 
     for bh in bit_hosts:
@@ -73,8 +74,7 @@ def status(host):
                 "rpc_user": bh['rpc_user'],
                 "rpc_pwd": bh['rpc_pwd'],
                 "rpc_port": bh['rpc_port'],
-                "ssh_port": bh['ssh_port'],
-                "status": "subscribed"
+                "ssh_port": bh['ssh_port']
             }
 
 
@@ -84,8 +84,13 @@ def status(host):
         if acc['address'] == host:
             balance = acc['balance']
             image = acc['image']
+            result['status'] = acc['status']
             if balance > 0:
                 result['hours_left'] = balance
+            if check_paid(host):
+                result = {
+                    "status": "creating instance"
+                }
             else:
                 result = {
                     "status": "pending payment"
