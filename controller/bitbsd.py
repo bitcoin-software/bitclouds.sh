@@ -1,7 +1,7 @@
 
 import random
 import hmac
-from ctrldbops import get_bitbsd, add_bitbsd
+from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln
 
 from base64 import urlsafe_b64encode
 from binascii import hexlify
@@ -110,7 +110,7 @@ def createlightningd(address):
     pwd = generate_salt(8)
 
     print(pwd)
-    add_bitbsd(address, jail_id, ipv4, ssh_port, app_port, alias, rpc_user, rpc_pass, plan, pwd)
+    add_bitbsd_cln(address, jail_id, ipv4, ssh_port, app_port, alias, rpc_user, rpc_pass, plan, pwd)
     system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lightningd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
 
 
