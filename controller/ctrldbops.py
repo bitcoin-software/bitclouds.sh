@@ -49,10 +49,10 @@ def delete_host(address):
 
 def hardclear():
 
-    mongo.hosts.delete(
+    mongo.hosts.delete_one(
         {"status": 'new'}
     )
-    mongo.hosts.delete(
+    mongo.hosts.delete_one(
         {"status": 'deleted'}
     )
 
