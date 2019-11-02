@@ -46,14 +46,45 @@ pre {
 <pre><output>
     Welcome to the internet of money!
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
-    # Version: 0.1.0 beta
+    # Version: 0.2.3 beta
 
     # only one plan available: [20 GB SSD, 2GB RAM, 1vCPU, 15TB traffic] = 66 sat/hour
 
     [you@home ~$] curl https://bitclouds.sh/images
-    [you@home ~$] curl https://bitclouds.sh/create/ubuntu
-    [you@home ~$] curl https://bitclouds.sh/topup/3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S/1000
-    [you@home ~$] curl https://bitclouds.sh/status/3FSef7zBHYNMW5Z2hrohDHJyDHyoTdj26S
+
+    {
+        "images": ["debian", "centos", "ubuntu", "bitcoind", "lightningd", "rootshell" ]
+    }
+
+    [you@home ~$] curl https://bitclouds.sh/create/lightningd
+
+    {
+        "host": "Taiyangshou",
+        "paytostart": "lnbc3627230p1pwm6g_BOLT11_9xh43sgcpx0ed49"
+    }
+
+    [you@home ~$] curl https://bitclouds.sh/topup/Taiyangshou/1000
+
+    {
+        "invoice": "lnbc230p1pw3627m6g_BOLT11_gc9xh43spx0ed49"
+    }
+
+    [you@home ~$] curl https://bitclouds.sh/status/Taiyangshou
+
+    {
+        "app_port": 51626,
+        "hours_left": 4,
+        "ip": "bitbsd.org",
+        "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22",
+        "ssh_port": 61956,
+        "ssh_pwd": "eb6280cda3b0bbeb",
+        "ssh_usr": "lightning",
+        "status": "subscribed"
+    }
+
+
+    # <a href="https://github.com/bitcoin-software/bitbsd-clouds">Refer here for more info about each instance</a>
+
 </output></pre>
 </body>
 </html>
