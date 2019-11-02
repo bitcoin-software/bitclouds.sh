@@ -5,7 +5,7 @@
   tasks:
 
   - name: update software on rootshell1
-    raw: "jexec rootshell1 sh -c 'cd /tmp/bitbsd-clouds/ && git pull'"
+    raw: "jexec rootshell1 sh -c 'rm -rf /tmp/bitbsd-clouds/* && cd /tmp/bitbsd-clouds/ && git pull'"
 
   - name: make executables in tools directory
     raw: "jexec rootshell1 sh -c 'chmod +x /tmp/bitbsd-clouds/rootshell/*.sh'"
