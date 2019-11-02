@@ -16,32 +16,32 @@
   - name: stop rootshell1
     shell: cbsd jstop rootshell1
 
-  - name: create cloned jail
+  - name: create cloned rootshell jail
     shell: "cbsd jclone old=rootshell1 new={{ cname }} host_hostname='{{ cname }}.bitclouds.sh' ip4_addr=DHCP"
 
-  - name: start rootshell1
+  - name: start rootshell1 jail
     shell: cbsd jstart rootshell1
 
-  - name: start cloned jail
+  - name: start cloned rootshell jail
     shell: "cbsd jstart {{ cname }}"
 
-  - name: Setup alternate SSH port
+  - name: Setup alternate SSH port on rootshell jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
       regexp: "^#Port"
       line: "Port {{ sshport }}"
 
-  - name: set satoshi user password
+  - name: set satoshi user password on rootshell jail
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod satoshi -h0'"
 
-  - name: Setup ssh on start
+  - name: Setup ssh on start on rootshell jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
       regexp: "^sshd_enable"
       line: "sshd_enable=YES"
 
-  - name: stop cloned jail
+  - name: stop cloned rootshell jail
     shell: "cbsd jstop {{ cname }}"
 
-  - name: start cloned jail
+  - name: start cloned rootshell jail
     shell: "cbsd jstart {{ cname }}"

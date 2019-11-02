@@ -23,75 +23,75 @@
   - name: start lightning1
     shell: cbsd jstart lightning1
 
-  - name: start cloned jail
+  - name: start cloned lightning jail
     shell: "cbsd jstart {{ cname }}"
 
-  - name: enable TOR in jail
+  - name: enable TOR in lightning jail
     shell: "jexec {{ cname }} sysrc tor_enable=YES"
 
-  - name: start TOR
+  - name: start TOR on lightning jail
     shell: "jexec {{ cname }} service tor start"
 
-  - name: Setup alternate SSH port
+  - name: Setup alternate SSH port on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
       regexp: "^#Port"
       line: "Port {{ sshport }}"
 
-  - name: Add RPC host to bitcoin-cli
+  - name: Add RPC host to bitcoin-cli on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
       regexp: "^rpcconnect="
       line: "rpcconnect=192.168.0.2"
 
-  - name: Add RPC user to bitcoin-cli
+  - name: Add RPC user to bitcoin-cli on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
       regexp: "^rpcuser="
       line: "rpcuser={{ rpcusr }}"
 
-  - name: Add RPC pass to bitcoin-cli
+  - name: Add RPC pass to bitcoin-cli on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
       regexp: "^rpcpassword="
       line: "rpcpassword={{ rpcpwd }}"
 
-  - name: Set alias on LN
+  - name: Set alias on LN on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^alias="
       line: "alias={{ alias }}"
 
-  - name: Bridge SSH to .onion
+  - name: Bridge SSH to .onion on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
       regexp: "^HiddenServicePort 22 localhost:22"
       line: "HiddenServicePort 22 localhost:{{ sshport }}"
 
-  - name: Read onion address in jail
+  - name: Read onion address in jail on lightning jail
     shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
     register: onion
 
-  - name: Change LN announce-addr
+  - name: Change LN announce-addr on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^announce-addr="
       line: "announce-addr={{ onion.stdout }}:9735"
 
-  - name: keep .onion in userdir
+  - name: keep .onion in userdir on lightning jail
     raw: "jexec {{ cname }} sh -c 'echo {{ onion.stdout }} > /home/lightning/onion.domain'"
 
-  - name: set lightning user password
+  - name: set lightning user password on lightning jail
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
 
-  - name: Setup ssh on start
+  - name: Setup ssh on start on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
       regexp: "^sshd_enable"
       line: "sshd_enable=YES"
 
-  - name: stop cloned jail
+  - name: stop cloned lightning jail
     shell: "cbsd jstop {{ cname }}"
 
-  - name: start cloned jail
+  - name: start cloned lightning jail
     shell: "cbsd jstart {{ cname }}"
