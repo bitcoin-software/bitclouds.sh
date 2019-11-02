@@ -4,6 +4,7 @@ import sys
 import configparser
 import threading
 import time
+import os
 import datetime
 
 app = Flask(__name__)
@@ -32,15 +33,20 @@ def accountant():
     hosts = find_hosts()
     for host in hosts:
         if host['status'] == 'subscribed':
-            print(host)
+            #print(host)
             deduct_host(host['address'])
             dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-            print(dtime + ": " + host['address'] + "is subscribed; balance: " + str(
+            os.system("echo '"+dtime + ": " + host['address'] + "is subscribed; balance: " + str(
                 host['balance']) + "' >> /tmp/acc.log")
+            print(dtime + ": " + host['address'] + "is subscribed; balance: " + str(
+                host['balance']))
         last = host['address']
 
     for host in get_suspended():
-        print('deleting ' + host['address'])
+        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        os.system("echo '" + dtime + ": " + host['address'] + " is expired; balance: " + str(
+            host['balance']) + " - DELETING!' >> /tmp/acc.log")
+        print(dtime + 'DELETING: ' + host['address'])
         del_server(host['address'])
         delete_host(host['address'])
         time.sleep(5)
