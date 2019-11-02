@@ -60,7 +60,7 @@
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^alias="
-      line: "alias={{ alias }}"
+      line: "alias={{ alias }} [bitclouds.sh]"
 
   - name: Bridge SSH to .onion on lightning jail
     lineinfile:
