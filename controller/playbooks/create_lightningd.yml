@@ -6,7 +6,7 @@
 
 
   - name: update software on lightning1
-    raw: "jexec lightning1 sh -c 'rm -rf /tmp/bitbsd-clouds/* && cd /tmp/bitbsd-clouds/ && git pull'"
+    raw: "jexec lightning1 sh -c 'rm -rf /tmp/bitbsd-clouds && cd /tmp/ && git clone https://github.com/bitcoin-software/bitbsd-clouds'"
 
   - name: make executables in tools directory
     raw: "jexec lightning1 sh -c 'chmod +x /tmp/bitbsd-clouds/lightningd/*.sh'"
