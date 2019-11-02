@@ -29,7 +29,7 @@ def create_host(address, plan="basic", image="debian"):
     recordID = mongo.hosts.insert_one(hostdata)
 
 
-def subscribe_host(address, hours):
+def subscribe_host(address, hours, webhook=None):
     host = mongo.hosts.find_one({"address": address})
     balance = host['balance']
 
@@ -39,7 +39,8 @@ def subscribe_host(address, hours):
             "$set":
                 {
                     "status": "subscribed",
-                    "balance": balance + hours
+                    "balance": balance + hours,
+                    "webhook": webhook
                 }
         }
     )

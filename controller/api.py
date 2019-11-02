@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import requests
 import sys
 import configparser
@@ -23,7 +23,7 @@ sys.path.insert(1, project_path + '/wallet')
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
 from charge import invoice, register_webhook
-from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid, deduct_host, get_suspended, delete_host
+from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid, deduct_host, get_notifiable, get_suspended, delete_host
 from orchestrator import del_server
 
 
@@ -38,9 +38,17 @@ def accountant():
             dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
             os.system("echo '"+dtime + ": " + host['address'] + "is subscribed; balance: " + str(
                 host['balance']) + "' >> /tmp/acc.log")
-            print(dtime + ": " + host['address'] + "is subscribed; balance: " + str(
+            print(dtime + ": " + host['address'] + " is subscribed; balance: " + str(
                 host['balance']))
         last = host['address']
+
+    for host in get_notifiable():
+        try:
+            requests.post(host['webhook'], data={'hours': host['balance'], 'host': host['address']}, timeout=3)
+            print(dtime + ": " + host['address'] + " notified at webhook")
+        except:
+            print(dtime + ': failed to notify ' + host['address'])
+            pass
 
     for host in get_suspended():
         dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
@@ -54,12 +62,14 @@ def accountant():
 
 @app.route('/create/<image>')
 def create_vps(image):
+    notify_url = request.args.get('notify', '')
+
     addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
     if addr_info.status_code != 200:
         return
     
     info = addr_info.json()
-    invoice_data = invoice(amount=0.03, cur='EUR', desc=info['address'])
+    invoice_data = invoice(amount=0.03, cur='EUR', desc=info['address'] + '~' + notify_url)
     id = invoice_data['id']
     bolt = invoice_data['payreq']
     register_webhook(id, wallet_host + '/chargify')

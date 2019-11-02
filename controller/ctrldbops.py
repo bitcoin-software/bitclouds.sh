@@ -23,6 +23,18 @@ def check_paid(address):
     else:
         return False
 
+def get_notifiable():
+    hosts = mongo.hosts.find({
+        "status": "subscribed",
+        "balance": {'$lt': 25},
+        "webhook": {'$not': None}
+    })
+
+    if hosts:
+        return hosts
+    else:
+        return False
+
 
 def get_suspended():
     hosts = mongo.hosts.find({"status": "suspended"})
@@ -62,6 +74,7 @@ def deduct_host(address):
                     }
             }
         )
+
     elif status == "subscribed":
         mongo.hosts.update_one(
             {"address": address},
