@@ -115,7 +115,7 @@ def createlightningd(address):
 
 
 def createrootshell(address):
-    jail_id = 'cln'+generate_salt(4)
+    jail_id = 'rs'+generate_salt(4)
 
     ipv4 = host_ip
 
