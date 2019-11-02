@@ -1,7 +1,7 @@
 
 import random
 import hmac
-from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, add_bitbsd_rs, find_hosts
+from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, add_bitbsd_rs, find_hosts, clearold
 
 from base64 import urlsafe_b64encode
 from binascii import hexlify
@@ -94,6 +94,7 @@ def createlightningd(address):
             user_ports.append(host['user_port'])
         except KeyError as e:
             print('ERROR: ignoring ' + host['address'])
+            clearold(host['address'])
 
     plan = 'lightningd'
 

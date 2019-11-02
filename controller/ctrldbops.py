@@ -47,6 +47,26 @@ def delete_host(address):
     )
 
 
+def hardclear():
+
+    mongo.hosts.delete(
+        {"status": 'new'}
+    )
+    mongo.hosts.delete(
+        {"status": 'deleted'}
+    )
+
+
+def clearold(address):
+
+    mongo.hetzner.delete_one(
+        {"address": address}
+    )
+    mongo.bitbsd.delete_one(
+        {"address": address}
+    )
+
+
 def deduct_host(address):
     host = mongo.hosts.find_one({"address": address})
     balance = host['balance']

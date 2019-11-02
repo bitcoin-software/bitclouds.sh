@@ -8,7 +8,7 @@ config = configparser.ConfigParser()
 
 config.read('../controller/config.ini')
 
-from ctrldbops import find_hosts, deduct_host, get_suspended, delete_host, get_bitbsd
+from ctrldbops import find_hosts, deduct_host, get_suspended, delete_host, get_bitbsd, hardclear
 from orchestrator import del_server
 
 hosts = find_hosts()
@@ -27,3 +27,5 @@ elif sys.argv[1] == 'del':
         if host['address'] == host2del:
             delete_host(host['address'])
             del_server(host['address'])
+elif sys.argv[1] == 'hardclear':
+    hardclear()
