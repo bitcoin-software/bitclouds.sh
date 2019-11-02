@@ -21,3 +21,9 @@ elif sys.argv[1] == 'housekeeper':
     for host in hosts:
         if host['status'] == 'deleted':
             del_server(host['address'])
+elif sys.argv[1] == 'del':
+    host2del = sys.argv[2]
+    hosts = find_hosts()
+    for host in hosts:
+        if host['address'] == host2del:
+            del_server(host['address'])
