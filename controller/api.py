@@ -2,6 +2,9 @@ from flask import Flask, jsonify
 import requests
 import sys
 import configparser
+import threading
+import time
+import datetime
 
 app = Flask(__name__)
 
@@ -19,7 +22,28 @@ sys.path.insert(1, project_path + '/wallet')
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
 from charge import invoice, register_webhook
-from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid
+from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid, deduct_host, get_suspended, delete_host
+from orchestrator import del_server
+
+
+def accountant():
+    threading.Timer(60.0, accountant).start()
+
+    hosts = find_hosts()
+    for host in hosts:
+        if host['status'] == 'subscribed':
+            print(host)
+            deduct_host(host['address'])
+            dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+            print(dtime + ": " + host['address'] + "is subscribed; balance: " + str(
+                host['balance']) + "' >> /tmp/acc.log")
+        last = host['address']
+
+    for host in get_suspended():
+        print('deleting ' + host['address'])
+        del_server(host['address'])
+        delete_host(host['address'])
+        time.sleep(5)
 
 
 @app.route('/create/<image>')
@@ -140,6 +164,7 @@ def topup(host, sats):
 
     return jsonify(result)
 
+accountant()
 
 if __name__ == '__main__':
     app.run(debug=False, port=16444)
