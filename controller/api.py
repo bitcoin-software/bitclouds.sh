@@ -45,7 +45,7 @@ def create_vps(image):
 @app.route('/images')
 def images():
     result = {
-        "images": ['debian', 'centos', 'ubuntu', 'bitcoind', 'lightningd'] #'freebsd', 'bitcoind', 'lightningd'
+        "images": ['debian', 'centos', 'ubuntu', 'bitcoind', 'lightningd', 'rootshell'] #'freebsd', 'bitcoind', 'lightningd'
     }
 
     return jsonify(result)
