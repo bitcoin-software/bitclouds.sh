@@ -25,4 +25,5 @@ elif sys.argv[1] == 'del':
     host2del = sys.argv[2]
     for host in hosts:
         if host['address'] == host2del:
+            delete_host(host['address'])
             del_server(host['address'])
