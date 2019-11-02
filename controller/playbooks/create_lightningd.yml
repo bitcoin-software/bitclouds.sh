@@ -69,10 +69,10 @@
       line: "HiddenServicePort 22 localhost:{{ sshport }}"
 
   - name: Bridge c-lightning to .onion on lightning jail
-      lineinfile:
-        dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
-        regexp: "^HiddenServicePort 9735 localhost:9735"
-        line: "HiddenServicePort 9735 localhost:{{ appport }}"
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
+      regexp: "^HiddenServicePort 9735 localhost:9735"
+      line: "HiddenServicePort 9735 localhost:{{ appport }}"
 
 
   - name: Read onion address in jail on lightning jail
@@ -80,10 +80,10 @@
     register: onion
 
   - name: Change LN bind addr
-      lineinfile:
-        dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
-        regexp: "^bind-addr="
-        line: "bind-addr=0.0.0.0:{{ appport }}"
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^bind-addr="
+      line: "bind-addr=0.0.0.0:{{ appport }}"
 
   - name: Change LN .onion announce-addr on lightning jail
     lineinfile:
