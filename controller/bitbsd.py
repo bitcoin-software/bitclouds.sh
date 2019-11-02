@@ -87,10 +87,13 @@ def createlightningd(address):
 
     hosts = get_bitbsd('lightningd')
     for host in hosts:
-        ssh_ports.append(host['ssh_port'])
-        app_ports.append(host['app_port'])
-        sparko_ports.append(host['sparko_port'])
-        user_ports.append(host['user_port'])
+        try:
+            ssh_ports.append(host['ssh_port'])
+            app_ports.append(host['app_port'])
+            sparko_ports.append(host['sparko_port'])
+            user_ports.append(host['user_port'])
+        except KeyError as e:
+            print('ignoring ' + host['address'])
 
     plan = 'lightningd'
 
