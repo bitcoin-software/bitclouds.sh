@@ -96,6 +96,12 @@
       regexp: "^sparko-port=9737"
       line: "sparko-port={{ sparkoport }}"
 
+  - name: Change LN sparko-auth on lightning jail
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^sparko-keys="
+      line: "sparko-keys={{ sparko1 }};{{ sparko2 }}:+listchannels,+listnodes;{{ sparko3 }}:+invoice,+listinvoices,+delinvoice,+decodepay,+waitpay,+waitinvoice"
+
   - name: Change LN .onion announce-addr on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
