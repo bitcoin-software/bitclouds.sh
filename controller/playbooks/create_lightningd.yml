@@ -74,6 +74,11 @@
       regexp: "^HiddenServicePort 9735 localhost:9735"
       line: "HiddenServicePort 9735 localhost:{{ appport }}"
 
+  - name: Bridge c-lightning sparko to .onion on lightning jail
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
+      regexp: "^HiddenServicePort 9737 localhost:9737"
+      line: "HiddenServicePort 9737 localhost:{{ sparkoport }}"
 
   - name: Read onion address in jail on lightning jail
     shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
@@ -84,6 +89,12 @@
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^bind-addr="
       line: "bind-addr=0.0.0.0:{{ appport }}"
+
+  - name: Change LN sparko-port on lightning jail
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^sparko-port=9737"
+      line: "sparko-port={{ sparkoport }}"
 
   - name: Change LN .onion announce-addr on lightning jail
     lineinfile:

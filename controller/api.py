@@ -117,6 +117,8 @@ def status(host):
                 "ssh_usr": 'lightning',
                 "ssh_port": bh['ssh_port'],
                 "app_port": bh['app_port'],
+                "user_port": bh['user_port'],
+                "sparko": 'https://bitbsd.org:' + str(bh['sparko_port'])+'/rpc',
                 "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22"
             }
 

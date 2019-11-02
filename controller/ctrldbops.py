@@ -128,7 +128,7 @@ def add_bitbsd(address, bitbsd_id, ipv4, ssh_port, rpc_port, rpc_authline, rpc_u
     return hostdata
 
 
-def add_bitbsd_cln(address, bitbsd_id, ipv4, ssh_port, app_port, alias, rpc_user, rpc_pwd, plan, pwd):
+def add_bitbsd_cln(address, bitbsd_id, ipv4, ports, alias, rpc_user, rpc_pwd, plan, pwd):
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
     hostdata = {"created_date": dtime,
@@ -136,8 +136,10 @@ def add_bitbsd_cln(address, bitbsd_id, ipv4, ssh_port, app_port, alias, rpc_user
                 "plan": plan,
                 "id": bitbsd_id,
                 "ipv4": ipv4,
-                "ssh_port": ssh_port,
-                "app_port": app_port,
+                "ssh_port": ports['ssh'],
+                "app_port": ports['app'],
+                "user_port": ports['userport'],
+                "sparko_port": ports['sparko'],
                 "alias": alias,
                 "rpc_user": rpc_user,
                 "rpc_pwd": rpc_pwd,

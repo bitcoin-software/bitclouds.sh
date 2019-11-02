@@ -52,7 +52,7 @@ def createbitcoind(address):
     while ssh_port in ssh_ports:
         ssh_port = random.randrange(60002, 61000)
     while rpc_port in rpc_ports:
-        rpc_port = random.randrange(51002, 51000)
+        rpc_port = random.randrange(50002, 51000)
 
     rpc_password = generate_password()
 
@@ -82,20 +82,32 @@ def createlightningd(address):
 
     ssh_ports = list()
     app_ports = list()
+    sparko_ports = list()
+    user_ports = list()
 
     hosts = get_bitbsd('lightningd')
     for host in hosts:
         ssh_ports.append(host['ssh_port'])
         app_ports.append(host['app_port'])
+        sparko_ports.append(host['sparko_port'])
+        user_ports.append(host['user_port'])
 
     plan = 'lightningd'
 
     ssh_port = random.randrange(61002, 62000)
+    sparko_port = random.randrange(59002, 59999)
     app_port = random.randrange(51002, 52000)
+    user_port = random.randrange(53002, 54000)
     while ssh_port in ssh_ports:
         ssh_port = random.randrange(61002, 62000)
     while app_port in app_ports:
         app_port = random.randrange(51002, 52000)
+    while sparko_port in sparko_ports:
+        sparko_port = random.randrange(59002, 59999)
+    while user_port in user_ports:
+        user_port = random.randrange(53002, 54000)
+
+
 
     creds = getrpc()
 
@@ -109,9 +121,16 @@ def createlightningd(address):
     #gen user pwd
     pwd = generate_salt(8)
 
+    ports = {
+        'ssh': ssh_port,
+        'app': app_port,
+        'sparko': sparko_port,
+        'userport': user_port
+    }
+
     print(pwd)
-    add_bitbsd_cln(address, jail_id, ipv4, ssh_port, app_port, alias, rpc_user, rpc_pass, plan, pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lightningd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' appport='+str(app_port)+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
+    add_bitbsd_cln(address, jail_id, ipv4, ports, alias, rpc_user, rpc_pass, plan, pwd)
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lightningd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' appport='+str(app_port)+' sparkoport='+str(sparko_port)+' userport='+str(user_port)+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
 
 
 def createrootshell(address):
