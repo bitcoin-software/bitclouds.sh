@@ -68,15 +68,34 @@
       regexp: "^HiddenServicePort 22 localhost:22"
       line: "HiddenServicePort 22 localhost:{{ sshport }}"
 
+  - name: Bridge c-lightning to .onion on lightning jail
+      lineinfile:
+        dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
+        regexp: "^HiddenServicePort 9735 localhost:9735"
+        line: "HiddenServicePort 9735 localhost:{{ appport }}"
+
+
   - name: Read onion address in jail on lightning jail
     shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
     register: onion
 
-  - name: Change LN announce-addr on lightning jail
+  - name: Change LN bind addr
+      lineinfile:
+        dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+        regexp: "^bind-addr="
+        line: "bind-addr=0.0.0.0:{{ appport }}"
+
+  - name: Change LN .onion announce-addr on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
-      regexp: "^announce-addr="
+      regexp: "^announce-addr=.onion:9735"
       line: "announce-addr={{ onion.stdout }}:9735"
+
+  - name: Change LN bitbsd.org announce-addr on lightning jail
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^announce-addr=bitbsd.org:9735"
+      line: "announce-addr=bitbsd.org:{{ appport }}"
 
   - name: keep .onion in userdir on lightning jail
     raw: "jexec {{ cname }} sh -c 'echo {{ onion.stdout }} > /home/lightning/onion.domain'"
