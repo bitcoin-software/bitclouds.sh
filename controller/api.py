@@ -28,7 +28,7 @@ from orchestrator import del_server
 
 
 def accountant():
-    threading.Timer(60.0, accountant).start()
+    threading.Timer(3600.0, accountant).start()
 
     hosts = find_hosts()
     for host in hosts:
