@@ -5385,4 +5385,4 @@ def getStar():
     star = random.choice(stars)
 
     normalized = re.sub(r'[^a-zA-Z]+', '', star['Name'])
-    return normalized
+    return normalized.lower()
