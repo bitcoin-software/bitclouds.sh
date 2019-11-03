@@ -59,7 +59,8 @@ def create_vps(image):
         return
     
     info = addr_info.json()
-    invoice_data = invoice(amount=0.03, cur='EUR', desc=info['address'])
+    desc = 'BitClouds.sh: ' + info['address']
+    invoice_data = invoice(amount=0.03, cur='EUR', desc=desc)
     id = invoice_data['id']
     bolt = invoice_data['payreq']
     register_webhook(id, wallet_host + '/chargify')
