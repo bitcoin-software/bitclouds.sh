@@ -49,14 +49,14 @@ def log_acc(address, record):
     host = mongo.hosts.find_one({"address": address})
 
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+    if host:
+        data = {"timestamp": dtime,
+                "address": address,
+                "record": record,
+                "balance": host['balance']
+                }
 
-    data = {"timestamp": dtime,
-            "address": address,
-            "record": record,
-            "balance": host['balance']
-            }
-
-    recordID = mongo.logs.insert_one(data)
+        recordID = mongo.logs.insert_one(data)
 
 
 def find_tx(txhash):
