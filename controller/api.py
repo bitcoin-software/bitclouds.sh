@@ -85,7 +85,7 @@ def images():
 def chkinv(inv):
     all_invoices = get_invoice()
     for local_invoice in all_invoices:
-        if local_invoice['bolt11'] == inv:
+        if local_invoice['payreq'] == inv:
             return jsonify(local_invoice)
     return False
 
