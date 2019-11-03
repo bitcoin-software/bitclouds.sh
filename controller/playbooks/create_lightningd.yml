@@ -81,7 +81,7 @@
       line: "HiddenServicePort 9735 localhost:{{ appport }}"
 
   - name: get jail ip addr
-    shell: "sh -c \"jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'\""
+    shell: jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'
     register: jailip
 
   - name: Set torsocks addr in lightning jail
