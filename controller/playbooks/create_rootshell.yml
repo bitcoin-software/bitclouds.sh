@@ -13,6 +13,16 @@
   - name: make scripts global on rootshell1
     shell: "jexec rootshell1 sh -c 'ln -sf /tmp/bitbsd-clouds/rootshell/*.sh /usr/local/bin/'"
 
+  - name: get jail ip addr
+    shell: "jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'"
+    register: jailip
+
+  - name: Set torsocks addr in rootshell jail
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torsocks.conf"
+      regexp: "^TorAddress"
+      line: "TorAddress {{ jailip.stdout }}"
+
   - name: stop rootshell1
     shell: cbsd jstop rootshell1
 

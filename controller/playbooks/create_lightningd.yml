@@ -80,7 +80,6 @@
       regexp: "^HiddenServicePort 9735 localhost:9735"
       line: "HiddenServicePort 9735 localhost:{{ appport }}"
 
-
   - name: get jail ip addr
     shell: "jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'"
     register: jailip
