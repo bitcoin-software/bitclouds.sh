@@ -82,7 +82,6 @@ def images():
 
 @app.route('/status/<host>')
 def status(host):
-    print('xyz')
     hetz_hosts = get_hetzner()
     bit_hosts = get_bitbsd()
     cln_hosts = get_bitbsd('lightningd')
