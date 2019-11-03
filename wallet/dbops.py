@@ -56,7 +56,7 @@ def log_acc(address, record):
                 "balance": host['balance']
                 }
 
-        recordID = mongo.logs.insert_one(data)
+        _ = mongo.logs.insert_one(data)
 
 
 def find_tx(txhash):
