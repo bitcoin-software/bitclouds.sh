@@ -81,11 +81,11 @@ def images():
     return jsonify(result)
 
 
-@app.route('/invoice/<invoice>')
-def invoice(invoice):
+@app.route('/invoice/<inv>')
+def invoice(inv):
     all_invoices = get_invoice()
     for local_invoice in all_invoices:
-        if local_invoice['bolt11'] == invoice:
+        if local_invoice['bolt11'] == inv:
             return local_invoice
     return False
 
