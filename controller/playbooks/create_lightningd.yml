@@ -91,7 +91,7 @@
       line: "TorAddress {{ jailip.stdout }}"
 
   - name: Read onion address in jail on lightning jail
-    shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
+    shell: jexec {{ cname }} cat /var/db/tor/clightning/hostname
     register: onion
 
   - name: Change LN bind addr
@@ -125,10 +125,10 @@
       line: "announce-addr=bitbsd.org:{{ appport }}"
 
   - name: keep .onion in userdir on lightning jail
-    raw: "jexec {{ cname }} sh -c 'echo {{ onion.stdout }} > /home/lightning/onion.domain'"
+    shell: "jexec {{ cname }} sh -c 'echo {{ onion.stdout }} > /home/lightning/onion.domain'"
 
   - name: set lightning user password on lightning jail
-    raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
+    shell: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
 
   - name: Setup ssh on start on lightning jail
     lineinfile:
@@ -141,3 +141,6 @@
 
   - name: start cloned lightning jail
     shell: "cbsd jstart {{ cname }}"
+
+  - name: start c-lightning on lightning jail
+    shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
