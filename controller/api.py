@@ -22,7 +22,7 @@ sys.path.insert(1, project_path + '/wallet')
 # charge.py
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
-from charge import invoice, register_webhook
+from charge import invoice, register_webhook, get_invoice
 from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid, deduct_host, get_suspended, delete_host
 from orchestrator import del_server
 
@@ -79,6 +79,16 @@ def images():
     }
 
     return jsonify(result)
+
+
+@app.route('/status/<invoice>')
+def invoice(invoice):
+    all_invoices = get_invoice()
+    for local_invoice in all_invoices:
+        if local_invoice['bolt11'] == invoice:
+            return local_invoice
+    return False
+
 
 @app.route('/status/<host>')
 def status(host):
