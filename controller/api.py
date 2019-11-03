@@ -81,7 +81,7 @@ def images():
     return jsonify(result)
 
 
-@app.route('/status/<invoice>')
+@app.route('/invoice/<invoice>')
 def invoice(invoice):
     all_invoices = get_invoice()
     for local_invoice in all_invoices:
