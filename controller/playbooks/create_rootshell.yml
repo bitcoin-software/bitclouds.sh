@@ -31,17 +31,6 @@
       regexp: "^#Port"
       line: "Port {{ sshport }}"
 
-  - name: get jail ip addr
-    shell: jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'
-    register: jailip
-
-  - name: Set torsocks addr in lightning jail
-    lineinfile:
-      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torsocks.conf"
-      regexp: "^TorAddress"
-      line: "TorAddress {{ jailip.stdout }}"
-
-
   - name: set satoshi user password on rootshell jail
     raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod satoshi -h0'"
 
