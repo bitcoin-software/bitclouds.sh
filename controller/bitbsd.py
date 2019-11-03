@@ -69,10 +69,10 @@ def createbitcoind(address):
 
     #gen user pwd
     pwd = generate_salt(8)
-
+    hname = address
     print(pwd)
     add_bitbsd(address, jail_id, ipv4, ssh_port, rpc_port, authline, rpc_user, rpc_pass, plan, pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' rpcport='+str(rpc_port)+' rpcauthline='+authline+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_btcnode.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' hname='+ hname +' rpcport='+str(rpc_port)+' rpcauthline='+authline+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
 
 
 def createlightningd(address):
@@ -123,6 +123,7 @@ def createlightningd(address):
     authline = 'None'
 
     alias = address + " [bitclouds.sh]"
+    hname = address
 
     #gen user pwd
     pwd = generate_salt(8)
@@ -136,7 +137,7 @@ def createlightningd(address):
 
     print(pwd)
     add_bitbsd_cln(address, jail_id, ipv4, ports, alias, rpc_user, rpc_pass, plan, pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lightningd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' appport='+str(app_port)+' sparko1='+str(sparko1)+' sparko2='+str(sparko2)+' sparko3='+str(sparko3)+' sparkoport='+str(sparko_port)+' userport='+str(user_port)+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lightningd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' appport='+str(app_port)+' sparko1='+str(sparko1)+' sparko2='+str(sparko2)+' sparko3='+str(sparko3)+' sparkoport='+str(sparko_port)+' userport='+str(user_port)+' hname='+hname+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
 
 
 def createrootshell(address):
@@ -163,19 +164,12 @@ def createrootshell(address):
 
     creds = getrpc()
 
-    rpc_user = creds['user']
-    rpc_pass = creds['password']
-
-    authline = 'None'
-
-    alias = address + " [bitclouds.sh]"
-
     #gen user pwd
     pwd = generate_salt(8)
-
+    hname = address
     print(pwd)
     add_bitbsd_rs(address, jail_id, ipv4, ssh_port, app_port, plan, pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_rootshell.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' pwd='+pwd+'"')
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_rootshell.yml --extra-vars="cname='+str(jail_id)+' hname='+hname+' sshport='+str(ssh_port)+' pwd='+pwd+'"')
 
 
 def delete_jail(address):
