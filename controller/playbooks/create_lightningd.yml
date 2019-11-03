@@ -68,17 +68,28 @@
       regexp: "^HiddenServicePort 22 localhost:22"
       line: "HiddenServicePort 22 localhost:{{ sshport }}"
 
+  - name: Bridge SSH to .onion on lightning jail
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
+      regexp: "^HiddenServicePort 22 localhost:22"
+      line: "HiddenServicePort 22 localhost:{{ sshport }}"
+
   - name: Bridge c-lightning to .onion on lightning jail
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
       regexp: "^HiddenServicePort 9735 localhost:9735"
       line: "HiddenServicePort 9735 localhost:{{ appport }}"
 
-  - name: Bridge c-lightning sparko to .onion on lightning jail
+
+  - name: get jail ip addr
+    shell: "jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'"
+    register: jailip
+
+  - name: Set torsocks addr in lightning jail
     lineinfile:
-      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
-      regexp: "^HiddenServicePort 9737 localhost:9737"
-      line: "HiddenServicePort 9737 localhost:{{ sparkoport }}"
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torsocks.conf"
+      regexp: "^TorAddress"
+      line: "TorAddress {{ jailip.stdout }}"
 
   - name: Read onion address in jail on lightning jail
     shell: "jexec {{ cname }} cat /var/db/tor/clightning/hostname"
