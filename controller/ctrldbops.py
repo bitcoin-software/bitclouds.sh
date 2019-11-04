@@ -34,8 +34,6 @@ def get_suspended():
 
 
 def delete_host(address):
-    host = mongo.hosts.find_one({"address": address})
-
     mongo.hosts.update_one(
         {"address": address},
         {

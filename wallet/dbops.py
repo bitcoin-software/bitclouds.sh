@@ -50,10 +50,7 @@ def log_acc(address, record):
 
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
-    if host:
-        balance = host['balance']
-    else:
-        balance = 0
+    balance = host['balance']
 
     data = {"timestamp": dtime,
                 "address": address,
