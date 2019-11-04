@@ -12,7 +12,7 @@ from ctrldbops import get_bitbsd, find_hosts
 
 
 def new_server(address, image="debian"):
-    if image == "ubuntu" or image == "centos" or image == "debian":
+    if image == "ubuntu" or image == "centos" or image == "debian" or image == "vpn":
         createServer(address, image)
     elif image=="bitcoind":
         createbitcoind(address)
