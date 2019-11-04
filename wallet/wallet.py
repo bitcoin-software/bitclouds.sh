@@ -106,8 +106,7 @@ def chargify():
                     _ = new_server(address, new_host['image'])
                     time.sleep(15)
                 task_running = False
-        add_tx(address=address, txhash=bolt, amount_sats=amount_sats, status='confirmed', chargeid=id,
-               prev_outhash='none')
+        add_tx(address=address, txhash=bolt, amount_sats=amount_sats, status='confirmed', chargeid=id, prev_outhash='none')
         hours = convert_sats2hours(address, amount_sats)
         subscribe_host(address, hours)
     print("\n\n" + str(find_host(address)) + "\n\n")
