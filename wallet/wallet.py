@@ -89,7 +89,7 @@ def chargify():
     id = request.get_json()['id']
     invoice_data = get_invoice(id=id)
     #print(invoice_data)
-    address = str(invoice_data['description']).replace('BitClouds.sh: ')
+    address = str(invoice_data['description']).replace('BitClouds.sh: ', '')
     status = invoice_data['status']
     amount_sats = int(int(invoice_data['msatoshi'])/1000)
     bolt = invoice_data['payreq']
