@@ -47,6 +47,9 @@ def createServer(name, image):
     elif image == "freebsd":
         snap_id = "8322744"
         sysImage = False
+    elif image == "vpn":
+        snap_id = "8322744"
+        sysImage = False
     elif image == "ubuntu":
         image_name = "ubuntu-18.04"
 
