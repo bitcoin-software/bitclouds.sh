@@ -50,10 +50,15 @@ def log_acc(address, record):
 
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
+    if 'balance' in host:
+        balance = host['balance']
+    else:
+        balance = 0
+
     data = {"timestamp": dtime,
                 "address": address,
                 "record": record,
-                "balance": host['balance']
+                "balance": balance
                 }
 
     _ = mongo.logs.insert_one(data)
