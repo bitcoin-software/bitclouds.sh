@@ -142,7 +142,6 @@ def status(host):
                 "app_port": bh['app_port']
             }
 
-
     accs = find_hosts()
 
     for acc in accs:
