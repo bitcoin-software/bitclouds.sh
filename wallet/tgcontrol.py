@@ -10,7 +10,7 @@ tg_config.read('../wallet/config.ini')
 
 tg_token = tg_config['telegram']['token']
 
-bot = telegram.Bot('TOKEN')
+bot = telegram.Bot(tg_token)
 
 chat_id = tg_config['telegram']['admin_chatid']
 
