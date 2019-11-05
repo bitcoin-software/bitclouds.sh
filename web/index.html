@@ -106,7 +106,7 @@ pre {
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
     # Version: 0.2.3 beta
 
-    <a href="https://github.com/bitcoin-software/bitclouds.sh" id="hostname">Check your HOST</a>
+    <a href="https://github.com/bitcoin-software/bitclouds.sh" id="hostname">HOST</div></a>
 
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>..
@@ -153,7 +153,8 @@ pre {
                 bolt=data.paytostart
                 host=data.host
                 new QRCode(document.getElementById("qr"), bolt);
-                $('#invoice-link').text(bolt);
+                $('#invoice-link').href('lightning:'+bolt);
+                $('#invoice-link').text('Pay for ' + host);
             });
             alert('got invoice, checking!');
             setInterval(function() {
@@ -163,28 +164,26 @@ pre {
                 }).then(function(data) {
                     if (data.status === 'paid' && !invoice_completed) {
                         invoice_completed = true
-                        $("#qr").html('<img src="/loading.gif"></img>')
+                        $("#qr").html('<img src="/loading.gif">')
                         $("#vps-invoice").hide()
                         $("#vps-paid").show()
-
                         alert('got payment, checking construction!');
                         setInterval(function() {
                             //your jQuery ajax code
                                 $.ajax({
-                               url: "https://bitclouds.sh/statis/"+host
+                               url: "https://bitclouds.sh/status/"+host
                                 }).then(function(data) {
                                     if (data.status === 'subscribed') {
                                         $("#vps-paid").hide()
                                         $("#vps-data").show()
                                         invoice_completed = true
-                                        $("#qr").html('<img src="/paid.png">')
-                                        $("#vps-invoice").hide()
-                                        $("#vps-paid").show()
-
+                                        $('#hostname').html('<img src="/ok.png">');
+                                        $('#hostname').href("https://bitclouds.sh/status/"+host);
                                         alert('all done!');
                                     } else if (data.status === 'expired' && !invoice_completed) {
                                         invoice_completed = true
-                                        $('#hostname').text(host);
+
+                                        $("#vps-invoice").hide()
 
                                         $("#vps-invoice").hide()
                                     }
