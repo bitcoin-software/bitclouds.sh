@@ -50,7 +50,39 @@ pre {
 </style>
 
 <body>
-<pre><output id="content">
+<div id="support" style="display: none;">
+    <form class="was-validated">
+      <div class="mb-3">
+           <div class="form-row">
+            <div class="col-md-4 mb-3">
+              <label for="validationServer01">Host name</label>
+              <input type="text" class="form-control is-valid" id="validationServer01" placeholder="cosmic-1" value="" required>
+
+                <div class="invalid-feedback">
+                Type host name
+              </div>
+            </div>
+            <div class="col-md-4 mb-3">
+              <label for="validationServer02">Contact details</label>
+              <input type="text" class="form-control is-valid" id="validationServer02" placeholder="your@email.com or @telegram or @you:matrix.org or +73 523 23543" value="" required>
+                <div class="invalid-feedback">
+                Type contact details
+              </div>
+            </div>
+            </div>
+       </div>
+        <label for="validationTextarea">Your message (max. 300 characters)</label>
+
+        <textarea class="form-control is-invalid" id="validationTextarea" placeholder="I cannot restart my VPS! Please help!" required></textarea>
+
+        <div class="custom-control custom-checkbox mb-3">
+            <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
+            <label class="custom-control-label" for="customControlValidation1">I need response ASAP</label>
+        </div>
+    </form>
+</div>
+<pre>
+    <output id="content">
     Welcome to the internet of money!
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
     # Version: 0.2.3 beta
