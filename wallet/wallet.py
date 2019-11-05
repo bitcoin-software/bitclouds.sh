@@ -5,9 +5,11 @@ import configparser
 from charge import get_invoice
 from stars import getStar
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
+from tgcontrol import ticket_notify
 import sys
 import time
 import random, string
+import re
 
 wallet_config = configparser.ConfigParser()
 wallet_config.read('config.ini')
@@ -109,8 +111,35 @@ def chargify():
         add_tx(address=address, txhash=bolt, amount_sats=amount_sats, status='confirmed', chargeid=id, prev_outhash='none')
         hours = convert_sats2hours(address, amount_sats)
         subscribe_host(address, hours)
-    print("\n\n" + str(find_host(address)) + "\n\n")
+    print("\n" + dtime + " TOP-UP " + str(find_host(address)) + "\n\n")
     return ''
+
+
+@app.route('/support', methods=['POST'])
+def support():
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+    id = request.get_json()['id']
+    invoice_data = get_invoice(id=id)
+    desc = invoice_data['description']
+    status = invoice_data['status']
+    amount_sats = int(int(invoice_data['msatoshi'])/1000)
+    bolt = invoice_data['payreq']
+    # *[support BitClouds.sh] | malto-1 | tet@tet.com:~ help
+    m = re.search('(.)\[support BitClouds\.sh\] \| ([a-z\-0-9]+) \| (.*):~ (.*)', desc)
+
+    premium = m.group(1)
+    address = m.group(2)
+    contact = str(m.group(3))
+    msg = str(m.group(3))
+
+    print(dtime + " " + status + " support message [" + address + "] for [" + contact + "]")
+    if status == 'paid':
+        problem_host = find_host(address)
+
+        if problem_host:
+            ticket_notify(premium, address, contact, msg)
+    return ''
+
 
 
 def randomString(stringLength=10):
