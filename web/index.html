@@ -50,7 +50,7 @@ pre {
 </style>
 
 <body>
-<div id="support" style="display: none;">
+<div id="support" >
     <form class="was-validated">
       <div class="mb-3">
            <div class="form-row">
@@ -79,9 +79,36 @@ pre {
             <input type="checkbox" class="custom-control-input" id="customControlValidation1" required>
             <label class="custom-control-label" for="customControlValidation1">I need response ASAP</label>
         </div>
+
+  <button onclick="sendMessage()" class="btn btn-success" type="submit" id="sup-send">Submit support request</button>
+
+  <button onclick="hideSupport()" class="btn btn-secondary" type="back" id="sup-back">Go back</button>
     </form>
 </div>
 <pre>
+    <output id="support-invoice" style="display: none;">
+    Welcome to the internet of money!
+    # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+    # Version: 0.2.3 beta
+
+    Awaiting following invoice to be paid <img src="loading.gif" height="70">
+        <a href="#" id="support-payment" target="_blank"><div id="suport-qr" align="center"></div></a>
+
+    # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>
+    # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
+    # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    </output>
+    <output id="support-complete" style="display: none;">
+    Welcome to the internet of money!
+    # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+    # Version: 0.2.3 beta
+
+    Your message sent! <a href="https://bitclouds.sh/"> Go back!</a>
+
+    # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>..
+    # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
+    # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    </output>
     <output id="content">
     Welcome to the internet of money!
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
@@ -101,7 +128,7 @@ pre {
 
     [you@home ~$] curl https://bitclouds.sh/topup/{$HOST_NAME}/1000
 
-    Get fast support for regular or even urgent issue!
+        <a href="javascript:getSupport();">Get fast support for regular or even urgent issue!</a>
 
     [you@home ~$] curl https://bitclouds.sh/support/{$HOST_NAME}/{YOUR_EMAIL_OR_TELEGRAM_OR_PHONE_OR_WHATEVER}/urgent
 
@@ -157,7 +184,7 @@ pre {
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
     # Version: 0.2.3 beta
 
-    Your invoice is expired! <a href="#"> Go back!</a>
+    Your invoice is expired! <a href="https://bitclouds.sh/"> Go back!</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -176,6 +203,58 @@ pre {
             if (tmp[0] === parameterName) result = decodeURIComponent(tmp[1]);
         }
         return result;
+    }
+
+    function getSupport(){
+            $("#content").hide()
+            $("#support").show()
+    }
+
+
+    function closeSupport(){
+            $("#content").show()
+            $("#support").hide()
+    }
+
+    function sendMessage(){
+        host = $("#validationServer01").val();
+        contact = $("#validationServer01").val();
+        msg = $("#validationTextArea").val();
+        urgent = false;
+        if ($('#customControlValidation1').is(":checked"))
+        {
+            urgent = true;
+        }
+        dest_url = "https://bitclouds.sh/support/"+host+"/"+contact+"/"+msg
+        if (urgent) {
+            dest_url = "https://bitclouds.sh/support/"+host+"/"+contact+"/"+msg+"/urgent"
+        }
+        $.ajax({
+                url: dest_url
+            }).then(function(data) {
+                bolt=data.paytosend
+                invoice_completed = false
+                $("#support").hide()
+
+                $("#support-invoice").show()
+                new QRCode(document.getElementById("support-qr"), bolt);
+                $('#support-payment').attr("href", 'lightning:'+bolt);
+
+                setInterval(function() {
+                            //your jQuery ajax code
+                                $.ajax({
+                               url: "https://bitclouds.sh/chkinv/"+bolt
+                                }).then(function(data) {
+                                    if (data.status === 'subscribed' && !invoice_completed) {
+                                        invoice_completed = true
+                                        $("#support-invoice").hide()
+                                        $("#support-complete").show()
+                                    }
+                                })
+
+                        }, 1000 * 5 );
+            });
+
     }
 
     $(document).ready(function(){
