@@ -16,7 +16,7 @@ bot = telegram.Bot(tg_token)
 
 
 def ticket_notify(premium, address, contact, msg):
-    if premium == '*':
+    if premium == '$':
         header = "\n <b>$$$ PREMIUM $$$</b> \n"
         gold = True
     else:
