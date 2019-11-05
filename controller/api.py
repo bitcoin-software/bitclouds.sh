@@ -100,7 +100,7 @@ def support(address, contact, msg, premium):
     if premium == 'urgent':
         desc = '$[support BitClouds.sh] | ' + address + ' | ' + contact + ':~ ' + formatted_msg
         invoice_data = invoice(amount=1.01, cur='USD', desc=desc)
-    else:
+    elif premium == 'regular':
         desc = '*[support BitClouds.sh] ' + address + ' (' + contact + '):~ ' + formatted_msg
         invoice_data = invoice(amount=0.01, cur='EUR', desc=desc)
 
