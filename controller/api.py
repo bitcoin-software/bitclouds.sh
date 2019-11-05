@@ -96,6 +96,8 @@ def chkinv(inv):
 def support(address, contact, msg, premium):
     if len(msg) > 300:
         formatted_msg = msg[:300]
+    else:
+        formatted_msg = msg
     if premium == 'plus':
         desc = '*[support BitClouds.sh] | ' + address + ' | ' + contact + ':~ ' + formatted_msg
         invoice_data = invoice(amount=0.01, cur='USD', desc=desc)
