@@ -54,15 +54,14 @@ pre {
     [you@home ~$] curl https://bitclouds.sh/images
 
     {
-        "images": ["debian", "centos", "ubuntu", "bitcoind", "lightningd", "rootshell" ]
+        "images": ["debian", "centos", "ubuntu", "vpn", "bitcoind", "lightningd", "rootshell"]
     }
 
     [you@home ~$] curl https://bitclouds.sh/create/lightningd
 
-    [you@home ~$] curl https://bitclouds.sh/topup/Taiyangshou/1000
+    [you@home ~$] curl https://bitclouds.sh/status/{$HOST_NAME}
 
-    [you@home ~$] curl https://bitclouds.sh/status/Taiyangshou
-
+    [you@home ~$] curl https://bitclouds.sh/topup/{$HOST_NAME}/1000
 
     # <a href="https://github.com/bitcoin-software/bitbsd-clouds">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
