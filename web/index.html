@@ -84,7 +84,7 @@ pre {
 
     Awaiting following invoice to be paid <img src="loading.gif" height="70">
         <a href="#" id="qrlink-payment" target="_blank"><div id="qr" align="left"></div></a>
-        <a href="https://github.com/bitcoin-software/bitclouds.sh" id="invoice-link">INVOICE</a>
+        <a href="#" id="invoice-link">INVOICE</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -152,8 +152,9 @@ pre {
             }).then(function(data) {
                 bolt=data.paytostart
                 host=data.host
-                new QRCode(document.getElementById("qr"), host);
-                $('#invoice-link').href('lightning:'+bolt);
+                new QRCode(document.getElementById("qr"), bolt);
+                $('#qrlink-payment').href('lightning:'+bolt);
+                $('#qrlink-payment').text(host);
                 $('#invoice-link').text('Pay for ' + host);
             });
             alert('got invoice, checking!');
