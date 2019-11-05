@@ -106,8 +106,15 @@ pre {
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
     # Version: 0.2.3 beta
 
-    <a href="https://github.com/bitcoin-software/bitclouds.sh" id="hostname">HOST</div></a>
+    Well done, your instance is created!
 
+    [you@home ~$] ssh <a href="https://www.howtogeek.com/311287/how-to-connect-to-an-ssh-server-from-windows-macos-or-linux/" id="hostname">HOST</a>
+
+    <a href="https://www.howtogeek.com/311287/how-to-connect-to-an-ssh-server-from-windows-macos-or-linux/" id="password">Enter password</a>
+
+    To setup your shh key use
+
+    [you@home ~$] ssh-copy-id
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -175,11 +182,29 @@ pre {
                                url: "https://bitclouds.sh/status/"+host
                                 }).then(function(data) {
                                     if (data.status === 'subscribed') {
+                                        ssh_usr = 'root'
+                                        ssh_port = '22'
+                                        ssh_pass = 'none'
+                                        if (data.hasOwnProperty('ssh_usr')) {
+                                            ssh_usr = data.ssh_usr
+                                        }
+                                        if (data.hasOwnProperty('ssh_port')) {
+                                            ssh_port = data.ssh_port
+                                        }
+
+                                        if (data.hasOwnProperty('ssh_pwd')) {
+                                            ssh_pwd = data.ssh_pwd
+                                        }
+
+                                        if (data.hasOwnProperty('pwd')) {
+                                            ssh_pwd = data.pwd
+                                        }
                                         $("#vps-paid").hide()
                                         $("#vps-data").show()
                                         invoice_completed = true
-                                        $('#hostname').html('<img src="/ok.png">');
+                                        $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
                                         $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
+                                        $('#password').text('Enter password: ' + ssh_pwd);
                                         alert('all done!');
                                     } else if (data.status === 'expired' && !invoice_completed) {
                                         invoice_completed = true
