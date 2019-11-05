@@ -90,8 +90,8 @@ def chkinv(inv):
             return jsonify(local_invoice)
     return False
 
-
 @app.route('/support/<address>/<string:contact>/<string:msg>', defaults={'premium': 'regular'})
+@app.route('/support/<address>/<string:contact>/<string:msg>/<string:premium>')
 def support(address, contact, msg, premium):
     if len(msg) > 300:
         formatted_msg = msg[:300]
