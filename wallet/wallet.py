@@ -125,7 +125,7 @@ def support():
     amount_sats = int(int(invoice_data['msatoshi'])/1000)
     bolt = invoice_data['payreq']
     # *[support BitClouds.sh] | malto-1 | tet@tet.com:~ help
-    m = re.search('^([*$])\[support BitClouds\.sh\] \| ([a-z\-0-9]+) \| (.*):~ (.*)', desc)
+    m = re.search('^(.*)\[support BitClouds\.sh\] \| ([a-z\-0-9]+) \| (.*):~ (.*)', desc)
 
     premium = m.group(1)
     address = m.group(2)
