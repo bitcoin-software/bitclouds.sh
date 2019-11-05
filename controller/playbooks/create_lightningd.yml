@@ -5,142 +5,142 @@
   tasks:
 
 
-  - name: update software on lightning1
+  - name: update software on lightning1 {{ hname }}
     raw: "jexec lightning1 sh -c 'rm -rf /tmp/bitbsd-clouds && cd /tmp/ && git clone https://github.com/bitcoin-software/bitbsd-clouds'"
 
-  - name: make executables in tools directory
+  - name: make executables in tools directory {{ hname }}
     raw: "jexec lightning1 sh -c 'chmod +x /tmp/bitbsd-clouds/lightningd/*.sh'"
 
-  - name: make scripts global on lightning1
+  - name: make scripts global on lightning1 {{ hname }}
     shell: "jexec lightning1 sh -c 'ln -sf /tmp/bitbsd-clouds/lightningd/*.sh /usr/local/bin/'"
 
-  - name: stop lightning1
+  - name: stop lightning1 {{ hname }}
     shell: cbsd jstop lightning1
 
-  - name: create cloned jail
+  - name: create cloned jail {{ hname }}
     shell: "cbsd jclone old=lightning1 new={{ cname }} host_hostname='{{ hname }}.bitclouds.sh' ip4_addr=DHCP"
 
-  - name: start lightning1
+  - name: start lightning1 {{ hname }}
     shell: cbsd jstart lightning1
 
-  - name: start cloned lightning jail
+  - name: start cloned lightning jail {{ hname }}
     shell: "cbsd jstart {{ cname }}"
 
-  - name: enable TOR in lightning jail
+  - name: enable TOR in lightning jail {{ hname }}
     shell: "jexec {{ cname }} sysrc tor_enable=YES"
 
-  - name: start TOR on lightning jail
+  - name: start TOR on lightning jail {{ hname }}
     shell: "jexec {{ cname }} service tor start"
 
-  - name: Setup alternate SSH port on lightning jail
+  - name: Setup alternate SSH port on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
       regexp: "^#Port"
       line: "Port {{ sshport }}"
 
-  - name: Add RPC host to bitcoin-cli on lightning jail
+  - name: Add RPC host to bitcoin-cli on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
       regexp: "^rpcconnect="
       line: "rpcconnect=192.168.0.2"
 
-  - name: Add RPC user to bitcoin-cli on lightning jail
+  - name: Add RPC user to bitcoin-cli on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
       regexp: "^rpcuser="
       line: "rpcuser={{ rpcusr }}"
 
-  - name: Add RPC pass to bitcoin-cli on lightning jail
+  - name: Add RPC pass to bitcoin-cli on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
       regexp: "^rpcpassword="
       line: "rpcpassword={{ rpcpwd }}"
 
-  - name: Set alias on LN on lightning jail
+  - name: Set alias on LN on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^alias="
       line: "alias={{ alias }} [bitclouds.sh]"
 
-  - name: Bridge SSH to .onion on lightning jail
+  - name: Bridge SSH to .onion on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
       regexp: "^HiddenServicePort 22 localhost:22"
       line: "HiddenServicePort 22 localhost:{{ sshport }}"
 
-  - name: Bridge SSH to .onion on lightning jail
+  - name: Bridge SSH to .onion on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
       regexp: "^HiddenServicePort 22 localhost:22"
       line: "HiddenServicePort 22 localhost:{{ sshport }}"
 
-  - name: Bridge c-lightning to .onion on lightning jail
+  - name: Bridge c-lightning to .onion on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
       regexp: "^HiddenServicePort 9735 localhost:9735"
       line: "HiddenServicePort 9735 localhost:{{ appport }}"
 
-  - name: get jail ip addr
+  - name: get jail ip addr {{ hname }}
     shell: jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'
     register: jailip
 
-  - name: Set torsocks addr in lightning jail
+  - name: Set torsocks addr in lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torsocks.conf"
       regexp: "^TorAddress"
       line: "TorAddress {{ jailip.stdout }}"
 
-  - name: Read onion address in jail on lightning jail
+  - name: Read onion address in jail on lightning jail {{ hname }}
     shell: jexec {{ cname }} cat /var/db/tor/clightning/hostname
     register: onion
 
-  - name: Change LN bind addr
+  - name: Change LN bind addr {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^bind-addr="
       line: "bind-addr=0.0.0.0:{{ appport }}"
 
-  - name: Change LN sparko-port on lightning jail
+  - name: Change LN sparko-port on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^sparko-port=9737"
       line: "sparko-port={{ sparkoport }}"
 
-  - name: Change LN sparko-auth on lightning jail
+  - name: Change LN sparko-auth on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^sparko-keys="
       line: "sparko-keys={{ sparko1 }};{{ sparko2 }}:+listchannels,+listnodes;{{ sparko3 }}:+invoice,+listinvoices,+delinvoice,+decodepay,+waitpay,+waitinvoice"
 
-  - name: Change LN .onion announce-addr on lightning jail
+  - name: Change LN .onion announce-addr on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^announce-addr=.onion:9735"
       line: "announce-addr={{ onion.stdout }}:9735"
 
-  - name: Change LN bitbsd.org announce-addr on lightning jail
+  - name: Change LN bitbsd.org announce-addr on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
       regexp: "^announce-addr=bitbsd.org:9735"
       line: "announce-addr=bitbsd.org:{{ appport }}"
 
-  - name: keep .onion in userdir on lightning jail
+  - name: keep .onion in userdir on lightning jail {{ hname }}
     shell: "jexec {{ cname }} sh -c 'echo {{ onion.stdout }} > /home/lightning/onion.domain'"
 
-  - name: set lightning user password on lightning jail
+  - name: set lightning user password on lightning jail {{ hname }}
     shell: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
 
-  - name: Setup ssh on start on lightning jail
+  - name: Setup ssh on start on lightning jail {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
       regexp: "^sshd_enable"
       line: "sshd_enable=YES"
 
-  - name: stop cloned lightning jail
+  - name: stop cloned lightning jail {{ hname }}
     shell: "cbsd jstop {{ cname }}"
 
-  - name: start cloned lightning jail
+  - name: start cloned lightning jail {{ hname }}
     shell: "cbsd jstart {{ cname }}"
 
-  - name: start c-lightning on lightning jail
+  - name: start c-lightning on lightning jail {{ hname }}
     shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
