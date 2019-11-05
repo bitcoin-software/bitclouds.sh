@@ -241,7 +241,11 @@ pre {
                 $("#support").hide()
 
                 $("#support-invoice").show()
-                new QRCode(document.getElementById("support-qr"), bolt);
+                //new QRCode(document.getElementById("support-qr"), bolt);
+                var qr = new QRious({
+                    element: document.getElementById('support-qr'),
+                    value: bolt
+                });
                 $('#support-payment').attr("href", 'lightning:'+bolt);
 
                 setInterval(function() {
@@ -274,7 +278,11 @@ pre {
             }).then(function(data) {
                 bolt=data.paytostart
                 host=data.host
-                new QRCode(document.getElementById("qr"), bolt);
+                //new QRCode(document.getElementById("qr"), bolt);
+                var qr = new QRious({
+                    element: document.getElementById('qr'),
+                    value: bolt
+                });
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').text(host);
