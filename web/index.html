@@ -154,7 +154,7 @@ pre {
                 host=data.host
                 new QRCode(document.getElementById("qr"), bolt);
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
-                $('#invoice-link').attr("href", 'Pay for ' + host);
+                $('#invoice-link').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').text(host);
             });
             alert('got invoice, checking!');
