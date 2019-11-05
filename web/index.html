@@ -208,6 +208,18 @@ pre {
       return qr.createImgTag();
     };
 
+
+    function qc(qrid,usrtext) {
+      var text = usrtext.
+        replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
+      var t = "14";
+      var e = "M";
+      var m = "Byte";
+      var mb = "UTF-8";
+      document.getElementById(qrid).innerHTML =
+        create_qrcode(text, t, e, m, mb);
+    };
+
     function findGetParameter(parameterName) {
         var result = null,
             tmp = [];
@@ -277,19 +289,10 @@ pre {
 
     }
 
-    function qc(qrid,usrtext) {
-      var text = usrtext.
-        replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
-      var t = 0;
-      var e = "M";
-      var m = "Byte";
-      var mb = "UTF-8";
-      document.getElementById(qrid).innerHTML =
-        create_qrcode(text, t, e, m, mb);
-    };
 
     $(document).ready(function(){
         var invoice_completed = false
+        qc('support-qr', 'lnbc1180280p1pwur5c5pp5fthn9882dgdar7c3hgyvmckr8kkgg26tu3saqr208nnfjvw8pj7sdzy9fdhxatswphhyapqgf5hgsmvda6kguewwd596grpwfjhxgpgw3jhxapf8flzqar9wd6qxqzjccqp2rzjqfxj8p6qjf5l8du7yuytkwdcjhylfd4gxgs48t65awjg04ye80mq7zx8dgqqy9gqqyqqqqqqqqqqvsqqrcv32j0qxjhka3vthy9h5zwdspx8wtvv50w524a7zqcwettd9u5458x2v6y5drtmykc3qgsqzyter5g6etmglcrc69w5kt0a4g9ggv9ucp2addqg');
 
         image=findGetParameter('create');
 
