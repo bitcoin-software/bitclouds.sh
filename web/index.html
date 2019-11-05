@@ -1,5 +1,12 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/html">
+<head>
+    <meta charset="UTF-8">
+    <title>bitclouds.sh - vps cloud platform with bitcoin payments</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
+</head>
 <style>
   body {
   background-color: black;
@@ -30,7 +37,9 @@
     pointer-events: none;
   }
 }
-a { color: #d6d6ff; }
+
+output { color: #f6ffff; }
+a { color: #b6d6ff; }
 ::selection {
   background: #0080FF;
   text-shadow: none;
@@ -40,12 +49,7 @@ pre {
 }
 
 </style>
-<head>
-    <meta charset="UTF-8">
-    <title>bitclouds.sh - vps cloud platform with bitcoin payments</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-</head>
+
 <body>
 <pre><output>
     Welcome to the internet of money!
@@ -60,9 +64,19 @@ pre {
         "images": ["debian", "centos", "ubuntu", "vpn", "bitcoind", "lightningd", "rootshell"]
     }
 
-    [you@home ~$] curl https://bitclouds.sh/create/</output>
-     <output>[RUN]
-
+    [you@home ~$] curl https://bitclouds.sh/create/
+    </output>
+    <div class="dropdown">
+  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown button
+  </button>
+  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Something else here</a>
+  </div>
+</div>
+    <output>
     [you@home ~$] curl https://bitclouds.sh/status/{$HOST_NAME}
 
     [you@home ~$] curl https://bitclouds.sh/topup/{$HOST_NAME}/1000
