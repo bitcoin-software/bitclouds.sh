@@ -82,9 +82,20 @@ pre {
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
     # Version: 0.2.3 beta
 
-    Now we are creating new instance.. pay following invoice
+    Awaiting following invoice to be paid <img src="loading.gif" height="70">
         <a href="#" id="qrlink-payment" target="_blank"><div id="qr" align="center"></div></a>
         <a href="https://github.com/bitcoin-software/bitclouds.sh" id="invoice-link">INVOICE</a>
+
+    # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>
+    # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
+    # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    </output>
+    <output id="vps-paid" style="display: none;">
+    Welcome to the internet of money!
+    # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+    # Version: 0.2.3 beta
+
+    Now we are creating new instance.. <img src="loading.gif" height="70">
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -97,6 +108,17 @@ pre {
 
     <a href="https://github.com/bitcoin-software/bitclouds.sh" id="hostname">Check your HOST</a>
 
+
+    # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>..
+    # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
+    # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    </output>
+    <output id="invoice-expired" style="display: none;">
+    Welcome to the internet of money!
+    # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+    # Version: 0.2.3 beta
+
+    Your invoice is expired! <a href="#"> Go back!</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -133,6 +155,7 @@ pre {
                 new QRCode(document.getElementById("qr"), bolt);
                 $('#invoice-link').text(bolt);
             });
+            alert('got invoice, checking!');
             setInterval(function() {
             //your jQuery ajax code
                 $.ajax({
@@ -140,9 +163,34 @@ pre {
                 }).then(function(data) {
                     if (data.status === 'paid' && !invoice_completed) {
                         invoice_completed = true
-                        $("#qr").html('<img src="/paid.png">')
+                        $("#qr").html('<img src="/loading.gif"></img>')
                         $("#vps-invoice").hide()
-                        $("#vps-data").show()
+                        $("#vps-paid").show()
+
+                        alert('got payment, checking construction!');
+                        setInterval(function() {
+                            //your jQuery ajax code
+                                $.ajax({
+                               url: "https://bitclouds.sh/statis/"+host
+                                }).then(function(data) {
+                                    if (data.status === 'subscribed') {
+                                        $("#vps-paid").hide()
+                                        $("#vps-data").show()
+                                        invoice_completed = true
+                                        $("#qr").html('<img src="/paid.png">')
+                                        $("#vps-invoice").hide()
+                                        $("#vps-paid").show()
+
+                                        alert('all done!');
+                                    } else if (data.status === 'expired' && !invoice_completed) {
+                                        invoice_completed = true
+                                        $('#hostname').text(host);
+
+                                        $("#vps-invoice").hide()
+                                    }
+                                })
+
+                        }, 1000 * 5 );
                     } else if (data.status === 'expired' && !invoice_completed) {
                         invoice_completed = true
                         $('#hostname').text(host);
