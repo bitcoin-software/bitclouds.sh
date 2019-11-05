@@ -104,7 +104,16 @@ pre {
         "images": ["debian", "centos", "ubuntu", "vpn", "bitcoind", "lightningd", "rootshell"]
     }
 
-    [you@home ~$] curl https://bitclouds.sh/create/lightningd
+    [you@home ~$] curl https://bitclouds.sh/create/<div class="dropdown">
+    <button class="dropbtn">Select Image
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="#">Link 1</a>
+      <a href="#">Link 2</a>
+      <a href="#">Link 3</a>
+    </div>
+  </div>
 
     [you@home ~$] curl https://bitclouds.sh/status/{$HOST_NAME}
 
