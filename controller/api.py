@@ -101,7 +101,7 @@ def support(address, contact, msg, premium):
         desc = '$[support BitClouds.sh] | ' + address + ' | ' + contact + ':~ ' + formatted_msg
         invoice_data = invoice(amount=1.01, cur='USD', desc=desc)
     elif premium == 'regular':
-        desc = '*[support BitClouds.sh] ' + address + ' (' + contact + '):~ ' + formatted_msg
+        desc = '*[support BitClouds.sh] ' + address + ' | ' + contact + '):~ ' + formatted_msg
         invoice_data = invoice(amount=0.01, cur='EUR', desc=desc)
 
     id = invoice_data['id']
