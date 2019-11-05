@@ -91,8 +91,26 @@ def chkinv(inv):
     return False
 
 
-@app.route('/support/<host>/<contact>')
-def status(host, contact):
+@app.route('/support/<address>/<string:contact>', defaults={'msg': 'empty', 'premium': 'regular'})
+@app.route('/support/<address>/<string:contact>/<string:msg>/<string:premium>')
+def support(address, contact, msg, premium):
+    if len(msg) > 300:
+        formatted_msg = msg[:300]
+    if premium == 'plus':
+        desc = '*[support BitClouds.sh] ' + address + ' (' + contact + '): ' + formatted_msg
+        invoice_data = invoice(amount=0.01, cur='USD', desc=desc)
+    else:
+        desc = '[support BitClouds.sh] ' + address + ' (' + contact + '): ' + formatted_msg
+        invoice_data = invoice(amount=1.01, cur='EUR', desc=desc)
+
+    id = invoice_data['id']
+    bolt = invoice_data['payreq']
+    register_webhook(id, wallet_host + '/support')
+
+    result = {
+        "paytosend": bolt
+    }
+    return jsonify(result)
 
 
 @app.route('/status/<host>')
