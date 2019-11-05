@@ -6,7 +6,7 @@ import time
 import configparser
 
 tg_config = configparser.ConfigParser()
-tg_config.read('../controller/config.ini')
+tg_config.read('../wallet/config.ini')
 
 tg_token = tg_config['telegram']['token']
 

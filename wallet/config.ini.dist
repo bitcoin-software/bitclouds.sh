@@ -11,3 +11,9 @@ token = ei1o_your_token_4ieb8
 [ipn]
 
 url = http://192.168.0.101:2222
+
+[telegram]
+
+token = YOUR_TOKEN
+admin_chatid = 123123
+
