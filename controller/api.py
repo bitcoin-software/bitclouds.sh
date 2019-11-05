@@ -91,6 +91,10 @@ def chkinv(inv):
     return False
 
 
+@app.route('/support/<host>/<contact>')
+def status(host, contact):
+
+
 @app.route('/status/<host>')
 def status(host):
     hetz_hosts = get_hetzner()

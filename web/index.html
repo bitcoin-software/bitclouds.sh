@@ -64,11 +64,13 @@ pre {
         "images": ["debian", "centos", "ubuntu", "vpn", "bitcoind", "lightningd", "rootshell"]
     }
 
-    [you@home ~$] curl https://bitclouds.sh/create/
+    [you@home ~$] curl https://bitclouds.sh/create/{$IMAGE}
 
     [you@home ~$] curl https://bitclouds.sh/status/{$HOST_NAME}
 
     [you@home ~$] curl https://bitclouds.sh/topup/{$HOST_NAME}/1000
+
+    [you@home ~$] curl https://bitclouds.sh/support/{$HOST_NAME}/{YOUR_EMAIL_OR_TELEGRAM_OR_PHONE_OR WHATEVER}
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>..
     # <a href="https://github.com/bitcoin-software/bitbsd-clouds">Refer here for more info about each instance</a>

@@ -10,3 +10,9 @@ local_path = /usr/home/dir/bitclouds
 
 host = http://192.168.0.101:4444
 
+
+[telegram]
+
+token = YOUR_TOKEN
+admin_chatid = 123123
+
