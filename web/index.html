@@ -92,11 +92,7 @@ pre {
 
     Awaiting following invoice to be paid <img src="loading.gif" height="70">
         <a href="#" id="support-payment" target="_blank"></a>
-        <strong class="bitcoin-address" id="support-qr"
-        data-bc-address="19356KxTs9Bw5AAdxens5hoxDSp5bsUKse">
-        19356KxTs9Bw5AAdxens5hoxDSp5bsUKse
-        </strong>
-
+        <div id="qr"></div>
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
@@ -145,10 +141,8 @@ pre {
     # Version: 0.2.3 beta
 
     Awaiting following invoice to be paid <img src="loading.gif" height="70">
-        <strong class="bitcoin-address" id="qr"
-        data-bc-address="19356KxTs9Bw5AAdxens5hoxDSp5bsUKse">
-        19356KxTs9Bw5AAdxens5hoxDSp5bsUKse
-        </strong>
+
+        <div id="qr"></div>
         <a href="#" id="invoice-link" align="center">INVOICE</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/tor-hidden-service">TOR hidden service</a> or <a href="https://github.com/bitcoin-software/telegram-bot">Telegram bot</a>
@@ -198,7 +192,6 @@ pre {
     </output>
 </pre>
 <script src="jq.js"></script>
-<script src="bitcoinaddress.js"></script>
 <script src="qrcode.js"></script>
 <script>
     function findGetParameter(parameterName) {
@@ -249,12 +242,6 @@ pre {
                 $("#support").hide()
 
                 $("#support-invoice").show()
-                //new QRCode(document.getElementById("support-qr"), bolt);
-                //#var qr = new QRious({
-                //#    element: document.getElementById('support-qr'),
-                //#    value: bolt
-                //#});
-                //$('#support-qr').attr("data-bc-address", bolt);
                 $('#support-qr').html(bolt);
                 $('#support-payment').attr("href", 'lightning:'+bolt);
 
@@ -288,11 +275,6 @@ pre {
             }).then(function(data) {
                 bolt=data.paytostart
                 host=data.host
-                //new QRCode(document.getElementById("qr"), bolt);
-                //var qr = new QRious({
-                //    element: document.getElementById('qr'),
-                //    value: bolt
-                //});
                 $('#qr').attr("data-bc-address", bolt);
                 $('#qr').html(bolt);
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
