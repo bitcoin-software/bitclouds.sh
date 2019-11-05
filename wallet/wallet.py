@@ -130,7 +130,7 @@ def support():
     premium = m.group(1)
     address = m.group(2)
     contact = str(m.group(3))
-    msg = str(m.group(3))
+    msg = str(m.group(4))
 
     print(dtime + " " + status + " support message [" + address + "] for [" + contact + "]")
     if status == 'paid':
