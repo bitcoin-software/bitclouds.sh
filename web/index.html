@@ -79,9 +79,8 @@ pre {
             <input type="checkbox" class="custom-control-input" id="customControlValidation1">
             <label class="custom-control-label" for="customControlValidation1">I need response ASAP</label>
         </div>
-
-  <button onclick="sendMessage()" class="btn btn-success" type="submit" id="sup-send">Submit support request</button>
-<a href="https://bitclouds.sh/"> Go back!</a>
+        <a href="javascript:getSupport();">Send message!</a>
+        <a href="https://bitclouds.sh/"> Go back!</a>
     </form>
 
 </div>
@@ -236,6 +235,7 @@ pre {
                 url: "https://bitclouds.sh/support/"+ dest_url
             }).then(function(data) {
                 bolt=data.paytosend
+                alert(bolt)
                 invoice_completed = false
 
                 $("#support").hide()
