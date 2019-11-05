@@ -91,8 +91,8 @@ def chkinv(inv):
     return False
 
 
-@app.route('/support/<address>/<string:contact>', defaults={'msg': 'empty', 'premium': 'regular'})
 @app.route('/support/<address>/<string:contact>/<string:msg>', defaults={'premium': 'regular'})
+@app.route('/support/<address>/<string:contact>', defaults={'msg': 'empty', 'premium': 'regular'})
 def support(address, contact, msg, premium):
     if len(msg) > 300:
         formatted_msg = msg[:300]
