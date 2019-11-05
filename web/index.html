@@ -277,7 +277,7 @@ pre {
                                 $.ajax({
                                url: "https://bitclouds.sh/chkinv/"+bolt
                                 }).then(function(data) {
-                                    if (data.status === 'subscribed' && !invoice_completed) {
+                                    if (data.status === 'paid' && !invoice_completed) {
                                         invoice_completed = true
                                         $("#support-invoice").hide()
                                         $("#support-complete").show()
