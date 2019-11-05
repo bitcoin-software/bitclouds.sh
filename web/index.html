@@ -315,7 +315,6 @@ pre {
                url: "https://bitclouds.sh/chkinv/"+bolt
                 }).then(function(data) {
                     if (data.status === 'paid' && !invoice_completed) {
-                        invoice_completed = true
                         $("#qr").html('<img src="/loading.gif">')
                         $("#vps-invoice").hide()
                         $("#vps-paid").show()
