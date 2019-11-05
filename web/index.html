@@ -219,21 +219,25 @@ pre {
     function sendMessage(){
         host = $("#validationServer01").val();
         contact = $("#validationServer01").val();
-        msg = $("#validationTextArea").val();
+        msg = $("#validationTextarea").val();
         urgent = false;
         if ($('#customControlValidation1').is(":checked"))
         {
             urgent = true;
         }
-        dest_url = "https://bitclouds.sh/support/"+host+"/"+contact+"/"+msg
+            dest_url = host+"/"+contact+"/"+msg
+            alert(dest_url)
         if (urgent) {
-            dest_url = "https://bitclouds.sh/support/"+host+"/"+contact+"/"+msg+"/urgent"
+            dest_url = host+"/"+contact+"/"+msg+"/urgent"
+            alert(dest_url)
         }
+
         $.ajax({
-                url: dest_url
+                url: "https://bitclouds.sh/support/"+ dest_url
             }).then(function(data) {
                 bolt=data.paytosend
                 invoice_completed = false
+                alert("3")
                 $("#support").hide()
 
                 $("#support-invoice").show()
