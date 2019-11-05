@@ -153,9 +153,10 @@ pre {
                 bolt=data.paytostart
                 host=data.host
                 new QRCode(document.getElementById("qr"), bolt);
-                $('#qrlink-payment').href('lightning:'+bolt);
+                $('#qrlink-payment').attr("href", 'lightning:'+bolt);
                 $('#qrlink-payment').text(host);
-                $('#invoice-link').text('Pay for ' + host);
+                $('#invoice-link').attr("href", 'Pay for ' + host);
+                $('#invoice-link').text(host);
             });
             alert('got invoice, checking!');
             setInterval(function() {
@@ -179,14 +180,12 @@ pre {
                                         $("#vps-data").show()
                                         invoice_completed = true
                                         $('#hostname').html('<img src="/ok.png">');
-                                        $('#hostname').href("https://bitclouds.sh/status/"+host);
+                                        $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
                                         alert('all done!');
                                     } else if (data.status === 'expired' && !invoice_completed) {
                                         invoice_completed = true
-
                                         $("#vps-invoice").hide()
-
-                                        $("#vps-invoice").hide()
+                                        $("#invoice-expired").show()
                                     }
                                 })
 
