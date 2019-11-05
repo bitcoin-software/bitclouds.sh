@@ -14,6 +14,7 @@ chat_id = tg_config['telegram']['admin_chatid']
 
 bot = telegram.Bot(tg_token)
 
+
 def ticket_notify(premium, address, contact, msg):
     if premium == '*':
         header = "\n <b>$$$ PREMIUM $$$</b> \n"

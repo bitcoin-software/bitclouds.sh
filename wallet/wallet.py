@@ -134,10 +134,7 @@ def support():
 
     print(dtime + " " + status + " support message [" + address + "] for [" + contact + "]")
     if status == 'paid':
-        problem_host = find_host(address)
-
-        if problem_host:
-            ticket_notify(premium, address, contact, msg)
+        ticket_notify(premium, address, contact, msg)
     return ''
 
 
