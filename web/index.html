@@ -226,10 +226,10 @@ pre {
             urgent = true;
         }
             dest_url = host+"/"+contact+"/"+msg
-            alert(dest_url)
+
         if (urgent) {
             dest_url = host+"/"+contact+"/"+msg+"/urgent"
-            alert(dest_url)
+
         }
 
         $.ajax({
@@ -237,7 +237,7 @@ pre {
             }).then(function(data) {
                 bolt=data.paytosend
                 invoice_completed = false
-                alert("3")
+
                 $("#support").hide()
 
                 $("#support-invoice").show()
