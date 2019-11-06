@@ -34,3 +34,5 @@ elif sys.argv[1] == 'hardclear':
         print('hosts left to delete: ' + str(many))
         many -=1
         hardclear()
+
+    print('deletion done')
