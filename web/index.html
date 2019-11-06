@@ -162,7 +162,7 @@ pre {
                     <div id="support-qr"></div>
         <a href="#" id="support-payment" target="_blank"> invoice link </a>
 
-    Want to pay on-chain?  <a href="#" id="sup-onchain" onclick="genOnchain('sup-onchain', 'bolt_placeholder', false);return false;">Pay with BTCPayServer</a>
+    Want to pay on-chain?  <a href="#" id="sup-onchain" onclick="genOnchain('sup-onchain', 'bolt_placeholder', 'false');return false;">Pay with BTCPayServer</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -179,7 +179,7 @@ pre {
                     <div id="vps-qr"></div>
         <a href="#" id="invoice-link" align="center">INVOICE</a>
 
-        Want to pay on-chain?  <a href="#" id="vps-onchain" onclick="genOnchain('vps-onchain', 'bolt_placeholder', false);return false;">Pay with BTCPayServer</a>
+        Want to pay on-chain?  <a href="#" id="vps-onchain" onclick="genOnchain('vps-onchain', 'bolt_placeholder', 'false');return false;">Pay with BTCPayServer</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -325,7 +325,7 @@ pre {
 
              });
 
-             if (big_invoice != false){
+             if (big_invoice != 'false'){
                             setInterval(function() {
                     //your jQuery ajax code
                         $.ajax({
@@ -421,7 +421,7 @@ pre {
 
                 qc('support-qr', bolt);
                 $('#support-payment').attr("href", 'lightning:'+bolt);
-                $('#sup-onchain').attr("onclick","genOnchain('sup-onchain', '"+bolt+"', false);return false;");
+                $('#sup-onchain').attr("onclick","genOnchain('sup-onchain', '"+bolt+"', 'false');return false;");
                 $('#sup-onchain').html("Pay with BTCPayServer");
                 setInterval(function() {
                             //your jQuery ajax code
