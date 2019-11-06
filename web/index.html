@@ -442,6 +442,26 @@ pre {
     }
 
 
+        $(document).keyup(function(e) {
+             if (e.key === "Escape") { // escape key maps to keycode `27`
+
+                $("#imgresp").show();
+
+                $('#platform').show();
+
+                $("#plans").show();
+
+                $("#contactus").show();
+                $("#refermore").show();
+
+                $("#othercmd").show();
+
+                $("#fastsupport").show();
+
+
+            }
+            });
+
     $(document).ready(function(){
         var invoice_paid = false
         var invoice_completed = false
@@ -558,6 +578,7 @@ pre {
                 });
 
         }, 4800);
+
 
 setTimeout(function (){
         $("#imgresp").show();
