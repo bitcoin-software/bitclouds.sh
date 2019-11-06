@@ -283,7 +283,6 @@ pre {
 
     function genOnchain(curr_id,bolt,big_invoice){
 
-
             $(curr_id).html("Generating address...");
 
             $.ajax({
@@ -319,67 +318,67 @@ pre {
 
                 }
 
-             });
-
-             if (big_invoice != false){
-                            setInterval(function() {
-                    //your jQuery ajax code
-                        $.ajax({
-                       url: "https://bitclouds.sh/chkinv/"+big_invoice
-                        }).then(function(data) {
-
-                            if (data.status === 'paid' && !invoice_paid && !invoice_completed) {
-                                invoice_paid = true;
-
-                                $("#qr").html('<img src="/loading.gif">');
-                                $("#vps-invoice").hide();
-                                $("#vps-paid").show();
+                 if (big_invoice != false){
                                 setInterval(function() {
-                                    //your jQuery ajax code
-                                        $.ajax({
-                                       url: "https://bitclouds.sh/status/"+host
-                                        }).then(function(data) {
-                                            if (data.status === 'subscribed' && !invoice_completed) {
-                                                ssh_usr = 'root'
-                                                ssh_port = '22'
-                                                ssh_pass = 'none'
-                                                if (data.hasOwnProperty('ssh_usr')) {
-                                                    ssh_usr = data.ssh_usr
+                        //your jQuery ajax code
+                            $.ajax({
+                           url: "https://bitclouds.sh/chkinv/"+big_invoice
+                            }).then(function(data) {
+
+                                if (data.status === 'paid' && !invoice_paid && !invoice_completed) {
+                                    invoice_paid = true;
+
+                                    $("#qr").html('<img src="/loading.gif">');
+                                    $("#vps-invoice").hide();
+                                    $("#vps-paid").show();
+                                    setInterval(function() {
+                                        //your jQuery ajax code
+                                            $.ajax({
+                                           url: "https://bitclouds.sh/status/"+host
+                                            }).then(function(data) {
+                                                if (data.status === 'subscribed' && !invoice_completed) {
+                                                    ssh_usr = 'root'
+                                                    ssh_port = '22'
+                                                    ssh_pass = 'none'
+                                                    if (data.hasOwnProperty('ssh_usr')) {
+                                                        ssh_usr = data.ssh_usr
+                                                    }
+                                                    if (data.hasOwnProperty('ssh_port')) {
+                                                        ssh_port = data.ssh_port
+                                                    }
+
+                                                    if (data.hasOwnProperty('ssh_pwd')) {
+                                                        ssh_pwd = data.ssh_pwd
+                                                    }
+
+                                                    if (data.hasOwnProperty('pwd')) {
+                                                        ssh_pwd = data.pwd
+                                                    }
+                                                    $("#vps-paid").hide();
+                                                    $("#vps-data").show();
+                                                    invoice_completed = true
+                                                    $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
+                                                    $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
+                                                    $('#password').text('Enter password: ' + ssh_pwd);
+                                                } else if (data.status === 'expired' && !invoice_completed) {
+                                                    invoice_completed = true;
+                                                    $("#vps-invoice").hide()
+                                                    $("#invoice-expired").show()
                                                 }
-                                                if (data.hasOwnProperty('ssh_port')) {
-                                                    ssh_port = data.ssh_port
-                                                }
+                                            })
 
-                                                if (data.hasOwnProperty('ssh_pwd')) {
-                                                    ssh_pwd = data.ssh_pwd
-                                                }
+                                    }, 1000 * 9 );
+                                } else if (data.status === 'expired' && !invoice_completed) {
+                                    invoice_completed = true;
+                                    $("#vps-invoice").hide();
+                                    $("#invoice-expired").show();
 
-                                                if (data.hasOwnProperty('pwd')) {
-                                                    ssh_pwd = data.pwd
-                                                }
-                                                $("#vps-paid").hide();
-                                                $("#vps-data").show();
-                                                invoice_completed = true
-                                                $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
-                                                $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
-                                                $('#password').text('Enter password: ' + ssh_pwd);
-                                            } else if (data.status === 'expired' && !invoice_completed) {
-                                                invoice_completed = true;
-                                                $("#vps-invoice").hide()
-                                                $("#invoice-expired").show()
-                                            }
-                                        })
+                                }
+                            })
 
-                                }, 1000 * 9 );
-                            } else if (data.status === 'expired' && !invoice_completed) {
-                                invoice_completed = true;
-                                $("#vps-invoice").hide();
-                                $("#invoice-expired").show();
+                        }, 1000 * 11 ); //each 5 seconds test invoice data
 
-                            }
-                        })
-
-                    }, 1000 * 11 ); //each 5 seconds test invoice data
+                 }
 
              }
 
