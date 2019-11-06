@@ -94,7 +94,7 @@ pre {
         <div id="support-qr"></div>
         <a href="#" id="support-payment" target="_blank"> invoice link </a>
 
-    Want to pay on-chain?  <a href="#" id="sup-onchain">Generating address...</a>
+    Want to pay on-chain?  <a href="#" id="sup-onchain" target="_blank">Generating address...</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -149,7 +149,7 @@ pre {
         <div id="vps-qr"></div>
         <a href="#" id="invoice-link" align="center">INVOICE</a>
 
-        Want to pay on-chain?  <a href="#" id="vps-onchain">Generating address...</a>
+        Want to pay on-chain?  <a href="#" id="vps-onchain" target="_blank">Generating address...</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -288,7 +288,7 @@ pre {
                         alert(sgldata.error)
                     } else {
                         $('#sup-onchain').attr("href", sgldata.url);
-                        $('#sup-onchain').html("Pay using BTCPayServer");
+                        $('#sup-onchain').html("Pay via BTCPayServer");
                     }
 
                  });
@@ -344,7 +344,7 @@ pre {
                                 alert(gldata.error)
                             } else {
                                 $('#vps-onchain').attr("href", gldata.url);
-                                $('#vps-onchain').html("Pay using BTCPayServer");
+                                $('#vps-onchain').html("Pay via BTCPayServer");
                             }
                          });
                 });
