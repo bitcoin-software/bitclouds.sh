@@ -463,7 +463,7 @@ pre {
                 $('#invoice-link').text(host);
                 $.ajax({
                         url: "https://bitclouds.sh/topup/"+host+"/10000"
-                    }).then(function(bigpay){b
+                    }).then(function(bigpay){
                                     big_invoice=bigpay.invoice;
                                     $('#vps-onchain').attr("onclick","genOnchain('vps-onchain', '"+bolt+"', '"+big_invoice+"');return false;")
                                     $('#vps-onchain').html("Pay via BTCPayServer");
