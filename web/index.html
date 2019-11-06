@@ -280,7 +280,7 @@ pre {
                 $('#support-payment').attr("href", 'lightning:'+bolt);
 
                 $.ajax({
-                    url: "https://api.golightning.club/new",
+                    url: "https://bitclouds.sh/convert",
                     type: "POST",
                     data: {'bolt11': bolt}
                 }).then(function(sgldata) {
@@ -334,7 +334,7 @@ pre {
                     }).then(function(bigpay){
                              big_invoice=bigpay.invoice;
                             $.ajax({
-                                url: "https://api.golightning.club/new",
+                                url: "https://bitclouds.sh/convert",
                                 type: "POST",
                                 data: {'bolt11': big_invoice}
                             }).then(function(gldata) {
