@@ -283,7 +283,7 @@ pre {
 
     function genOnchain(curr_id,bolt,big_invoice){
 
-
+            $("#onchain-links").show();
             $(curr_id).html("Generating address...");
 
             $.ajax({
@@ -457,11 +457,11 @@ pre {
                 $.ajax({
                         url: "https://bitclouds.sh/topup/"+host+"/10000"
                     }).then(function(bigpay){
-                             big_invoice=bigpay.invoice;
+                                    big_invoice=bigpay.invoice;
                                     $('#vps-onchain').attr("onclick","genOnchain('vps-onchain', '"+bolt+"', '"+big_invoice+"');return false;")
                                     $('#vps-onchain').html("Pay via BTCPayServer");
-                             });
-            });
+                            });
+                });
 
             setInterval(function() {
             //your jQuery ajax code
