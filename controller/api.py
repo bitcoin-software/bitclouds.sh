@@ -60,7 +60,7 @@ def create_vps(image):
     
     info = addr_info.json()
     desc = 'BitClouds.sh: ' + info['address']
-    invoice_data = invoice(amount=0.03, cur='EUR', desc=desc)
+    invoice_data = invoice(amount=0.00000420, cur='BTC', desc=desc)
     id = invoice_data['id']
     bolt = invoice_data['payreq']
     register_webhook(id, wallet_host + '/chargify')
@@ -99,10 +99,10 @@ def support(address, contact, msg, premium):
         formatted_msg = msg
     if premium == 'urgent':
         desc = '$[support BitClouds.sh] | ' + address + ' | ' + contact + ':~ ' + formatted_msg
-        invoice_data = invoice(amount=1.01, cur='USD', desc=desc)
+        invoice_data = invoice(amount=0.00009999, cur='BTC', desc=desc)
     elif premium == 'regular':
         desc = '*[support BitClouds.sh] | ' + address + ' | ' + contact + ':~ ' + formatted_msg
-        invoice_data = invoice(amount=0.01, cur='EUR', desc=desc)
+        invoice_data = invoice(amount=0.00000099, cur='BTC', desc=desc)
 
     id = invoice_data['id']
     bolt = invoice_data['payreq']
