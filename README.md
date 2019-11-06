@@ -31,4 +31,3 @@ _{
 
 After you paid invoice your VPS will be created within a minute or two
 
-
