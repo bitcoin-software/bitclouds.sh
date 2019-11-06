@@ -315,7 +315,7 @@ pre {
         var invoice_completed = false
 
         image=findGetParameter('create');
-
+        var globalhost = 'ares'
         if (image != null) {
             $("#content").hide()
             $("#vps-invoice").show()
@@ -324,6 +324,7 @@ pre {
             }).then(function(data) {
                 bolt=data.paytostart
                 host=data.host;
+                globalhost = host
                 //$('#vps-qr').html(bolt);
                 qc('vps-qr', bolt);
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
@@ -332,7 +333,7 @@ pre {
             });
 
                 $.ajax({
-                    url: "https://bitclouds.sh/topup/"+host+"/10000"
+                    url: "https://bitclouds.sh/topup/"+globalhost+"/10000"
                 }).then(function(bigpay){
                          big_invoice=bigpay.invoice;
                         $.ajax({
