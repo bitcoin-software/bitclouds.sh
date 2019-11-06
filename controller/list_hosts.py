@@ -30,7 +30,7 @@ elif sys.argv[1] == 'del':
 elif sys.argv[1] == 'hardclear':
     many = input('how many hosts to delete?: ')
 
-    while many > 1:
+    while int(many) > 1:
         print('hosts left to delete: ' + str(many))
         many -=1
         hardclear()
