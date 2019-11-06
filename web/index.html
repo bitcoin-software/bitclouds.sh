@@ -257,7 +257,7 @@ pre {
       var mb = "UTF-8";
       document.getElementById(qrid).innerHTML =
         create_qrcode(text, t, e, m, mb);
-    };
+    }
 
     function findGetParameter(parameterName) {
         var result = null,
@@ -283,7 +283,7 @@ pre {
 
     function genOnchain(curr_id,bolt,big_invoice){
 
-            $(curr_id).html("Generating address...");
+            $(curr_id).text("Generating address...");
 
             $.ajax({
                 url: "https://bitclouds.sh/convert",
@@ -305,8 +305,8 @@ pre {
                     qc('ltc-onchain-qr', ltc_uri);
 
 
-                    btc_string = "Pay "+btc_amt+" BTC to "+btc_adr
-                    ltc_string = "Pay "+ltc_amt+" LTC to "+ltc_adr
+                    btc_string = "Pay "+btc_amt+" BTC to "+btc_adr;
+                    ltc_string = "Pay "+ltc_amt+" LTC to "+ltc_adr;
 
                     $('#btc-onchain-link').attr("href",sgldata.url);
                     $('#btc-onchain-link').html(btc_string);
@@ -455,7 +455,8 @@ pre {
                              big_invoice=bigpay.invoice;
                                     $('#vps-onchain').attr("onclick","genOnchain('vps-onchain', '"+bolt+"', '"+big_invoice+"');return false;")
                                     $('#vps-onchain').html("Pay via BTCPayServer");
-                    });
+                        }
+                           );
             });
 
             setInterval(function() {
@@ -505,10 +506,10 @@ pre {
                                         $("#vps-invoice").hide()
                                         $("#onchain-links").hide();
                                         $("#invoice-expired").show()
-                                    }
-                                })
+                            }
 
                         }, 1000 * 7 );
+                        })
                     } else if (data.status === 'expired' && !invoice_completed) {
                         invoice_completed = true;
                         $("#vps-invoice").hide();
