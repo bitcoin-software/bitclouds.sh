@@ -396,7 +396,7 @@ pre {
                                     }
                                 })
 
-                        }, 1000 * 5 );
+                        }, 1000 * 8 );
                     } else if (data.status === 'expired' && !invoice_completed) {
                         invoice_completed = true;
                         $("#vps-invoice").hide();
@@ -405,7 +405,7 @@ pre {
                     }
                 })
 
-            }, 1000 * 5 ); //each 5 seconds test invoice data
+            }, 1000 * 10 ); //each 5 seconds test invoice data
 
 
             setInterval(function() {
@@ -456,7 +456,7 @@ pre {
                                     }
                                 })
 
-                        }, 1000 * 5 );
+                        }, 1000 * 9 );
                     } else if (data.status === 'expired' && !invoice_completed) {
                         invoice_completed = true;
                         $("#vps-invoice").hide();
@@ -465,7 +465,7 @@ pre {
                     }
                 })
 
-            }, 1000 * 5 ); //each 5 seconds test invoice data
+            }, 1000 * 11 ); //each 5 seconds test invoice data
 
         }
     });
