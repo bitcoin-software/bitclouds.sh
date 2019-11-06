@@ -94,7 +94,7 @@ pre {
         <div id="support-qr"></div>
         <a href="#" id="support-payment" target="_blank"> invoice link </a>
 
-    Want to pay on-chain?  <a href="#" id="sup-onchain" target="_blank">Generating address...</a>
+    Want to pay on-chain?  <a href="#" id="sup-onchain">Generating address...</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -111,6 +111,7 @@ pre {
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
     <output id="content">
     Welcome to the internet of money!
@@ -138,7 +139,30 @@ pre {
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
+    <output id="onchain-links" style="display: none;">
+    Welcome to the internet of money!
+    # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+
+
+    Note that 1 confirmation is required to process your transaction!
+
+        <div id="btc-onchain-qr"></div>
+        <a href="#" id="btc-onchain-link" align="center">BTC</a>
+        <div id="ltc-onchain-qr"></div>
+        <a href="#" id="ltc-onchain-link" align="center">LTC</a>
+
+        You can start with instant Lightning payments using <a href="https://t.me/lntxbot" target="_blank">Telegram bot</a> or via <a href="https://bluewallet.io/" target="_blank">mobile app</a>
+
+        Use <a href="https://golightning.club">GoLightning</a> to swap you on-chain bitcoin
+        and refill these wallets just for 99 sats fee!
+
+    # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
+
+    </output>
+
     <output id="vps-invoice" style="display: none;">
     Welcome to the internet of money!
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
@@ -149,11 +173,12 @@ pre {
         <div id="vps-qr"></div>
         <a href="#" id="invoice-link" align="center">INVOICE</a>
 
-        Want to pay on-chain?  <a href="#" id="vps-onchain" target="_blank">Generating address...</a>
+        Want to pay on-chain?  <a href="#" id="vps-onchain">Generating address...</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
     <output id="vps-paid" style="display: none;">
     Welcome to the internet of money!
@@ -165,6 +190,7 @@ pre {
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
     <output id="vps-data" style="display: none;">
     Welcome to the internet of money!
@@ -184,6 +210,7 @@ pre {
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
     <output id="invoice-expired" style="display: none;">
     Welcome to the internet of money!
@@ -195,6 +222,7 @@ pre {
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
+    # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
 </pre>
 <script src="jq.js"></script>
@@ -287,8 +315,24 @@ pre {
                     if (sgldata.hasOwnProperty('error')) {
                         alert(sgldata.error)
                     } else {
-                        $('#sup-onchain').attr("href", sgldata.url);
+                        $('#sup-onchain').attr("href", "javascript:$("#onchain-links").show();");
                         $('#sup-onchain').html("Pay via BTCPayServer");
+
+                        btc_amt=sgldata.cryptoInfo[0].due
+                        ltc_amt=sgldata.cryptoInfo[1].due
+                        btc_uri=sgldata.cryptoInfo[0].paymentUrls.BIP21
+                        ltc_uri=sgldata.cryptoInfo[1].paymentUrls.BIP21
+                        btc_adr=sgldata.cryptoInfo[0].address
+                        ltc_adr=sgldata.cryptoInfo[1].paymentUrls.BIP21
+
+                        btc_string = "Pay "+btc_amt+" BTC to "+btc_adr"
+                        ltc_string = "Pay "+ltc_amt+" BTC to "+ltc_adr"
+
+                        $('#btc-onchain-link').attr("href",sgldata.url);
+                        $('#btc-onchain-link').html(btc_string);
+                        $('#ltc-onchain-link').attr("href",sgldata.url);
+                        $('#ltc-onchain-link').html(ltc_string);
+
                     }
 
                  });
@@ -300,6 +344,7 @@ pre {
                                     if (invdata.status === 'paid' && !invoice_completed) {
                                         invoice_completed = true;
                                         $("#support-invoice").hide();
+                                        $("#onchain-links").hide();
                                         $("#support-complete").show();
                                     }
                                 })
@@ -341,8 +386,23 @@ pre {
                                 if (gldata.hasOwnProperty('error')) {
                                     alert(gldata.error)
                                 } else {
-                                    $('#vps-onchain').attr("href", gldata.url);
+                                    $('#vps-onchain').attr("href", "javascript:$("#onchain-links").show();");
                                     $('#vps-onchain').html("Pay via BTCPayServer");
+
+                                    btc_amt=gldata.cryptoInfo[0].due
+                                    ltc_amt=gldata.cryptoInfo[1].due
+                                    btc_uri=gldata.cryptoInfo[0].paymentUrls.BIP21
+                                    ltc_uri=gldata.cryptoInfo[1].paymentUrls.BIP21
+                                    btc_adr=gldata.cryptoInfo[0].address
+                                    ltc_adr=gldata.cryptoInfo[1].paymentUrls.BIP21
+
+                                    btc_string = "Pay "+btc_amt+" BTC to "+btc_adr"
+                                    ltc_string = "Pay "+ltc_amt+" BTC to "+ltc_adr"
+
+                                    $('#btc-onchain-link').attr("href",gldata.url);
+                                    $('#btc-onchain-link').html(btc_string);
+                                    $('#ltc-onchain-link').attr("href",gldata.url);
+                                    $('#ltc-onchain-link').html(ltc_string);
                                 }
                              });
                     });
@@ -384,6 +444,7 @@ pre {
                                             ssh_pwd = data.pwd
                                         }
                                         $("#vps-paid").hide();
+                                        $("#onchain-links").hide();
                                         $("#vps-data").show();
                                         invoice_completed = true
                                         $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
@@ -392,6 +453,7 @@ pre {
                                     } else if (data.status === 'expired' && !invoice_completed) {
                                         invoice_completed = true;
                                         $("#vps-invoice").hide()
+                                        $("#onchain-links").hide();
                                         $("#invoice-expired").show()
                                     }
                                 })
