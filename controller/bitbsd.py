@@ -33,7 +33,7 @@ def password_to_hmac(salt, password):
 
 
 def createbitcoind(address):
-    jail_id = 'bd'+generate_salt(4)
+    jail_id = 'btd'+generate_salt(4)
 
     ipv4 = host_ip
 
@@ -141,7 +141,7 @@ def createlightningd(address):
 
 
 def createrootshell(address):
-    jail_id = 'rs'+generate_salt(4)
+    jail_id = 'rsh'+generate_salt(4)
 
     ipv4 = host_ip
 
