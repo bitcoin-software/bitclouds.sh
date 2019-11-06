@@ -271,8 +271,8 @@ pre {
                 $("#support-invoice").show();
                 //$('#support-qr').html(bolt);
 
-                $('#support-payment').attr("href", 'lightning:'+bolt);
                 qc('support-qr', bolt);
+                $('#support-payment').attr("href", 'lightning:'+bolt);
 
                 setInterval(function() {
                             //your jQuery ajax code
