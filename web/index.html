@@ -315,7 +315,7 @@ pre {
         var invoice_completed = false
 
         image=findGetParameter('create');
-        var globalhost = 'ares'
+
         if (image != null) {
             $("#content").hide()
             $("#vps-invoice").show()
@@ -324,31 +324,30 @@ pre {
             }).then(function(data) {
                 bolt=data.paytostart
                 host=data.host;
-                globalhost = host
                 //$('#vps-qr').html(bolt);
                 qc('vps-qr', bolt);
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').text(host);
-            });
 
                 $.ajax({
-                    url: "https://bitclouds.sh/topup/"+globalhost+"/10000"
-                }).then(function(bigpay){
-                         big_invoice=bigpay.invoice;
-                        $.ajax({
-                            url: "https://api.golightning.club/new",
-                            type: "POST",
-                            data: {'bolt11': big_invoice}
-                        }).then(function(gldata) {
-                            if (gldata.hasOwnProperty('error')) {
-                                alert(gldata.error)
-                            } else {
-                                $('#vps-onchain').attr("href", gldata.url);
-                                $('#vps-onchain').html("Pay via BTCPayServer");
-                            }
-                         });
-                });
+                        url: "https://bitclouds.sh/topup/"+host+"/10000"
+                    }).then(function(bigpay){
+                             big_invoice=bigpay.invoice;
+                            $.ajax({
+                                url: "https://api.golightning.club/new",
+                                type: "POST",
+                                data: {'bolt11': big_invoice}
+                            }).then(function(gldata) {
+                                if (gldata.hasOwnProperty('error')) {
+                                    alert(gldata.error)
+                                } else {
+                                    $('#vps-onchain').attr("href", gldata.url);
+                                    $('#vps-onchain').html("Pay via BTCPayServer");
+                                }
+                             });
+                    });
+            });
 
             setInterval(function() {
             //your jQuery ajax code
