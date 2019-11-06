@@ -37,7 +37,7 @@ def invoice(msat=None, amount=0, cur='EUR', desc=False):
     crypto = {
         'msatoshi': msat,
         'description': desc,
-        'expiry': 600
+        'expiry': 7200
     }
 
 
@@ -45,7 +45,7 @@ def invoice(msat=None, amount=0, cur='EUR', desc=False):
         'amount': amount,
         'currency': cur,
         'description': desc,
-        'expiry': 600
+        'expiry': 7200
     }
 
     if amount == 0:
