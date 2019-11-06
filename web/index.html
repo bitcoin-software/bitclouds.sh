@@ -342,8 +342,8 @@ pre {
                                         if (data.hasOwnProperty('pwd')) {
                                             ssh_pwd = data.pwd
                                         }
-                                        $("#vps-paid").hide()
-                                        $("#vps-data").show()
+                                        $("#vps-paid").hide();
+                                        $("#vps-data").show();
                                         invoice_completed = true
                                         $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
                                         $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
