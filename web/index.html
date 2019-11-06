@@ -94,7 +94,7 @@ pre {
         <div id="support-qr"></div>
         <a href="#" id="support-payment" target="_blank"> invoice link </a>
 
-    Want to pay on-chain?  <a href="https://golightning.club" target="_blank">Use golightning.club to convert</a>
+    Want to pay on-chain?  <a href="#" id="sup-onchain">Generating address...</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -149,7 +149,7 @@ pre {
         <div id="vps-qr"></div>
         <a href="#" id="invoice-link" align="center">INVOICE</a>
 
-    Want to pay on-chain?  <a href="https://golightning.club" target="_blank">Use golightning.club to convert</a>
+        Want to pay on-chain?  <a href="#" id="vps-onchain">Generating address...</a>
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
@@ -266,8 +266,8 @@ pre {
 
         $.ajax({
                 url: "https://bitclouds.sh/support/"+ dest_url
-            }).then(function(data) {
-                bolt=data.paytosend
+            }).then(function(supdata) {
+                bolt=supdata.paytosend
 
                 invoice_completed = false
 
@@ -279,12 +279,25 @@ pre {
                 qc('support-qr', bolt);
                 $('#support-payment').attr("href", 'lightning:'+bolt);
 
+                $.ajax({
+                    url: "https://api.golightning.club/new",
+                    type: "POST",
+                    data: {'bolt11': bolt}
+                }).then(function(sgldata) {
+                    if (sgldata.hasOwnProperty('error')) {
+                        alert(sgldata.error)
+                    } else {
+                        $('#sup-onchain').attr("href", sgldata.url);
+                        $('#sup-onchain').html("Pay using BTCPayServer");
+                    }
+
+                 });
                 setInterval(function() {
                             //your jQuery ajax code
                                 $.ajax({
                                url: "https://bitclouds.sh/chkinv/"+bolt
-                                }).then(function(data) {
-                                    if (data.status === 'paid' && !invoice_completed) {
+                                }).then(function(invdata) {
+                                    if (invdata.status === 'paid' && !invoice_completed) {
                                         invoice_completed = true;
                                         $("#support-invoice").hide();
                                         $("#support-complete").show();
@@ -298,6 +311,7 @@ pre {
 
 
     $(document).ready(function(){
+        var invoice_paid = false
         var invoice_completed = false
 
         image=findGetParameter('create');
@@ -316,12 +330,34 @@ pre {
                 $('#invoice-link').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').text(host);
             });
+
+                $.ajax({
+                    url: "https://bitclouds.sh/topup/"+host+"/10000"
+                }).then(function(bigpay){
+                         big_invoice=bigpay.invoice;
+                        $.ajax({
+                            url: "https://api.golightning.club/new",
+                            type: "POST",
+                            data: {'bolt11': big_invoice}
+                        }).then(function(gldata) {
+                            if (gldata.hasOwnProperty('error')) {
+                                alert(gldata.error)
+                            } else {
+                                $('#vps-onchain').attr("href", gldata.url);
+                                $('#vps-onchain').html("Pay using BTCPayServer");
+                            }
+                         });
+                });
+
             setInterval(function() {
             //your jQuery ajax code
                 $.ajax({
                url: "https://bitclouds.sh/chkinv/"+bolt
                 }).then(function(data) {
-                    if (data.status === 'paid' && !invoice_completed) {
+
+                    if (data.status === 'paid' && !invoice_paid) {
+                        invoice_paid = true;
+
                         $("#qr").html('<img src="/loading.gif">');
                         $("#vps-invoice").hide();
                         $("#vps-paid").show();
@@ -355,7 +391,7 @@ pre {
                                         $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
                                         $('#password').text('Enter password: ' + ssh_pwd);
                                     } else if (data.status === 'expired' && !invoice_completed) {
-                                        invoice_completed = true
+                                        invoice_completed = true;
                                         $("#vps-invoice").hide()
                                         $("#invoice-expired").show()
                                     }
