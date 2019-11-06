@@ -146,7 +146,7 @@ pre {
     # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
 
 
-    Note that 1 confirmation is required to process your transaction!
+    <a href="#" onclick='$("#onchain-links").hide();'>[<<< RETURN]</a> Note that 1 confirmation is required to process your transaction!
 
         <div id="btc-onchain-qr"></div>
         <a href="#" id="btc-onchain-link" align="center" target="_blank">BTC</a>
@@ -398,7 +398,7 @@ pre {
                                     btc_uri=gldata.cryptoInfo[0].paymentUrls.BIP21
                                     ltc_uri=gldata.cryptoInfo[1].paymentUrls.BIP21
                                     btc_adr=gldata.cryptoInfo[0].address
-                                    ltc_adr=gldata.cryptoInfo[1].paymentUrls.BIP21
+                                    ltc_adr=gldata.cryptoInfo[1].address
 
                                     qc('btc-onchain-qr', btc_uri);
                                     qc('ltc-onchain-qr', ltc_uri);
