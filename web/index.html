@@ -364,8 +364,7 @@ pre {
                                                             $("#vps-invoice").hide()
                                                             $("#invoice-expired").show()
                                                         }
-                                                    }
-
+                                                    })
                                             }, 1000 * 9 );
                                     } else if (data.status === 'expired' && !invoice_completed) {
                                         invoice_completed = true;
@@ -373,7 +372,7 @@ pre {
                                         $("#invoice-expired").show();
 
                                     }
-                            }
+                            })
 
                      }, 1000 * 11 ); //each 5 seconds test invoice data
 
