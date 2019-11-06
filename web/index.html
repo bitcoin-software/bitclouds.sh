@@ -329,7 +329,6 @@ pre {
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').text(host);
-
                 $.ajax({
                         url: "https://bitclouds.sh/topup/"+host+"/10000"
                     }).then(function(bigpay){
