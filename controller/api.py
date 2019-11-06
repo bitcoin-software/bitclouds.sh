@@ -186,7 +186,7 @@ def status(host):
 @app.route('/topup/<host>', defaults={'sats': 0})
 @app.route('/topup/<host>/<int:sats>')
 def topup(host, sats):
-    desc = 'BitClouds.sh: top-up' + str(host)
+    desc = 'BitClouds.sh: top-up ' + str(host)
     if sats == 0:
         invoice_data = invoice(amount=0.03, cur='EUR', desc=desc)
         print("generating invoice for 0.03 EUR desc=" + host)
