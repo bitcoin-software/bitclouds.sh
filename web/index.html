@@ -253,10 +253,10 @@ pre {
     };
 
 
-    function qc(qrid,usrtext) {
+    function qc(qrid,usrtext,t) {
       var text = usrtext.
         replace(/^[\s\u3000]+|[\s\u3000]+$/g, '');
-      var t = "14";
+      //t is typenum
       var e = "M";
       var m = "Byte";
       var mb = "UTF-8";
@@ -307,8 +307,8 @@ pre {
                     btc_adr=sgldata.cryptoInfo[0].address
                     ltc_adr=sgldata.cryptoInfo[1].address
 
-                    qc('btc-onchain-qr', btc_uri);
-                    qc('ltc-onchain-qr', ltc_uri);
+                    qc('btc-onchain-qr', btc_uri,6);
+                    qc('ltc-onchain-qr', ltc_uri,6);
 
 
                     btc_string = "Pay "+btc_amt+" BTC to "+btc_adr
@@ -419,7 +419,7 @@ pre {
                 $("#support-invoice").show();
                 //$('#support-qr').html(bolt);
 
-                qc('support-qr', bolt);
+                qc('support-qr', bolt, 16);
                 $('#support-payment').attr("href", 'lightning:'+bolt);
                 $('#sup-onchain').attr("onclick","genOnchain('sup-onchain', '"+bolt+"', 'false');return false;");
                 $('#sup-onchain').html("Pay with BTCPayServer");
@@ -457,7 +457,7 @@ pre {
                 bolt=data.paytostart;
                 host=data.host;
                 //$('#vps-qr').html(bolt);
-                qc('vps-qr', bolt);
+                qc('vps-qr', bolt, 16);
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').text(host);
