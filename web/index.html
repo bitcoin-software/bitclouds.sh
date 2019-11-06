@@ -257,7 +257,7 @@ pre {
       var mb = "UTF-8";
       document.getElementById(qrid).innerHTML =
         create_qrcode(text, t, e, m, mb);
-    }
+    };
 
     function findGetParameter(parameterName) {
         var result = null,
@@ -281,9 +281,10 @@ pre {
             $("#support").hide();
     }
 
-    function genOnchain(curr_id,bolt,big_invoice){
+    function getOnchain(curr_id,bolt,big_invoice){
 
-            $(curr_id).text("Generating address...");
+
+            $(curr_id).html("Generating address...");
 
             $.ajax({
                 url: "https://bitclouds.sh/convert",
@@ -305,79 +306,83 @@ pre {
                     qc('ltc-onchain-qr', ltc_uri);
 
 
-                    btc_string = "Pay "+btc_amt+" BTC to "+btc_adr;
-                    ltc_string = "Pay "+ltc_amt+" LTC to "+ltc_adr;
+                    btc_string = "Pay "+btc_amt+" BTC to "+btc_adr
+                    ltc_string = "Pay "+ltc_amt+" LTC to "+ltc_adr
 
                     $('#btc-onchain-link').attr("href",sgldata.url);
                     $('#btc-onchain-link').html(btc_string);
                     $('#ltc-onchain-link').attr("href","https://btcpayjungle.com/i/"+sgldata.id+"/LTC");
                     $('#ltc-onchain-link').html(ltc_string);
 
-
                     $(curr_id).attr("onclick", '$("#onchain-links").show();return false;');
 
                 }
 
-                 if (big_invoice != false){
-                    setInterval(function() {
-                            //your jQuery ajax code
-                            $.ajax({
-                               url: "https://bitclouds.sh/chkinv/"+big_invoice
-                            }).then(function(data) {
-                                    if (data.status === 'paid' && !invoice_paid && !invoice_completed) {
-                                            invoice_paid = true;
+             });
 
-                                            $("#qr").html('<img src="/loading.gif">');
-                                            $("#vps-invoice").hide();
-                                            $("#vps-paid").show();
-                                            setInterval(function() {
-                                                    //your jQuery ajax code
-                                                    $.ajax({
-                                                        url: "https://bitclouds.sh/status/"+host
-                                                    }).then(function(data) {
-                                                        if (data.status === 'subscribed' && !invoice_completed) {
-                                                            ssh_usr = 'root'
-                                                            ssh_port = '22'
-                                                            ssh_pass = 'none'
-                                                            if (data.hasOwnProperty('ssh_usr')) {
-                                                                ssh_usr = data.ssh_usr
-                                                            }
-                                                            if (data.hasOwnProperty('ssh_port')) {
-                                                                ssh_port = data.ssh_port
-                                                            }
+             if (big_invoice != false){
+                            setInterval(function() {
+                    //your jQuery ajax code
+                        $.ajax({
+                       url: "https://bitclouds.sh/chkinv/"+big_invoice
+                        }).then(function(data) {
 
-                                                            if (data.hasOwnProperty('ssh_pwd')) {
-                                                                ssh_pwd = data.ssh_pwd
-                                                            }
+                            if (data.status === 'paid' && !invoice_paid && !invoice_completed) {
+                                invoice_paid = true;
 
-                                                            if (data.hasOwnProperty('pwd')) {
-                                                                ssh_pwd = data.pwd
-                                                            }
-                                                            $("#vps-paid").hide();
-                                                            $("#vps-data").show();
-                                                            invoice_completed = true
-                                                            $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
-                                                            $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
-                                                            $('#password').text('Enter password: ' + ssh_pwd);
-                                                        } else if (data.status === 'expired' && !invoice_completed) {
-                                                            invoice_completed = true;
-                                                            $("#vps-invoice").hide()
-                                                            $("#invoice-expired").show()
-                                                        }
-                                                    })
-                                            }, 1000 * 9 );
-                                    } else if (data.status === 'expired' && !invoice_completed) {
-                                        invoice_completed = true;
-                                        $("#vps-invoice").hide();
-                                        $("#invoice-expired").show();
+                                $("#qr").html('<img src="/loading.gif">');
+                                $("#vps-invoice").hide();
+                                $("#vps-paid").show();
+                                setInterval(function() {
+                                    //your jQuery ajax code
+                                        $.ajax({
+                                       url: "https://bitclouds.sh/status/"+host
+                                        }).then(function(data) {
+                                            if (data.status === 'subscribed' && !invoice_completed) {
+                                                ssh_usr = 'root'
+                                                ssh_port = '22'
+                                                ssh_pass = 'none'
+                                                if (data.hasOwnProperty('ssh_usr')) {
+                                                    ssh_usr = data.ssh_usr
+                                                }
+                                                if (data.hasOwnProperty('ssh_port')) {
+                                                    ssh_port = data.ssh_port
+                                                }
 
-                                    }
-                            })
+                                                if (data.hasOwnProperty('ssh_pwd')) {
+                                                    ssh_pwd = data.ssh_pwd
+                                                }
 
-                     }, 1000 * 11 ); //each 5 seconds test invoice data
-                 }
+                                                if (data.hasOwnProperty('pwd')) {
+                                                    ssh_pwd = data.pwd
+                                                }
+                                                $("#vps-paid").hide();
+                                                $("#vps-data").show();
+                                                invoice_completed = true
+                                                $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
+                                                $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
+                                                $('#password').text('Enter password: ' + ssh_pwd);
+                                            } else if (data.status === 'expired' && !invoice_completed) {
+                                                invoice_completed = true;
+                                                $("#vps-invoice").hide()
+                                                $("#invoice-expired").show()
+                                            }
+                                        })
+
+                                }, 1000 * 9 );
+                            } else if (data.status === 'expired' && !invoice_completed) {
+                                invoice_completed = true;
+                                $("#vps-invoice").hide();
+                                $("#invoice-expired").show();
+
+                            }
+                        })
+
+                    }, 1000 * 11 ); //each 5 seconds test invoice data
+
              }
-    )}
+
+    }
 
     function sendMessage(){
         host = $("#validationServer01").val();
@@ -455,8 +460,7 @@ pre {
                              big_invoice=bigpay.invoice;
                                     $('#vps-onchain').attr("onclick","genOnchain('vps-onchain', '"+bolt+"', '"+big_invoice+"');return false;")
                                     $('#vps-onchain').html("Pay via BTCPayServer");
-                        }
-                           );
+                             });
             });
 
             setInterval(function() {
@@ -506,10 +510,10 @@ pre {
                                         $("#vps-invoice").hide()
                                         $("#onchain-links").hide();
                                         $("#invoice-expired").show()
-                            }
+                                    }
+                                })
 
                         }, 1000 * 7 );
-                        })
                     } else if (data.status === 'expired' && !invoice_completed) {
                         invoice_completed = true;
                         $("#vps-invoice").hide();
