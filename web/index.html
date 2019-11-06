@@ -79,7 +79,7 @@ pre {
             <input type="checkbox" class="custom-control-input" id="customControlValidation1">
             <label class="custom-control-label" for="customControlValidation1">I need response ASAP</label>
         </div>
-        <a href="javascript:sendMessage();">Send message!</a>
+        <a href="#" onclick='sendMessage();return false;'>Send message!</a>
         <a href="https://bitclouds.sh/"> Go back!</a>
     </form>
 
@@ -132,7 +132,7 @@ pre {
 
     [you@home ~$] curl https://bitclouds.sh/topup/{$HOST_NAME}/1000
 
-    <a href="javascript:getSupport();">Get fast support for urgent or regular issue!</a>
+    <a href="#" onclick='getSupport();return false;'>Get fast support for urgent or regular issue!</a>
 
     [you@home ~$] curl https://bitclouds.sh/support/{$HOST_NAME}/{YOUR_EMAIL_OR_TELEGRAM_OR_PHONE_OR_WHATEVER}/{MESSAGE}/urgent
 
@@ -149,9 +149,9 @@ pre {
     Note that 1 confirmation is required to process your transaction!
 
         <div id="btc-onchain-qr"></div>
-        <a href="#" id="btc-onchain-link" align="center">BTC</a>
+        <a href="#" id="btc-onchain-link" align="center" target="_blank">BTC</a>
         <div id="ltc-onchain-qr"></div>
-        <a href="#" id="ltc-onchain-link" align="center">LTC</a>
+        <a href="#" id="ltc-onchain-link" align="center" target="_blank">LTC</a>
 
         You can start with instant Lightning payments using <a href="https://t.me/lntxbot" target="_blank">Telegram bot</a> or via <a href="https://bluewallet.io/" target="_blank">mobile app</a>
 
@@ -315,7 +315,7 @@ pre {
                     if (sgldata.hasOwnProperty('error')) {
                         alert(sgldata.error)
                     } else {
-                        $('#sup-onchain').attr("href", 'javascript:$("#onchain-links").show();');
+                        $('#sup-onchain').attr("onclick", '$("#onchain-links").show();return false;');
                         $('#sup-onchain').html("Pay via BTCPayServer");
 
                         btc_amt=sgldata.cryptoInfo[0].due
@@ -390,7 +390,7 @@ pre {
                                 if (gldata.hasOwnProperty('error')) {
                                     alert(gldata.error)
                                 } else {
-                                    $('#vps-onchain').attr("href", 'javascript:$("#onchain-links").show();');
+                                    $('#vps-onchain').attr("onclick", '$("#onchain-links").show();return false;');
                                     $('#vps-onchain').html("Pay via BTCPayServer");
 
                                     btc_amt=gldata.cryptoInfo[0].due
