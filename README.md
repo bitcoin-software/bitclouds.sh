@@ -18,7 +18,9 @@ _{
     "centos", 
     "ubuntu", 
     "bitcoind", 
-    "lightningd"
+    "lightningd",
+    "vpn",
+    "rootshell"
   ]
 }_
  
