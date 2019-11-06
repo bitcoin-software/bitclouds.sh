@@ -149,9 +149,9 @@ pre {
     Note that 1 confirmation is required to process your transaction!
 
         <div id="btc-onchain-qr"></div>
-        <a href="#" id="btc-onchain-link" align="center">BTC</a>
+        <a href="#" id="btc-onchain-link" align="center" target="_blank">BTC</a>
         <div id="ltc-onchain-qr"></div>
-        <a href="#" id="ltc-onchain-link" align="center">LTC</a>
+        <a href="#" id="ltc-onchain-link" align="center" target="_blank">LTC</a>
 
         You can start with instant Lightning payments using <a href="https://t.me/lntxbot" target="_blank">Telegram bot</a> or via <a href="https://bluewallet.io/" target="_blank">mobile app</a>
 
@@ -325,6 +325,10 @@ pre {
                         btc_adr=sgldata.cryptoInfo[0].address
                         ltc_adr=sgldata.cryptoInfo[1].paymentUrls.BIP21
 
+                        qc('btc-onchain-qr', btc_uri);
+                        qc('ltc-onchain-qr', ltc_uri);
+
+
                         btc_string = "Pay "+btc_amt+" BTC to "+btc_adr"
                         ltc_string = "Pay "+ltc_amt+" BTC to "+ltc_adr"
 
@@ -395,6 +399,10 @@ pre {
                                     ltc_uri=gldata.cryptoInfo[1].paymentUrls.BIP21
                                     btc_adr=gldata.cryptoInfo[0].address
                                     ltc_adr=gldata.cryptoInfo[1].paymentUrls.BIP21
+
+                                    qc('btc-onchain-qr', btc_uri);
+                                    qc('ltc-onchain-qr', ltc_uri);
+
 
                                     btc_string = "Pay "+btc_amt+" BTC to "+btc_adr"
                                     ltc_string = "Pay "+ltc_amt+" BTC to "+ltc_adr"
