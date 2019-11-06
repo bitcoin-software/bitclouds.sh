@@ -120,11 +120,9 @@ pre {
     </span>
     <span id="fastsupport" style="display: none;">
     <a href="#" onclick='getSupport();return false;'>Get fast support for urgent or regular issue!</a>
-
+    [you@home ~$] curl https://bitclouds.sh/support/{$HOST_NAME}/{YOUR_EMAIL_OR_TELEGRAM_OR_PHONE_OR_WHATEVER}/{MESSAGE}/urgent
     </span>
     <span id="refermore" style="display: none;">
-    [you@home ~$] curl https://bitclouds.sh/support/{$HOST_NAME}/{YOUR_EMAIL_OR_TELEGRAM_OR_PHONE_OR_WHATEVER}/{MESSAGE}/urgent
-
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
     </span>
@@ -564,12 +562,6 @@ setTimeout(function (){
 
         }, 8000);
 
-
-setTimeout(function (){
-
-        $("#fastsupport").show();
-        }, 8700);
-
 setTimeout(function (){
         $('#platform').show();
 
@@ -581,13 +573,15 @@ setTimeout(function (){
         }, 11000);
 
 setTimeout(function (){
-
-        $("#othercmd").show();
+        $("#contactus").show();
         $("#refermore").show();
         }, 14000);
 
 setTimeout(function (){
-        $("#contactus").show();
+        $("#othercmd").show();
+
+        $("#fastsupport").show();
+
         }, 18000);
 
     });
