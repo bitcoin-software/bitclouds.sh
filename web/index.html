@@ -462,7 +462,7 @@ pre {
                 $('#invoice-link').attr("href", 'lightning:'+bolt);
                 $('#invoice-link').text(host);
                 $.ajax({
-                        url: "https://bitclouds.sh/topup/"+host+"/10000"
+                        url: "https://bitclouds.sh/topup/"+host+"/11111"
                     }).then(function(bigpay){
                                     big_invoice=bigpay.invoice;
                                     $('#vps-onchain').attr("onclick","genOnchain('vps-onchain', '"+bolt+"', '"+big_invoice+"');return false;")
