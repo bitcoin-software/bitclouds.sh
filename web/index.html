@@ -398,12 +398,14 @@ pre {
         {
             urgent = true;
         }
-            dest_url = host+"/"+contact+"/"+msg;
+            d_url = host+"/"+contact+"/"+msg;
 
         if (urgent) {
-            dest_url = host+"/"+contact+"/"+msg+"/urgent";
+            d_url = host+"/"+contact+"/"+msg+"/urgent";
 
         }
+
+        dest_url = d_url.replace(/ /g, '-');
 
         $.ajax({
                 url: "https://bitclouds.sh/support/"+ dest_url
