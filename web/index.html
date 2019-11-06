@@ -99,32 +99,39 @@ pre {
     # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
     <output id="content">
-    Welcome to the internet of money!
-    # <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform
+    <span id="welcome"></span>
+    <span id="platform" style="display: none;"># <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform</span>
 
 
-    # only one plan available: [20 GB SSD, 2GB RAM, 1vCPU, 15TB traffic] = 66 sat/hour
+    <span id="plans" style="display: none;"># only one plan available: [20 GB SSD, 2GB RAM, 1vCPU, 15TB traffic] = 66 sat/hour</span>
 
-    [you@home ~$] curl https://bitclouds.sh/images
-
+    <span id="curlimg1" style="display: none;">[you@home ~$]</span><span id="curlimg"></span>
+    <span id="imgresp" style="display: none;">
     {
     "images": ["<a href="https://bitclouds.sh/index.html?create=debian">debian</a>", "<a href="https://bitclouds.sh/index.html?create=centos">centos</a>", "<a href="https://bitclouds.sh/index.html?create=ubuntu">ubuntu</a>", "<a href="https://bitclouds.sh/index.html?create=vpn">vpn</a>", "<a href="https://bitclouds.sh/index.html?create=bitcoind">bitcoind</a>", "<a href="https://bitclouds.sh/index.html?create=lightningd">lightningd</a>", "<a href="https://bitclouds.sh/index.html?create=rootshell">rootshell</a>"]
     }
-
+    </span>
+    <span id="othercmd" style="display: none;">
     [you@home ~$] curl https://bitclouds.sh/create/{$IMAGE}
 
     [you@home ~$] curl https://bitclouds.sh/status/{$HOST_NAME}
 
     [you@home ~$] curl https://bitclouds.sh/topup/{$HOST_NAME}/1000
-
+    </span>
+    <span id="fastsupport" style="display: none;">
     <a href="#" onclick='getSupport();return false;'>Get fast support for urgent or regular issue!</a>
 
+    </span>
+    <span id="refermore" style="display: none;">
     [you@home ~$] curl https://bitclouds.sh/support/{$HOST_NAME}/{YOUR_EMAIL_OR_TELEGRAM_OR_PHONE_OR_WHATEVER}/{MESSAGE}/urgent
 
     # You can also setup in easy steps <a href="https://github.com/bitcoin-software/bitbsd-clouds/tree/master/tor-hidden-service">TOR hidden service</a> or <a href="https://bitcoin-software.github.io/bitbsd-clouds/telegram-bot/">Telegram bot</a>..
     # <a href="https://bitcoin-software.github.io/bitbsd-clouds/">Refer here for more info about each instance</a>
+    </span>
+    <span id="contactus" style="display: none;">
     # Reach us <a href="https://t.me/bitclouds">on Telegram</a>
     # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
+    </span>
     </output>
     <output id="onchain-links" style="display: none;">
     Welcome to the internet of money!
@@ -456,7 +463,7 @@ pre {
                 $('#invoice-link').text(host);
                 $.ajax({
                         url: "https://bitclouds.sh/topup/"+host+"/10000"
-                    }).then(function(bigpay){
+                    }).then(function(bigpay){b
                                     big_invoice=bigpay.invoice;
                                     $('#vps-onchain').attr("onclick","genOnchain('vps-onchain', '"+bolt+"', '"+big_invoice+"');return false;")
                                     $('#vps-onchain').html("Pay via BTCPayServer");
@@ -527,7 +534,147 @@ pre {
 
 
         }
+
+
+        setTimeout(function (){
+
+            $('#welcome').teletype({
+              text: [' ', '# Welcome to the internet of money!'],
+              delay: 50,
+              pause: 100
+            });
+                }, 1000);
+
+
+        setTimeout(function (){
+            $("#curlimg1").show();
+        }, 4000);
+
+        setTimeout(function (){
+            $('#curlimg').teletype({
+                  text: [' ', ' curl https://bitclouds.sh/images'],
+                  delay: 60,
+                  pause: 100
+                });
+
+        }, 4800);
+
+setTimeout(function (){
+        $("#imgresp").show();
+
+        }, 8000);
+
+
+setTimeout(function (){
+
+        $("#fastsupport").show();
+        }, 8700);
+
+setTimeout(function (){
+        $('#platform').show();
+
+        }, 9000);
+
+setTimeout(function (){
+        $("#plans").show();
+
+        }, 11000);
+
+setTimeout(function (){
+
+        $("#othercmd").show();
+        $("#refermore").show();
+        }, 14000);
+
+setTimeout(function (){
+        $("#contactus").show();
+        }, 18000);
+
     });
+
+
+
+(function ($) {
+  // writes the string
+  //
+  // @param jQuery $target
+  // @param String str
+  // @param Numeric cursor
+  // @param Numeric delay
+  // @param Function cb
+  // @return void
+  function typeString($target, str, cursor, delay, cb) {
+    $target.html(function (_, html) {
+      return html + str[cursor];
+    });
+
+    if (cursor < str.length - 1) {
+      setTimeout(function () {
+        typeString($target, str, cursor + 1, delay, cb);
+      }, delay);
+    }
+    else {
+      cb();
+    }
+  }
+
+  // clears the string
+  //
+  // @param jQuery $target
+  // @param Numeric delay
+  // @param Function cb
+  // @return void
+  function deleteString($target, delay, cb) {
+    var length;
+
+    $target.html(function (_, html) {
+      length = html.length;
+      return html.substr(0, length - 0);
+    });
+
+    if (length > 1) {
+      setTimeout(function () {
+        deleteString($target, delay, cb);
+      }, delay);
+    }
+    else {
+      cb();
+    }
+  }
+
+  // jQuery hook
+  $.fn.extend({
+    teletype: function (opts) {
+      var settings = $.extend({}, $.teletype.defaults, opts);
+
+      return $(this).each(function () {
+        (function loop($tar, idx) {
+          // type
+          typeString($tar, settings.text[idx], 0, settings.delay, function () {
+            // delete
+            setTimeout(function () {
+              deleteString($tar, settings.delay, function () {
+                loop($tar, (idx + 1) % settings.text.length);
+              });
+            }, settings.pause);
+          });
+
+        }($(this), 0));
+      });
+    }
+  });
+
+  // plugin defaults
+  $.extend({
+    teletype: {
+      defaults: {
+        delay: 100,
+        pause: 5000,
+        text: []
+      }
+    }
+  });
+}(jQuery));
 </script>
 </body>
 </html>
