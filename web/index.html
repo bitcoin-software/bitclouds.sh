@@ -251,10 +251,10 @@ pre {
         {
             urgent = true;
         }
-            dest_url = host+"/"+contact+"/"+msg
+            dest_url = host+"/"+contact+"/"+msg;
 
         if (urgent) {
-            dest_url = host+"/"+contact+"/"+msg+"/urgent"
+            dest_url = host+"/"+contact+"/"+msg+"/urgent";
 
         }
 
@@ -303,7 +303,7 @@ pre {
                 url: "https://bitclouds.sh/create/"+image
             }).then(function(data) {
                 bolt=data.paytostart
-                host=data.host
+                host=data.host;
                 //$('#vps-qr').html(bolt);
                 qc('vps-qr', bolt);
                 $('#qrlink-payment').attr("href", 'lightning:'+bolt);
