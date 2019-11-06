@@ -28,9 +28,9 @@ elif sys.argv[1] == 'del':
             delete_host(host['address'])
             del_server(host['address'])
 elif sys.argv[1] == 'hardclear':
-    many = input('how many hosts to delete?: ')
+    many = int(input('how many hosts to delete?: '))
 
-    while int(many) > 1:
+    while many > 1:
         print('hosts left to delete: ' + str(many))
         many -=1
         hardclear()
