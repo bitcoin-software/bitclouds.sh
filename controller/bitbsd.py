@@ -162,14 +162,12 @@ def createrootshell(address):
     while app_port in app_ports:
         app_port = random.randrange(52002, 53000)
 
-    creds = getrpc()
-
     #gen user pwd
     pwd = generate_salt(8)
     hname = address
     print(pwd)
     add_bitbsd_rs(address, jail_id, ipv4, ssh_port, app_port, plan, pwd)
-    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_rootshell.yml --extra-vars="cname='+str(jail_id)+' hname='+hname+' sshport='+str(ssh_port)+' pwd='+pwd+'"')
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_rootshell.yml --extra-vars="cname='+str(jail_id)+' hname='+hname+' sshport='+str(ssh_port)+' appport='+str(app_port)+' pwd='+pwd+'"')
 
 
 def delete_jail(address):
