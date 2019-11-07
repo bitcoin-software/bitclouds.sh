@@ -16,16 +16,19 @@
   - name: stop rootshell1 {{ hname }}
     shell: cbsd jstop rootshell1
 
-  - name: create cloned rootshell jail {{ hname }}
+  - name: create cloned rootshell {{ hname }}
     shell: "cbsd jclone old=rootshell1 new={{ cname }} host_hostname='{{ hname }}.bitclouds.sh' ip4_addr=DHCP"
 
-  - name: start rootshell1 jail {{ hname }}
+  - name: start rootshell1 {{ hname }}
     shell: cbsd jstart rootshell1
 
-  - name: start cloned rootshell jail {{ hname }}
+  - name: start cloned rootshell {{ hname }}
     shell: "cbsd jstart {{ cname }}"
 
-  - name: Setup alternate SSH port on rootshell jail {{ hname }}
+  - name: add app.port file on rootshell {{ hname }}
+    shell: "jexec {{ cname }} echo {{ appport }} >> /tmp/app.port"
+
+  - name: Setup alternate SSH port on rootshell {{ hname }}
     lineinfile:
       dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
       regexp: "^#Port"
