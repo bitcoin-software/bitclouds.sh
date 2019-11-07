@@ -134,7 +134,7 @@ def status(host):
     for bh in bit_hosts:
         if bh['address'] == host:
             result = {
-                "ip": 'bitbsd.org',
+                "ip": 'bitclouds.link',
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'bitcoin',
                 "rpc_user": bh['rpc_user'],
@@ -146,20 +146,20 @@ def status(host):
     for bh in cln_hosts:
         if bh['address'] == host:
             result = {
-                "ip": 'bitbsd.org',
+                "ip": 'bitclouds.link',
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'lightning',
                 "ssh_port": bh['ssh_port'],
                 "app_port": bh['app_port'],
                 "user_port": bh['user_port'],
-                "sparko": 'https://bitbsd.org:' + str(bh['sparko_port'])+'/rpc',
+                "sparko": 'https://bitclouds.link:' + str(bh['sparko_port'])+'/rpc',
                 "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22"
             }
 
     for bh in rs_hosts:
         if bh['address'] == host:
             result = {
-                "ip": 'bitbsd.org',
+                "ip": 'bitclouds.link',
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'satoshi',
                 "ssh_port": bh['ssh_port'],
