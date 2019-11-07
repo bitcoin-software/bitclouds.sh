@@ -362,7 +362,7 @@ pre {
                                                 $("#vps-paid").hide();
                                                 $("#vps-data").show();
                                                 invoice_completed = true
-                                                $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
+                                                $('#hostname').text(ssh_usr+'@bitclouds.link -p'+ssh_port);
                                                 $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
                                                 $('#password').text('Enter password: ' + ssh_pwd);
                                             } else if (data.status === 'expired' && !invoice_completed) {
@@ -527,7 +527,7 @@ pre {
                                         $("#onchain-links").hide();
                                         $("#vps-data").show();
                                         invoice_completed = true
-                                        $('#hostname').text(ssh_usr+'@bitbsd.org -p'+ssh_port);
+                                        $('#hostname').text(ssh_usr+'@bitclouds.link -p'+ssh_port);
                                         $('#hostname').attr("href", "https://bitclouds.sh/status/"+host);
                                         $('#password').text('Enter password: ' + ssh_pwd);
                                     } else if (data.status === 'expired' && !invoice_completed) {
