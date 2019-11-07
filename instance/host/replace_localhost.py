@@ -35,7 +35,7 @@ while True:
 
     for jail in jails:
         for line in check_hosts(jail):
-            if line == '127.0.0.1' and jail['jip'] != '192.168.0.3' and jail['jip'] != '192.168.0.1':
+            if line == '127.0.0.1' and jail['jip'] != '192.168.0.3' and jail['jip'] != '192.168.0.1' and jail['jip'] != '192.168.0.9':
                 dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
                 print(dtime + 'replacing for ' + str(jail['jid']) + ' to ' + jail['jip'])
                 replace_hosts(jail, '127.0.0.1')
