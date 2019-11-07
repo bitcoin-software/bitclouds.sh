@@ -26,7 +26,6 @@ def replace_hosts(jail, origip):
 
 def check_hosts(jail):
     hasline = os.popen('jexec ' + str(jail['jid']) + ' sh -c "cat /etc/hosts | egrep -o \'127.0.0.1\'"').read()
-
     return hasline.splitlines()
 
 
