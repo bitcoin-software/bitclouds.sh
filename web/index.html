@@ -99,9 +99,7 @@ pre {
     # Reach us <a href="https://twitter.com/bitcoinsoftwar1">on Twitter</a>
     </output>
     <output id="content">
-    <span id="welcome"></span>
-    <span id="platform" style="display: none;"># <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform</span>
-
+    <span id="welcome"></span><span id="platform" style="display: none;"># <a href="https://github.com/bitcoin-software/bitclouds.sh">bitclouds.sh</a> is a programmable VPS platform</span>
 
     <span id="plans" style="display: none;"># any instance for 66 sats per hour</span>
 
@@ -446,7 +444,7 @@ pre {
              if (e.key === "Escape") { // escape key maps to keycode `27`
 
                 $("#imgresp").show();
-
+                $('#welcome').hide();
                 $('#platform').show();
 
                 $("#plans").show();
@@ -559,7 +557,7 @@ pre {
         setTimeout(function (){
 
             $('#welcome').teletype({
-              text: [' ', '# Welcome to the internet of money!'],
+              text: [' ', '# Welcome to the internet of money! [Esc to skip]'],
               delay: 50,
               pause: 100
             });
