@@ -29,7 +29,7 @@ from orchestrator import new_server
 
 
 def convert_sats2hours(address, sats):
-        hours = int(sats / 66) - 1
+        hours = int(sats / 66)
         if hours < 0:
             hours = 0
 
