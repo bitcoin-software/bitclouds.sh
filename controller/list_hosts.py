@@ -21,6 +21,11 @@ elif sys.argv[1] == 'housekeeper':
     for host in hosts:
         if host['status'] == 'deleted':
             del_server(host['address'])
+elif sys.argv[1] == 'housekeeper':
+    for host in get_bitbsd('rootshell'):
+            print(host)
+    for host in get_bitbsd('lightningd'):
+            print(host)
 elif sys.argv[1] == 'del':
     host2del = sys.argv[2]
     for host in hosts:
