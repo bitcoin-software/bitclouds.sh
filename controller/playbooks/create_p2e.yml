@@ -138,9 +138,6 @@
       regexp: "^sshd_enable"
       line: "sshd_enable=YES"
 
-  - name: start c-lightning on p2e jail {{ hname }}
-    shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
-
   - name: enable nginx {{ hname }}
     shell: "jexec {{ cname }} sysrc nginx_enable=YES"
 
@@ -164,3 +161,6 @@
 
   - name: start cloned p2e jail {{ hname }}
     shell: "cbsd jstart {{ cname }}"
+
+  - name: start c-lightning on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
