@@ -54,23 +54,26 @@ def accountant():
 
 @app.route('/create/<image>')
 def create_vps(image):
-    addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
-    if addr_info.status_code != 200:
-        return
-    
-    info = addr_info.json()
-    desc = 'BitClouds.sh: ' + info['address']
-    invoice_data = invoice(amount=0.00000420, cur='BTC', desc=desc)
-    id = invoice_data['id']
-    bolt = invoice_data['payreq']
-    register_webhook(id, wallet_host + '/chargify')
+    if image in ['debian', 'centos', 'ubuntu', 'bitcoind', 'lightningd', 'rootshell', 'vpn', 'pay2exec']:
+        addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
+        if addr_info.status_code != 200:
+            return addr_info.status_code
 
-    result = {
-        "host": info['address'],
-        "paytostart": bolt
-    }
+        info = addr_info.json()
+        desc = 'BitClouds.sh: ' + info['address']
+        invoice_data = invoice(amount=0.00000420, cur='BTC', desc=desc)
+        id = invoice_data['id']
+        bolt = invoice_data['payreq']
+        register_webhook(id, wallet_host + '/chargify')
 
-    return jsonify(result)
+        result = {
+            "host": info['address'],
+            "paytostart": bolt
+        }
+
+        return jsonify(result)
+    else:
+        return {'error': 'no such image'}
 
 
 @app.route('/images')
@@ -121,6 +124,7 @@ def status(host):
     bit_hosts = get_bitbsd()
     cln_hosts = get_bitbsd('lightningd')
     rs_hosts = get_bitbsd('rootshell')
+    p2e_hosts = get_bitbsd('pay2exec')
 
     result = dict()
 
@@ -144,6 +148,19 @@ def status(host):
             }
 
     for bh in cln_hosts:
+        if bh['address'] == host:
+            result = {
+                "ip": 'bitclouds.link',
+                "ssh_pwd": bh['pwd'],
+                "ssh_usr": 'lightning',
+                "ssh_port": bh['ssh_port'],
+                "app_port": bh['app_port'],
+                "user_port": bh['user_port'],
+                "sparko": 'https://bitclouds.link:' + str(bh['sparko_port'])+'/rpc',
+                "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22"
+            }
+
+    for bh in p2e_hosts:
         if bh['address'] == host:
             result = {
                 "ip": 'bitclouds.link',
