@@ -58,7 +58,6 @@ def create_vps(image):
         addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
         if addr_info.status_code != 200:
             return addr_info.status_code
-
         info = addr_info.json()
         desc = 'BitClouds.sh: ' + info['address']
         invoice_data = invoice(amount=0.00000420, cur='BTC', desc=desc)
