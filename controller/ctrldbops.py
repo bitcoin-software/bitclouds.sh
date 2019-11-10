@@ -146,6 +146,7 @@ def add_bitbsd(address, bitbsd_id, ipv4, ssh_port, rpc_port, rpc_authline, rpc_u
     return hostdata
 
 
+# same for p2e
 def add_bitbsd_cln(address, bitbsd_id, ipv4, ports, alias, rpc_user, rpc_pwd, plan, pwd):
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 

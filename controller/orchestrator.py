@@ -6,7 +6,7 @@ api_config = configparser.ConfigParser()
 api_config.read('../controller/config.ini')
 project_path = api_config['paths']['local_path']
 sys.path.insert(1, project_path + '/controller')
-from bitbsd import createbitcoind, createlightningd, createrootshell, delete_jail
+from bitbsd import createbitcoind, createlightningd, createrootshell, delete_jail, createp2e
 from hetzner import createServer, deleteServer, getServers
 from ctrldbops import get_bitbsd, find_hosts
 
@@ -20,6 +20,8 @@ def new_server(address, image="debian"):
         createlightningd(address)
     elif image=="rootshell":
         createrootshell(address)
+    elif image=="pay2exec":
+        createp2e(address)
 
 
 def del_server(address):

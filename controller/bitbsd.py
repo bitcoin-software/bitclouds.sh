@@ -170,6 +170,71 @@ def createrootshell(address):
     system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_rootshell.yml --extra-vars="cname='+str(jail_id)+' hname='+hname+' sshport='+str(ssh_port)+' appport='+str(app_port)+' pwd='+pwd+'"')
 
 
+def createp2e(address):
+    jail_id = 'p2e'+generate_salt(4)
+
+    ipv4 = host_ip
+
+    ssh_ports = list()
+    app_ports = list()
+    sparko_ports = list()
+    user_ports = list()
+
+    hosts = get_bitbsd('pay2exec')
+    for host in hosts:
+        try:
+            ssh_ports.append(host['ssh_port'])
+            app_ports.append(host['app_port'])
+            sparko_ports.append(host['sparko_port'])
+            user_ports.append(host['user_port'])
+        except KeyError as e:
+            print('ERROR: ignoring ' + host['address'])
+            clearold(host['address'])
+
+    plan = 'pay2exec'
+
+    ssh_port = random.randrange(63002, 64000)
+    sparko_port = random.randrange(58002, 58999)
+    app_port = random.randrange(55002, 56000)
+    user_port = random.randrange(56002, 57000)
+    while ssh_port in ssh_ports:
+        ssh_port = random.randrange(61002, 62000)
+    while app_port in app_ports:
+        app_port = random.randrange(57002, 58000)
+    while sparko_port in sparko_ports:
+        sparko_port = random.randrange(56002, 56999)
+    while user_port in user_ports:
+        user_port = random.randrange(51002, 52000)
+
+    sparko1 = 'M'+generate_salt(8)
+    sparko2 = 'R'+generate_salt(8)
+    sparko3 = 'RW'+generate_salt(8)
+
+    creds = getrpc()
+
+    rpc_user = creds['user']
+    rpc_pass = creds['password']
+
+    authline = 'None'
+
+    alias = address + " [pay2exec.dev]"
+    hname = address
+
+    #gen user pwd
+    pwd = generate_salt(8)
+
+    ports = {
+        'ssh': ssh_port,
+        'app': app_port,
+        'sparko': sparko_port,
+        'userport': user_port
+    }
+
+    print(pwd)
+    add_bitbsd_cln(address, jail_id, ipv4, ports, alias, rpc_user, rpc_pass, plan, pwd)
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_p2e.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' appport='+str(app_port)+' sparko1='+str(sparko1)+' sparko2='+str(sparko2)+' sparko3='+str(sparko3)+' sparkoport='+str(sparko_port)+' userport='+str(user_port)+' hname='+hname+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
+
+
 def delete_jail(address):
     hosts = find_hosts()
     for host in hosts:
