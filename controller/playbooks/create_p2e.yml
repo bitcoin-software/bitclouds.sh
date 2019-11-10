@@ -136,11 +136,11 @@
       regexp: "^sshd_enable"
       line: "sshd_enable=YES"
 
-  - name: stop cloned lightning jail {{ hname }}
+  - name: stop cloned p2e jail {{ hname }}
     shell: "cbsd jstop {{ cname }}"
 
-  - name: start cloned lightning jail {{ hname }}
+  - name: start cloned p2e jail {{ hname }}
     shell: "cbsd jstart {{ cname }}"
 
-  - name: start c-lightning on lightning jail {{ hname }}
+  - name: start c-lightning on p2e jail {{ hname }}
     shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
