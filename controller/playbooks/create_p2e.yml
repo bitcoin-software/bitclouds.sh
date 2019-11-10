@@ -141,17 +141,8 @@
   - name: start c-lightning on p2e jail {{ hname }}
     shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
 
-#  - name: install python packages on p2e jail {{ hname }}
-#    shell: "jexec {{ cname }} sh -c 'python3.7 -m pip install setuptools python-telegram-bot pyqrcode pypng telethon flask requests'"
-
-#  - name: install nginx on p2e jail {{ hname }}
-#    shell: "jexec {{ cname }} pkg -y install nginx"
-
   - name: enable nginx {{ hname }}
     shell: "jexec {{ cname }} sysrc nginx_enable=YES"
-
-#  - name: clone pay2exec {{ hname }}
-#    raw: "jexec {{ cname }} sh -c 'su - lightning -c \"cd /usr/home/lightning/ && git clone https://github.com/bitcoin-software/pay2exec\"'"
 
   - name: copy p2e nginx config on p2e jail {{ hname }}
     shell: "jexec {{ cname }} cp /usr/home/lightning/pay2exec/core/p2edev/nginx.conf /usr/local/etc/nginx/nginx.conf"
