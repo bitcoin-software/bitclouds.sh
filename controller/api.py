@@ -162,14 +162,14 @@ def status(host):
     for bh in p2e_hosts:
         if bh['address'] == host:
             result = {
-                "ip": 'bitclouds.link',
+                "ip": 'pay2exec.dev',
                 "ssh_pwd": bh['pwd'],
                 "ssh_usr": 'lightning',
                 "ssh_port": bh['ssh_port'],
                 "app_port": bh['app_port'],
                 "user_port": bh['user_port'],
-                "sparko": 'https://bitclouds.link:' + str(bh['sparko_port'])+'/rpc',
-                "ssh2onion": "you can ssh directly to your .onion (/home/lightning/onion.domain) on port 22"
+                "sparko": 'https://pay2exec.dev:' + str(bh['sparko_port'])+'/rpc',
+                "ssh2onion": "you can open web/ssh directly to your .onion (/home/lightning/onion.domain) on port 80/22"
             }
 
     for bh in rs_hosts:
