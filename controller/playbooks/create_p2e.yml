@@ -138,13 +138,13 @@
   - name: start c-lightning on p2e jail {{ hname }}
     shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
 
-  - name: install python packages on p2e jail {{ hname }}
-    shell: "jexec {{ cname }} sh -c 'python3.7 -m pip install setuptools python-telegram-bot pyqrcode pypng telethon flask requests'"
+#  - name: install python packages on p2e jail {{ hname }}
+#    shell: "jexec {{ cname }} sh -c 'python3.7 -m pip install setuptools python-telegram-bot pyqrcode pypng telethon flask requests'"
 
-  - name: install nginx on p2e jail {{ hname }}
-    shell: "jexec {{ cname }} pkg -y install nginx"
+#  - name: install nginx on p2e jail {{ hname }}
+#    shell: "jexec {{ cname }} pkg -y install nginx"
 
-  - name: install python packages on p2e jail {{ hname }}
+  - name: enable nginx {{ hname }}
     shell: "jexec {{ cname }} sysrc nginx_enable=YES"
 
   - name: clone pay2exec {{ hname }}
