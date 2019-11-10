@@ -4,7 +4,6 @@
 
   tasks:
 
-
   - name: update software on lightning1 {{ hname }}
     raw: "jexec lightning1 sh -c 'rm -rf /tmp/bitbsd-clouds && cd /tmp/ && git clone https://github.com/bitcoin-software/bitbsd-clouds'"
 
@@ -136,11 +135,38 @@
       regexp: "^sshd_enable"
       line: "sshd_enable=YES"
 
+  - name: start c-lightning on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
+
+  - name: install python packages on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sh -c 'python3.7 -m pip install python-telegram-bot pyqrcode pypng telethon flask requests'"
+
+  - name: install nginx on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} pkg -y install nginx"
+
+  - name: install python packages on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sysrc nginx_enable=YES"
+
+  - name: clone pay2exec {{ hname }}
+    raw: "jexec {{ cname }} sh -c 'su - lightning -c \"cd /usr/home/lightning/ && git clone https://github.com/bitcoin-software/pay2exec\"'"
+
+  - name: copy p2e nginx config on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} cp /usr/home/lightning/pay2exec/core/p2edev/nginx.conf /usr/local/etc/nginx/nginx.conf"
+
+  - name: chainge default web port on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/nginx/nginx.conf"
+      regexp: "listen 77777 default_server;"
+      line: "listen {{ userport }} default_server;"
+
+  - name: set .onion on nginx of p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/nginx/nginx.conf"
+      regexp: "server_name .onion;"
+      line: "server_name {{ onion.stdout }};"
+
   - name: stop cloned p2e jail {{ hname }}
     shell: "cbsd jstop {{ cname }}"
 
   - name: start cloned p2e jail {{ hname }}
     shell: "cbsd jstart {{ cname }}"
-
-  - name: start c-lightning on p2e jail {{ hname }}
-    shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
