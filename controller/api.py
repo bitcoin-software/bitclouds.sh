@@ -169,7 +169,7 @@ def status(host):
                 "app_port": bh['app_port'],
                 "web_port": bh['user_port'],
                 "sparko": 'https://pay2exec.dev:' + str(bh['sparko_port'])+'/rpc',
-                "webapp": 'https://pay2exec.dev:'+str(bh['user_port'])+'/',
+                "webapp": 'http://pay2exec.dev:'+str(bh['user_port'])+'/',
                 "ssh2onion": "you can open web/ssh directly to your .onion (/home/lightning/onion.domain) on port 80/22"
             }
 
