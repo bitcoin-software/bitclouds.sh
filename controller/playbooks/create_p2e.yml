@@ -92,6 +92,12 @@
       regexp: "^TorAddress"
       line: "TorAddress {{ jailip.stdout }}"
 
+  - name: add p2e hostname {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/hosts"
+      regexp: " Imaginary network."
+      line: "{{ jailip.stdout }}            p2e"
+
   - name: Read onion address in jail on p2e jail {{ hname }}
     shell: jexec {{ cname }} cat /var/db/tor/clightning/hostname
     register: onion
