@@ -139,7 +139,7 @@
     shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"
 
   - name: install python packages on p2e jail {{ hname }}
-    shell: "jexec {{ cname }} sh -c 'python3.7 -m pip install python-telegram-bot pyqrcode pypng telethon flask requests'"
+    shell: "jexec {{ cname }} sh -c 'python3.7 -m pip install setuptools python-telegram-bot pyqrcode pypng telethon flask requests'"
 
   - name: install nginx on p2e jail {{ hname }}
     shell: "jexec {{ cname }} pkg -y install nginx"
