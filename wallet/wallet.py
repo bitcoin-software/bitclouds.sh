@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import datetime
 from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd, blistunspent
-from charge import get_invoice
 from stars import getStar
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
 from tgcontrol import ticket_notify
@@ -9,15 +8,18 @@ import sys
 import time
 import random, string
 import re
+import os
 
 from common import config
+from common.charge import get_invoice
 
 wallet = config["electrum"]["wallet"]
 
 app = Flask(__name__)
 
-project_path = config["paths"]["local_path"]
-sys.path.insert(1, project_path + "/controller")
+project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+controller_path = os.path.join(project_path, "controller")
+sys.path.insert(1, controller_path)
 
 task_running = False
 

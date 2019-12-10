@@ -1,7 +1,7 @@
 import pymongo
 import json
 import sys
-from charge import invoice
+from common.charge import invoice
 
 dbclient = pymongo.MongoClient('localhost')
 mongo_db = "hosting"

@@ -26,10 +26,6 @@ api_key = JTtV7d13fLuH_YOUR_OWN_KEY_cx7TJcEDbTVN
 
 host_ip = 192.168.0.100
 
-[paths]
-
-local_path = /usr/home/dir/bitclouds
-
 [wallet]
 
 ip = 0.0.0.0
