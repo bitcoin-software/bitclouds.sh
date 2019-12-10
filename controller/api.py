@@ -1,4 +1,4 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 import requests
 import threading
 import time
@@ -218,6 +218,9 @@ def topup(host, sats):
 
     return jsonify(result)
 
+@app.route('/lnurl/<template>')
+def lnurl_template(template):
+    return get_lnurl(template, request.args)
 
 accountant()
 
