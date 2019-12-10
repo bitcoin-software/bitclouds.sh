@@ -1,18 +1,14 @@
+import os
 
 from hcloud import Client
-
 from hcloud.images.domain import Image
 from hcloud.server_types.domain import ServerType
 from hcloud.ssh_keys.client import SSHKeysClient
 
 from ctrldbops import add_hetzner, get_hetzner
+from common import config
 
-import configparser
-
-hetzner_config = configparser.ConfigParser()
-hetzner_config.read('/home/bitclouds/bitclouds/controller/config.ini')
-
-hetzner_token = hetzner_config['hetzner']['api_key']
+hetzner_token = config['hetzner']['api_key']
 
 client = Client(token=hetzner_token)  # Please paste your API token here between the quotes
 sshClient = SSHKeysClient(client)

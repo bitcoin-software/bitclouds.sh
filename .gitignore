@@ -1,6 +1,5 @@
 venv/*
-controller/config.ini
-wallet/config.ini
+config.ini
 controller/get_lnrpc.py
 .idea
 __pycache__

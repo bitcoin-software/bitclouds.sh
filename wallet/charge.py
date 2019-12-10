@@ -1,10 +1,7 @@
 import requests
 import datetime
 
-import configparser
-
-config = configparser.ConfigParser()
-config.read('../wallet/config.ini')
+from common import config
 
 charge_url = config['charge']['url']
 charge_token = config['charge']['token']

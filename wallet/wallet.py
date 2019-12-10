@@ -1,7 +1,6 @@
 from flask import Flask, request, jsonify
 import datetime
 from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd, blistunspent
-import configparser
 from charge import get_invoice
 from stars import getStar
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
@@ -11,17 +10,14 @@ import time
 import random, string
 import re
 
-wallet_config = configparser.ConfigParser()
-wallet_config.read('config.ini')
+from common import config
 
-wallet = wallet_config['electrum']['wallet']
+wallet = config["electrum"]["wallet"]
 
 app = Flask(__name__)
 
-api_config = configparser.ConfigParser()
-api_config.read('../controller/config.ini')
-project_path = api_config['paths']['local_path']
-sys.path.insert(1, project_path + '/controller')
+project_path = config["paths"]["local_path"]
+sys.path.insert(1, project_path + "/controller")
 
 task_running = False
 
@@ -171,12 +167,12 @@ def newaddr():
     return jsonify(result)
 
 
-if __name__ == '__main__':
-#    wallet_list = [wallet]
-#    bstopd()
-#    bstartd(wallet_list)
+if __name__ == "__main__":
+    #    wallet_list = [wallet]
+    #    bstopd()
+    #    bstartd(wallet_list)
 
-    notifyURL = wallet_config['ipn']['url'] + '/elify'
-#    addr = bgetunused(wallet)
+    notifyURL = config['ipn']['url'] + '/elify'
+    #    addr = bgetunused(wallet)
 
-    app.run(debug=False, port=16333)
+    app.run(debug=True, host=config['wallet']['ip'], port=config['wallet']['port'])

@@ -1,22 +1,20 @@
 from flask import Flask, jsonify
 import requests
 import sys
-import configparser
 import threading
 import time
 import os
 import datetime
+
+from common import config
 
 app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
-api_config = configparser.ConfigParser()
-api_config.read('../controller/config.ini')
-
-wallet_host = api_config['wallet']['host']
-project_path = api_config['paths']['local_path']
+wallet_host = config['wallet']['host']
+project_path = config['paths']['local_path']
 sys.path.insert(1, project_path + '/wallet')
 
 # charge.py
@@ -227,4 +225,4 @@ def topup(host, sats):
 accountant()
 
 if __name__ == '__main__':
-    app.run(debug=False, port=16444)
+    app.run(debug=True, host=config['ipn']['ip'], port=config['ipn']['port'])

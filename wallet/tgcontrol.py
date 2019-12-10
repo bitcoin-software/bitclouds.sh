@@ -3,14 +3,11 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode
 import telegram
 import time
 
-import configparser
+from common import config
 
-tg_config = configparser.ConfigParser()
-tg_config.read('../wallet/config.ini')
+tg_token = config['telegram']['token']
+chat_id = config['telegram']['admin_chatid']
 
-tg_token = tg_config['telegram']['token']
-
-chat_id = tg_config['telegram']['admin_chatid']
 
 bot = telegram.Bot(tg_token)
 

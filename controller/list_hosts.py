@@ -1,12 +1,7 @@
-import configparser
 import os
 import datetime
 import time
 import sys
-
-config = configparser.ConfigParser()
-
-config.read('../controller/config.ini')
 
 from ctrldbops import find_hosts, deduct_host, get_suspended, delete_host, get_bitbsd, hardclear
 from orchestrator import del_server
