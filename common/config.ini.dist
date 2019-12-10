@@ -15,8 +15,8 @@ key = your_key_here
 
 [telegram]
 
-token = YOUR_TOKEN
-admin_chatid = 123123
+token =
+admin_chatid =
 
 [hetzner]
 
@@ -30,10 +30,14 @@ host_ip = 192.168.0.100
 
 ip = 0.0.0.0
 port = 16333
-url = http://10.147.17.19:16333
+url = http://192.168.0.101:16333
 
 [ipn]
 
 ip = 0.0.0.0
 port = 16444
-url = http://10.147.17.19:16444
+url = http://192.168.0.101:16444
+
+[environment]
+
+debug = true

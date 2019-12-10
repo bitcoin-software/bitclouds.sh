@@ -13,11 +13,14 @@ from orchestrator import del_server
 #invoice(msat=None, amount=0, cur='EUR', desc=False)
 #register_webhook(invoice_id, callback_url):
 from common.charge import invoice, register_webhook, get_invoice
+from common.lnurlpay import get_lnurl
 
 app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
+
+wallet_host = config['wallet']['url']
 
 def accountant():
     threading.Timer(3600.0, accountant).start()
@@ -219,4 +222,4 @@ def topup(host, sats):
 accountant()
 
 if __name__ == '__main__':
-    app.run(debug=True, host=config['ipn']['ip'], port=config['ipn']['port'])
+    app.run(debug=config['environment']['debug'] == 'true', host=config['ipn']['ip'], port=config['ipn']['port'])

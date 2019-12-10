@@ -177,4 +177,4 @@ if __name__ == "__main__":
     notifyURL = config['ipn']['url'] + '/elify'
     #    addr = bgetunused(wallet)
 
-    app.run(debug=True, host=config['wallet']['ip'], port=config['wallet']['port'])
+    app.run(debug=config['environment']['debug'] == 'true', host=config['wallet']['ip'], port=config['wallet']['port'])
