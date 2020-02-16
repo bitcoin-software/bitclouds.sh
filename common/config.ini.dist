@@ -1,0 +1,43 @@
+[electrum]
+
+xpub = ypubMbxjEry1NhowqXf1wjGXx3TayfTEbbL36nobSygibhXYY8aro7rL36nobSygibhXYY8aro7r1ZwDB7569RsQkW1dPjJWz1ZwDB7569RsQkW1dPjJWzMbxjEry1NhowqXf1wjGXx3TayfTEb
+wallet = something
+
+[charge]
+
+url = http://192.168.0.199:9112
+token = ei1o_your_token_4ieb8
+
+[lnurl]
+
+url = https://192.168.0.199:14421
+key = your_key_here
+
+[telegram]
+
+token =
+admin_chatid =
+
+[hetzner]
+
+api_key = JTtV7d13fLuH_YOUR_OWN_KEY_cx7TJcEDbTVN
+
+[bitbsd]
+
+host_ip = 192.168.0.100
+
+[wallet]
+
+ip = 0.0.0.0
+port = 16333
+url = http://192.168.0.101:16333
+
+[ipn]
+
+ip = 0.0.0.0
+port = 16444
+url = http://192.168.0.101:16444
+
+[environment]
+
+debug = true
