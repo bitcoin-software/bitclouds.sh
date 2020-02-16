@@ -12,7 +12,7 @@ def find_hosts():
     if hosts:
         return hosts
     else:
-        return []
+        return False
 
 
 def check_paid(address):
@@ -30,7 +30,7 @@ def get_suspended():
     if hosts:
         return hosts
     else:
-        return []
+        return False
 
 
 def delete_host(address):
@@ -46,6 +46,7 @@ def delete_host(address):
 
 
 def hardclear():
+
     mongo.hosts.delete_one(
         {"status": 'new'}
     )
@@ -55,6 +56,7 @@ def hardclear():
 
 
 def clearold(address):
+
     mongo.hetzner.delete_one(
         {"address": address}
     )

@@ -1,26 +1,31 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify
 import requests
+import sys
+import configparser
 import threading
 import time
 import os
 import datetime
-
-from common import config
-from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid, deduct_host, get_suspended, delete_host
-from orchestrator import del_server
-
-# charge.py
-#invoice(msat=None, amount=0, cur='EUR', desc=False)
-#register_webhook(invoice_id, callback_url):
-from common.charge import invoice, register_webhook, get_invoice
-from common.lnurlpay import get_lnurl
 
 app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
-wallet_host = config['wallet']['url']
+api_config = configparser.ConfigParser()
+api_config.read('../controller/config.ini')
+
+wallet_host = api_config['wallet']['host']
+project_path = api_config['paths']['local_path']
+sys.path.insert(1, project_path + '/wallet')
+
+# charge.py
+#invoice(msat=None, amount=0, cur='EUR', desc=False)
+#register_webhook(invoice_id, callback_url):
+from charge import invoice, register_webhook, get_invoice
+from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid, deduct_host, get_suspended, delete_host
+from orchestrator import del_server
+
 
 def accountant():
     threading.Timer(3600.0, accountant).start()
@@ -218,11 +223,8 @@ def topup(host, sats):
 
     return jsonify(result)
 
-@app.route('/lnurl/<template>')
-def lnurl_template(template):
-    return get_lnurl(template, request.args)
 
 accountant()
 
 if __name__ == '__main__':
-    app.run(debug=config['environment']['debug'] == 'true', host=config['ipn']['ip'], port=config['ipn']['port'])
+    app.run(debug=False, port=16444)

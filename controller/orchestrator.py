@@ -1,3 +1,11 @@
+import configparser
+import sys
+
+
+api_config = configparser.ConfigParser()
+api_config.read('../controller/config.ini')
+project_path = api_config['paths']['local_path']
+sys.path.insert(1, project_path + '/controller')
 from bitbsd import createbitcoind, createlightningd, createrootshell, delete_jail, createp2e
 from hetzner import createServer, deleteServer, getServers
 from ctrldbops import get_bitbsd, find_hosts

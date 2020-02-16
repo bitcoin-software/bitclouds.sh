@@ -1,3 +1,4 @@
+
 import random
 import hmac
 from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, add_bitbsd_rs, find_hosts, clearold
@@ -7,9 +8,13 @@ from binascii import hexlify
 from os import urandom, system
 
 from get_lnrpc import getrpc
-from common import config
 
-host_ip = config['bitbsd']['host_ip']
+import configparser
+
+bitbsd_config = configparser.ConfigParser()
+bitbsd_config.read('/home/bitclouds/bitclouds/controller/config.ini')
+
+host_ip = bitbsd_config['bitbsd']['host_ip']
 
 
 def generate_salt(size):
