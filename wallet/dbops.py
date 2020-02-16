@@ -70,7 +70,7 @@ def find_tx(txhash):
         return False
 
 
-def add_tx(address, txhash, amount_sats, status='paid', chargeid=None, lnurlid=None, prev_outhash='none'):
+def add_tx(address, txhash, amount_sats, status='paid', chargeid='none', prev_outhash='none'):
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
     txdata = {"timestamp": dtime,

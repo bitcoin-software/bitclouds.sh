@@ -1,5 +1,8 @@
 from flask import Flask, request, jsonify
+import datetime
 from btc_wallet import bstartd, bgetunused, bgetnew, bnotify, bstopd, blistunspent
+import configparser
+from charge import get_invoice
 from stars import getStar
 from dbops import find_host, create_host, subscribe_host, add_tx, find_tx, update_tx
 from tgcontrol import ticket_notify
@@ -7,21 +10,18 @@ import sys
 import time
 import random, string
 import re
-import os
-import datetime
-from urllib.parse import urljoin
 
-from common import config
-from common.charge import get_invoice
-from common.lnurlpay import set_template
+wallet_config = configparser.ConfigParser()
+wallet_config.read('config.ini')
 
-wallet = config["electrum"]["wallet"]
+wallet = wallet_config['electrum']['wallet']
 
 app = Flask(__name__)
 
-project_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-controller_path = os.path.join(project_path, "controller")
-sys.path.insert(1, controller_path)
+api_config = configparser.ConfigParser()
+api_config.read('../controller/config.ini')
+project_path = api_config['paths']['local_path']
+sys.path.insert(1, project_path + '/controller')
 
 task_running = False
 
@@ -114,56 +114,6 @@ def chargify():
     print("\n" + dtime + " TOP-UP " + str(find_host(address)) + "\n\n")
     return ''
 
-@app.route("/lnurlify", methods=["POST"])
-def lnurlify():
-    dtime = datetime.datetime.strftime(datetime.datetime.now(), "%Y-%m-%d %H:%M:%S")
-
-    invoice_data = request.get_json()
-    id = invoice_data['id']
-    kind = invoice_data['template']
-    address = invoice_data["params"]["host"]
-    paid = invoice_data["paid"]
-    amount_sats = invoice_data["msatoshi"]
-    bolt11 = invoice_data["bolt11"]
-    if not paid:
-        return ""
-
-    print(dtime + " new lnurl invoice paid for [" + id + "]")
-
-    host = find_host(address)
-    if kind == 'createhost':
-        if host:
-            # wrong, this host has an owner already.
-            return ""
-
-        image = invoice_data['params']['image']
-        hours = convert_sats2hours(address, amount_sats)
-
-        create_host(address, "basic", image)
-        global task_running
-        while task_running:
-            time.sleep(30)
-        task_running = True
-        if task_running:
-            _ = new_server(address, image)
-            time.sleep(15)
-        task_running = False
-
-    elif kind == 'topup':
-        hours = invoice_data['params']['hours']
-
-    add_tx(
-        address=host,
-        txhash=bolt11,
-        amount_sats=amount_sats,
-        status="confirmed",
-        lnurlid=id,
-        prev_outhash="none",
-    )
-    subscribe_host(address, hours)
-
-    return ""
-
 
 @app.route('/support', methods=['POST'])
 def support():
@@ -221,23 +171,12 @@ def newaddr():
     return jsonify(result)
 
 
-def ensure_lnurl_templates():
-    set_template('createhost', ['image'], {'host': True}, {
-        'text/plain': 'Initial setup of host "{{host}}" with the "{{image}}" image.'
-    }, '420', urljoin(config['wallet']['url'], '/lnurlify'))
-    set_template('topup', [], {'host': True, 'hours': True}, {
-        'text/plain': 'Topup {{hours}}h on "{{host}}".'
-    }, '66 * hours', urljoin(config['wallet']['url'], '/lnurlify'))
+if __name__ == '__main__':
+#    wallet_list = [wallet]
+#    bstopd()
+#    bstartd(wallet_list)
 
+    notifyURL = wallet_config['ipn']['url'] + '/elify'
+#    addr = bgetunused(wallet)
 
-if __name__ == "__main__":
-    #    wallet_list = [wallet]
-    #    bstopd()
-    #    bstartd(wallet_list)
-
-    notifyURL = urljoin(config['wallet']['url'], '/elify')
-    #    addr = bgetunused(wallet)
-
-    ensure_lnurl_templates()
-
-    app.run(debug=config['environment']['debug'] == 'true', host=config['wallet']['ip'], port=config['wallet']['port'])
+    app.run(debug=False, port=16333)
