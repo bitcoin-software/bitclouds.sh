@@ -1,9 +1,29 @@
-- hosts: bitbsd
+- hosts: bitbsd-hyper
   remote_user: root
   gather_facts: no
 
   tasks:
 
+  - name: stop lnd for {{ hname }}
+    shell: cbsd jstop lnd
+
+  - name: create cloned jail {{ hname }}
+    shell: "cbsd jclone old=lnd new=s{{ cname }} host_hostname='{{ hname }}.bitclouds.sh' ip4_addr=DHCP"
+
+  - name: start lnd again because of {{ hname }}
+    shell: cbsd jstart lnd
+
+  - name: Setup alternate SSH port on lightning jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
+      regexp: "^#Port"
+      line: "Port {{ sshport }}"
+
+  - name: get jail ip addr {{ hname }}
+    shell: jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'
+    register: jailip
+
+####
 
   - name: update software on lightning1 {{ hname }}
     raw: "jexec lightning1 sh -c 'rm -rf /tmp/bitbsd-clouds && cd /tmp/ && git clone https://github.com/bitcoin-software/bitbsd-clouds'"

@@ -1,0 +1,172 @@
+- hosts: bitbsd
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+
+  - name: update software on p2e {{ hname }}
+    raw: "jexec p2e sh -c 'rm -rf /tmp/bitbsd-clouds && cd /tmp/ && git clone https://github.com/bitcoin-software/bitbsd-clouds'"
+
+  - name: update p2e on p2e {{ hname }}
+    raw: "jexec p2e sh -c 'su - lightning -c \"rm -rf /usr/home/lightning/pay2exec && cd /usr/home/lightning/ && git clone https://github.com/bitcoin-software/pay2exec\"'"
+
+  - name: make executables in tools directory {{ hname }}
+    raw: "jexec p2e sh -c 'chmod +x /tmp/bitbsd-clouds/lightningd/*.sh'"
+
+  - name: make scripts global on lightning1 {{ hname }}
+    shell: "jexec p2e sh -c 'ln -sf /tmp/bitbsd-clouds/lightningd/*.sh /usr/local/bin/'"
+
+  - name: stop p2e {{ hname }}
+    shell: cbsd jstop p2e
+
+  - name: create cloned jail {{ hname }}
+    shell: "cbsd jclone old=p2e new={{ cname }} host_hostname='{{ hname }}.bitclouds.sh' ip4_addr=DHCP"
+
+  - name: start p2e {{ hname }}
+    shell: cbsd jstart p2e
+
+  - name: start cloned p2e jail {{ hname }}
+    shell: "cbsd jstart {{ cname }}"
+
+  - name: enable TOR in p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sysrc tor_enable=YES"
+
+  - name: start TOR on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} service tor start"
+
+  - name: Setup alternate SSH port on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
+      regexp: "^#Port"
+      line: "Port {{ sshport }}"
+
+  - name: Add RPC host to bitcoin-cli on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
+      regexp: "^rpcconnect="
+      line: "rpcconnect=192.168.0.2"
+
+  - name: Add RPC user to bitcoin-cli on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
+      regexp: "^rpcuser="
+      line: "rpcuser={{ rpcusr }}"
+
+  - name: Add RPC pass to bitcoin-cli on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.bitcoin/bitcoin.conf"
+      regexp: "^rpcpassword="
+      line: "rpcpassword={{ rpcpwd }}"
+
+  - name: Set alias on LN on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^alias="
+      line: "alias={{ alias }} [bitclouds.sh]"
+
+  - name: Bridge SSH to .onion on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
+      regexp: "^HiddenServicePort 22 localhost:22"
+      line: "HiddenServicePort 22 localhost:{{ sshport }}"
+
+  - name: Bridge SSH to .onion on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
+      regexp: "^HiddenServicePort 22 localhost:22"
+      line: "HiddenServicePort 22 localhost:{{ sshport }}"
+
+  - name: Bridge c-lightning to .onion on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torrc"
+      regexp: "^HiddenServicePort 9735 localhost:9735"
+      line: "HiddenServicePort 9735 localhost:{{ appport }}"
+
+  - name: get jail ip addr {{ hname }}
+    shell: jls | grep {{ cname }} | egrep -o '192.168.0.[0-9]+'
+    register: jailip
+
+  - name: Set torsocks addr in p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/tor/torsocks.conf"
+      regexp: "^TorAddress"
+      line: "TorAddress {{ jailip.stdout }}"
+
+  - name: add p2e hostname {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/hosts"
+      regexp: " Imaginary network."
+      line: "{{ jailip.stdout }}            p2e"
+
+  - name: Read onion address in jail on p2e jail {{ hname }}
+    shell: jexec {{ cname }} cat /var/db/tor/clightning/hostname
+    register: onion
+
+  - name: Change LN bind addr {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^bind-addr="
+      line: "bind-addr=0.0.0.0:{{ appport }}"
+
+  - name: Change LN sparko-port on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^sparko-port=9737"
+      line: "sparko-port={{ sparkoport }}"
+
+  - name: Change LN sparko-auth on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^sparko-keys="
+      line: "sparko-keys={{ sparko1 }};{{ sparko2 }}:+listchannels,+listnodes;{{ sparko3 }}:+invoice,+listinvoices,+delinvoice,+decodepay,+waitpay,+waitinvoice"
+
+  - name: Change LN .onion announce-addr on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^announce-addr=.onion:9735"
+      line: "announce-addr={{ onion.stdout }}:9735"
+
+  - name: Change LN bitbsd.org announce-addr on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/home/lightning/.lightning/config"
+      regexp: "^announce-addr=188.165.223.61:9735"
+      line: "announce-addr=188.165.223.61:{{ appport }}"
+
+  - name: keep .onion in userdir on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sh -c 'echo {{ onion.stdout }} > /home/lightning/onion.domain'"
+
+  - name: set lightning user password on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod lightning -h0'"
+
+  - name: Setup ssh on start on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
+      regexp: "^sshd_enable"
+      line: "sshd_enable=YES"
+
+  - name: enable nginx {{ hname }}
+    shell: "jexec {{ cname }} sysrc nginx_enable=YES"
+
+  - name: copy p2e nginx config on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} cp /usr/home/lightning/pay2exec/core/p2edev/nginx.conf /usr/local/etc/nginx/nginx.conf"
+
+  - name: chainge default web port on p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/nginx/nginx.conf"
+      regexp: "listen 77777 default_server;"
+      line: "listen {{ userport }} default_server;"
+
+  - name: set .onion on nginx of p2e jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/nginx/nginx.conf"
+      regexp: "server_name .onion;"
+      line: "server_name {{ onion.stdout }};"
+
+  - name: stop cloned p2e jail {{ hname }}
+    shell: "cbsd jstop {{ cname }}"
+
+  - name: start cloned p2e jail {{ hname }}
+    shell: "cbsd jstart {{ cname }}"
+
+  - name: start c-lightning on p2e jail {{ hname }}
+    shell: "jexec {{ cname }} sh -c 'su - lightning -c \"/usr/local/bin/lightningd --daemon\"'"

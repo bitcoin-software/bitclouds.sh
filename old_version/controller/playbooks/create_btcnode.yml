@@ -1,0 +1,86 @@
+- hosts: bitbsd
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: update software on bitcoin1 {{ hname }}
+    raw: "jexec bitcoin1 sh -c 'rm -rf /tmp/bitbsd-clouds && cd /tmp/ && git clone https://github.com/bitcoin-software/bitbsd-clouds'"
+
+  - name: make executables in tools directory {{ hname }}
+    raw: "jexec bitcoin1 sh -c 'chmod +x /tmp/bitbsd-clouds/bitcoind/*.sh'"
+
+  - name: make scripts global on bitcoin1 {{ hname }}
+    shell: "jexec bitcoin1 sh -c 'ln -sf /tmp/bitbsd-clouds/bitcoind/*.sh /usr/local/bin/'"
+
+  - name: stop bitcoin1 {{ hname }}
+    shell: cbsd jstop bitcoin1
+
+  - name: create cloned jail {{ hname }}
+    shell: "cbsd jclone old=bitcoin1 new={{ cname }} host_hostname='{{ hname }}.bitclouds.sh' ip4_addr=DHCP"
+
+  - name: start bitcoin1 {{ hname }}
+    shell: cbsd jstart bitcoin1
+
+  - name: start cloned bitcoin jail {{ hname }}
+    shell: "cbsd jstart {{ cname }}"
+
+  - name: Setup alternate SSH port on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/ssh/sshd_config"
+      regexp: "^#Port"
+      line: "Port {{ sshport }}"
+
+  - name: Setup alternate RPC port on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcport"
+      line: "rpcport={{ rpcport }}"
+
+  - name: Add RPC auth user on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcuser"
+      line: "rpcuser={{ rpcusr }}"
+
+  - name: Add RPC auth password on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/usr/local/etc/bitcoin.conf"
+      regexp: "^rpcpassword"
+      line: "rpcpassword={{ rpcpwd }}"
+
+  - name: Add RPC host to bitcoin-cli on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcconnect=localhost"
+      line: "rpcconnect=localhost:{{ rpcport }}"
+
+  - name: Add RPC user to bitcoin-cli on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcuser="
+      line: "rpcuser={{ rpcusr }}"
+
+  - name: Add RPC pass to bitcoin-cli on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/var/db/bitcoin/.bitcoin/bitcoin.conf"
+      regexp: "^rpcpassword="
+      line: "rpcpassword={{ rpcpwd }}"
+
+  - name: set bitcoin user password on bitcoin jail {{ hname }}
+    raw: "jexec {{ cname }} sh -c 'echo \"{{ pwd }}\" | pw usermod bitcoin -h0'"
+
+  - name: Setup ssh on start on bitcoin jail {{ hname }}
+    lineinfile:
+      dest: "/zroot/jails/jails/{{ cname }}/etc/rc.conf"
+      regexp: "^sshd_enable"
+      line: "sshd_enable=YES"
+
+  - name: stop cloned bitcoin jail {{ hname }}
+    shell: "cbsd jstop {{ cname }}"
+
+  - name: start cloned bitcoin jail {{ hname }}
+    shell: "cbsd jstart {{ cname }}"
+
+
+
+

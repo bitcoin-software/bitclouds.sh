@@ -1,30 +1,18 @@
 ### BitClouds.sh - open-source programmable VPS platform ###
 
-It's not an easy task to setup clean, working, secure and reliable enviroment for your bitcoin app
+### Bitclouds is temporary down, we are moving to new backend and re-factoring the code
 
-Bitclouds provides fast, open, account-less cloud platform which solves this problem 
-
-Host your bitcoin nodes and apps in enterprise-grade certified datacenter, on a dedicated servers configured with best privacy and security practices in mind.
-
-We configure best open-source tools together and delivering to you ready-to-go solutions
-
-Payments powered by Lightning Network, so you get free instant payment processing with ability to make them completely autonomous
+Bitclouds is a streaming cloud platform. You can order VMs on per-minute accounting. You can create new instance right from your app or script.
 
 `$ curl https://bitclouds.sh/images`
 
 _{
   "images": [
-    "debian", 
-    "centos", 
     "ubuntu", 
-    "bitcoind", 
-    "lightningd",
-    "vpn",
-    "rootshell"
   ]
 }_
  
-`$ curl https://bitclouds.sh/create/lightningd`
+`$ curl https://bitclouds.sh/create/ubuntu`
 
 _{
   "host": "Alya", 

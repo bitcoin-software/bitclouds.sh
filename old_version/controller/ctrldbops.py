@@ -186,4 +186,38 @@ def add_bitbsd_rs(address, bitbsd_id, ipv4, ssh_port, app_port, plan, pwd):
     return hostdata
 
 
+def add_bitbsd_lnd(address, bitbsd_id, ipv4, ssh_port, lnd_port, lnd_port2, plan, pwd):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    hostdata = {"created_date": dtime,
+                "address": address,
+                "plan": plan,
+                "id": bitbsd_id,
+                "ipv4": ipv4,
+                "ssh_port": ssh_port,
+                "lnd_port": lnd_port,
+                "lnd_port2": lnd_port2,
+                "pwd": pwd
+                }
+
+    _ = mongo.bitbsd.insert_one(hostdata)
+    return hostdata
+
+
+def add_bitbsd_testlnd(address, bitbsd_id, ipv4, ssh_port, lnd_port, lnd_port2, plan, pwd):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    hostdata = {"created_date": dtime,
+                "address": address,
+                "plan": plan,
+                "id": bitbsd_id,
+                "ipv4": ipv4,
+                "ssh_port": ssh_port,
+                "lnd_port": lnd_port,
+                "lnd_port2": lnd_port2,
+                "pwd": pwd
+                }
+
+    _ = mongo.bitbsd.insert_one(hostdata)
+    return hostdata
 

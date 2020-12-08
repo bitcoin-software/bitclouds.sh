@@ -1,7 +1,7 @@
 
 import random
 import hmac
-from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, add_bitbsd_rs, find_hosts, clearold
+from ctrldbops import get_bitbsd, add_bitbsd, add_bitbsd_cln, add_bitbsd_lnd, add_bitbsd_testlnd, add_bitbsd_rs, find_hosts, clearold
 
 from base64 import urlsafe_b64encode
 from binascii import hexlify
@@ -15,6 +15,7 @@ bitbsd_config = configparser.ConfigParser()
 bitbsd_config.read('/home/bitclouds/bitclouds/controller/config.ini')
 
 host_ip = bitbsd_config['bitbsd']['host_ip']
+lnd_host_ip = bitbsd_config['bitbsd']['lnd_host_ip']
 
 
 def generate_salt(size):
@@ -233,6 +234,82 @@ def createp2e(address):
     print(pwd)
     add_bitbsd_cln(address, jail_id, ipv4, ports, alias, rpc_user, rpc_pass, plan, pwd)
     system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_p2e.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' appport='+str(app_port)+' sparko1='+str(sparko1)+' sparko2='+str(sparko2)+' sparko3='+str(sparko3)+' sparkoport='+str(sparko_port)+' userport='+str(user_port)+' hname='+hname+' alias='+alias+' rpcusr='+rpc_user+' rpcpwd='+rpc_pass+' pwd='+pwd+'"')
+
+
+def createlnd(address):
+    jail_id = 'lnd'+generate_salt(4)
+
+    ipv4 = lnd_host_ip
+
+    ssh_ports = list()
+    lnd_ports = list()
+    lnd_ports2 = list()
+
+    hosts = get_bitbsd('lnd')
+    for host in hosts:
+        try:
+            ssh_ports.append(host['ssh_port'])
+            lnd_ports.append(host['app_port'])
+            lnd_ports2.append(host['user_port'])
+        except KeyError as e:
+            print('ERROR: ignoring ' + host['address'])
+            clearold(host['address'])
+
+    plan = 'lnd'
+
+    ssh_port = random.randrange(49002, 49999)
+    lnd_port = random.randrange(48002, 48999)
+    lnd_port2 = random.randrange(47002, 47999)
+    while ssh_port in ssh_ports:
+        ssh_port = random.randrange(49002, 49999)
+    while lnd_port in lnd_ports:
+        lnd_port = random.randrange(48002, 48999)
+    while lnd_port2 in lnd_ports2:
+        lnd_port2 = random.randrange(47002, 47999)
+
+    pwd = generate_salt(8)
+    print(pwd)
+
+    add_bitbsd_lnd(address, jail_id, ipv4, ssh_port, lnd_port, lnd_port2, plan, pwd)
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lnd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' lndport='+str(lnd_port)+' lndport='+str(lnd_port2)+' pwd='+pwd+'"')
+
+
+def createtestlnd(address):
+    jail_id = 'lnd'+generate_salt(4)
+
+    ipv4 = lnd_host_ip
+
+    ssh_ports = list()
+    lnd_ports = list()
+    lnd_ports2 = list()
+
+    hosts = get_bitbsd('testlnd')
+    for host in hosts:
+        try:
+            ssh_ports.append(host['ssh_port'])
+            lnd_ports.append(host['app_port'])
+            lnd_ports2.append(host['user_port'])
+        except KeyError as e:
+            print('ERROR: ignoring ' + host['address'])
+            clearold(host['address'])
+
+    plan = 'testlnd'
+
+    ssh_port = random.randrange(49002, 49999)
+    lnd_port = random.randrange(48002, 48999)
+    lnd_port2 = random.randrange(47002, 47999)
+    while ssh_port in ssh_ports:
+        ssh_port = random.randrange(49002, 49999)
+    while lnd_port in lnd_ports:
+        lnd_port = random.randrange(48002, 48999)
+    while lnd_port2 in lnd_ports2:
+        lnd_port2 = random.randrange(47002, 47999)
+
+    pwd = generate_salt(8)
+    print(pwd)
+
+    add_bitbsd_lnd(address, jail_id, ipv4, ssh_port, lnd_port, lnd_port2, plan, pwd)
+    system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds/controller/playbooks/create_lnd.yml --extra-vars="cname='+str(jail_id)+' sshport='+str(ssh_port)+' lndport='+str(lnd_port)+' lndport='+str(lnd_port2)+' pwd='+pwd+'"')
 
 
 def delete_jail(address):
