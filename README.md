@@ -2,7 +2,7 @@
 
 ### Bitclouds is temporary down, we are moving to new backend and re-factoring the code
 
-Bitclouds is a streaming cloud platform. You can order VMs on per-minute accounting. You can create new instance right from your app or script.
+Bitclouds is a streaming cloud platform. You can order instances on per-minute accounting. You can create new instance right from your app or script, or simply manually with `curl`:
 
 `$ curl https://bitclouds.sh/images`
 
@@ -20,4 +20,12 @@ _{
 }_
 
 After you paid invoice your VPS will be created within a minute or two
+
+### Setting up your own bitclouds:
+
+0) [FreeBSD](https://www.freebsd.org/) host with [cbsd](https://github.com/olevole/cbsd)
+
+1) `tcsh misc/setenvs.sh`
+
+2) `pip install -r application/requirements.txt`
 
