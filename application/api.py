@@ -1,4 +1,6 @@
 from flask import Flask, jsonify
+
+
 import requests
 import sys
 import threading
@@ -14,7 +16,7 @@ app.url_map.strict_slashes = False
 
 @app.route('/create/<image>')
 def create_vps(image):
-    if image in ['eu-ubuntu']:
+    if image in ['ubuntu-eu']:
 
         result = {
             "host": "barnardstar-420",
@@ -29,7 +31,7 @@ def create_vps(image):
 @app.route('/images')
 def images():
     result = {
-        "images": ['eu-ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
+        "images": ['ubuntu-eu']
     }
 
     return jsonify(result)
@@ -38,7 +40,7 @@ def images():
 @app.route('/status/<host>')
 def status(host):
     result = {
-        "status": "none"
+        "status": "we are still on the way"
     }
 
     return result
@@ -49,7 +51,7 @@ def status(host):
 def topup(host, sats):
 
     result = {
-        "topup-"+host: sats #'freebsd', 'bitcoind', 'lightningd'
+        "topup-"+host: sats
     }
 
     return jsonify(result)
