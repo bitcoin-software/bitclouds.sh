@@ -7,4 +7,5 @@ sparko = os.environ['SPARKO_ENDPOINT']
 messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO_RO']})
 
 for msg in messages:
-    print(msg)
+    if msg != '':
+        print(msg)
