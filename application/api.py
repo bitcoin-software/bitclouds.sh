@@ -1,7 +1,6 @@
 from flask import Flask, jsonify
 import requests
 import sys
-import configparser
 import threading
 import time
 import os
@@ -12,49 +11,9 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
-api_config = configparser.ConfigParser()
-api_config.read('../controller/config.ini')
-
-wallet_host = api_config['wallet']['host']
-project_path = api_config['paths']['local_path']
-sys.path.insert(1, project_path + '/wallet')
-
-# charge.py
-#invoice(msat=None, amount=0, cur='EUR', desc=False)
-#register_webhook(invoice_id, callback_url):
-from charge import invoice, register_webhook, get_invoice
-from ctrldbops import get_hetzner, find_hosts, get_bitbsd, check_paid, deduct_host, get_suspended, delete_host
-from orchestrator import del_server
-
-
-def accountant():
-    threading.Timer(3600.0, accountant).start()
-
-    hosts = find_hosts()
-    for host in hosts:
-        if host['status'] == 'subscribed':
-            #print(host)
-            deduct_host(host['address'])
-            dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-            os.system("echo '"+dtime + ": " + host['address'] + "is subscribed; balance: " + str(
-                host['balance']) + "' >> /tmp/acc.log")
-            print(dtime + ": " + host['address'] + "is subscribed; balance: " + str(
-                host['balance']))
-        last = host['address']
-
-    for host in get_suspended():
-        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-        os.system("echo '" + dtime + ": " + host['address'] + " is expired; balance: " + str(
-            host['balance']) + " - DELETING!' >> /tmp/acc.log")
-        print(dtime + 'DELETING: ' + host['address'])
-        del_server(host['address'])
-        delete_host(host['address'])
-        time.sleep(5)
-
-
 @app.route('/create/<image>')
 def create_vps(image):
-    if image in ['debian', 'centos', 'ubuntu', 'bitcoind', 'lightningd', 'rootshell', 'vpn', 'pay2exec']:
+    if image in ['ubuntu']:
         addr_info = requests.post(wallet_host + '/newaddr', data={"image": image})
         if addr_info.status_code != 200:
             return addr_info.status_code
@@ -78,7 +37,7 @@ def create_vps(image):
 @app.route('/images')
 def images():
     result = {
-        "images": ['debian', 'centos', 'ubuntu', 'bitcoind', 'lightningd', 'rootshell', 'vpn', 'pay2exec'] #'freebsd', 'bitcoind', 'lightningd'
+        "images": ['ubuntu'] #'freebsd', 'bitcoind', 'lightningd'
     }
 
     return jsonify(result)

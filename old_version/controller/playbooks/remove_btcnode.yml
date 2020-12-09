@@ -1,8 +1,0 @@
-- hosts: bitbsd
-  remote_user: root
-  gather_facts: no
-
-  tasks:
-  - name: remove cloned jail
-    shell: "cbsd jstop {{ jname }}"
-

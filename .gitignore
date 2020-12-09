@@ -1,10 +1,3 @@
-venv/*
-controller/config.ini
-wallet/config.ini
-controller/get_lnrpc.py
-old_version/controller/config.ini
-old_version/wallet/config.ini
-old_version/controller/get_lnrpc.py
-
+drafter.py
 .idea
 __pycache__
