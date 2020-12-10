@@ -1,12 +1,7 @@
 from flask import Flask, jsonify
-
-
-import requests
-import sys
-import threading
-import time
-import os
-import datetime
+from wallet import generate_invoice
+from stars import getStar
+from database import find_host
 
 app = Flask(__name__)
 
@@ -16,11 +11,23 @@ app.url_map.strict_slashes = False
 
 @app.route('/create/<image>')
 def create_vps(image):
-    if image in ['ubuntu-eu']:
+
+    all_images = ['ubuntu-eu']
+
+    if image in all_images:
+        name = getStar()
+        inc = 0
+        while find_host(name):
+            inc += 1
+            name = getStar() + '-' + str(inc)
 
         result = {
-            "host": "barnardstar-420",
-            "paytostart": "bolt"
+            "name": name
+        }
+
+        result = {
+            "host": name,
+            "paytostart": generate_invoice(99,name)['bolt11']
         }
 
         return jsonify(result)
