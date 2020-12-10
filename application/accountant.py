@@ -9,5 +9,6 @@ sparko = os.environ['SPARKO_ENDPOINT']
 messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO_RO']})
 
 for msg in messages:
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
     if msg != '':
-        print(str(datetime.fromtimestamp(time.time())) + " :\n" + msg)
+        print(dtime + ":\n" + msg)
