@@ -17,8 +17,8 @@ def find_hosts():
         return False
 
 
-def find_host(address):
-    ex_user = mongo.cloud.find_one({"address": address})
+def get_hostdata(name):
+    ex_user = mongo.cloud.find_one({"name": name})
 
     if ex_user:
         return ex_user
@@ -26,13 +26,13 @@ def find_host(address):
         return False
 
 
-def add_host(name, ipv4, pwd, status, plan="1sat"):
+def add_host(name, ipv4, pwd, status, image):
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
     hostdata = {"created_date": dtime,
                 "name": name,
                 "balance": 0,
-                "plan": plan,
+                "image": image,
                 "ipv4": ipv4,
                 "pwd": pwd,
                 "status": status

@@ -4,7 +4,7 @@ import datetime
 import json
 import threading
 import re
-from database import subscribe_host, find_hosts, deactivate_host
+from database import subscribe_host, find_hosts, deactivate_host, get_hostdata
 
 # the sparko endpoint, i.e. 'http://192.168.0.7:9737'
 sparko = os.environ['SPARKO_ENDPOINT']
@@ -35,7 +35,18 @@ def extract_name(label):
         print("NAME EXTRACT ERROR: " + name)
         return False
 
-### MAIN
+
+def create_host(name):
+    hostdata = get_hostdata(instance_name)
+    image = hostdata['image']
+    pwd = hostdata['pwd']
+    if image == 'ubuntu-eu':
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
+           '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name + ' pwd=' + pwd + '"')
+        subscribe_host(name, 99)
+    else:
+        return False
+
 
 decreaser()
 
@@ -57,13 +68,20 @@ for msg in messages:
 
         print(dtime + ":\n" + str(data))
         if data['status'] == 'paid':
-            print(data['msatoshi_received'])
             sats = round(data['msatoshi_received']/1000)
             instance_name = extract_name(data['label'])
             print('adding balance to ' + instance_name)
-            subscribe_host(instance_name, sats)
-        print("paid invoice for:")
-        print(data['label'])
+
+            if get_hostdata(instance_name):
+                hostdata = get_hostdata(instance_name)
+                if hostdata['status'] == 'init':
+                    create_host(instance_name)
+                elif hostdata['status'] == 'subscribed':
+                    subscribe_host(instance_name, sats)
+            else:
+                print('non-existent host topped up')
+
+        print("paid invoice for:" + data['label'])
 
     except Exception as e:
         print("loading json exception: " + str(e))

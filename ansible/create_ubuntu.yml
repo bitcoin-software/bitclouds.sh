@@ -1,0 +1,67 @@
+- hosts: bitbsd
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: copy cbsd template for {{ iname }}
+    shell: "cp /root/ubuntu.jconf /tmp/{{ iname }}.bhyve"
+
+  - name: Edit VM details - jname
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^jname=\"ubutest\";"
+      line: "jname=\"u_{{ iname }}\""
+
+  - name: Edit VM details - path
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^path=\"/crdata/jails/jails/ubutest\";"
+      line: "path=\"/crdata/jails/jails/u_{{ iname }}\";"
+
+  - name: Edit VM details - datadir
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^data=\"/crdata/jails/jails-data/ubutest-data\";"
+      line: "data=\"/crdata/jails/jails-data/u_{{ iname }}-data\";"
+
+  - name: Edit VM details - datadir
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^rcconf=\"/crdata/jails/jails-rcconf/rc.conf_ubutest\";"
+      line: "rcconf=\"/crdata/jails/jails-rcconf/rc.conf_u_{{ iname }}\";"
+
+  - name: Edit VM details - hostname
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^host_hostname=\"ubutest.my.domain\";"
+      line: "host_hostname=\"{{ dname }}.bitclouds.sh\";"
+
+  - name: Edit VM CI details (jname)
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^ci_jname='ubutest';"
+      line: "ci_jname='{{ iname }}';"
+
+  - name: Edit VM CI details (fqdn)
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^ci_fqdn='ubutest.bitclouds.sh';"
+      line: "ci_fqdn='{{ dname }}.bitclouds.sh';"
+
+  - name: Edit VM CI details (user pwd)
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^ci_user_pw_user='bitclouds';"
+      line: "ci_user_pw_user='{{ pwd }}';"
+
+  - name: Edit VM CI details (root pwd)
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^ci_user_pw_root='bitclouds';"
+      line: "ci_user_pw_root='{{ pwd }}';"
+
+  - name: create {{ iname }}
+    shell: "cbsd bcreate jconf=/tmp/{{ iname }}.bhyve"
+
+  - name: start cloned bitcoin jail {{ hname }}
+    shell: "cbsd bstart u_{{ iname }}"

@@ -1,7 +1,10 @@
 from flask import Flask, jsonify
 from wallet import generate_invoice
 from stars import getStar
-from database import find_host, add_host
+from database import get_hostdata, add_host
+import random
+import string
+
 
 app = Flask(__name__)
 
@@ -11,6 +14,12 @@ app.url_map.strict_slashes = False
 ALL_IMAGES = ['ubuntu-eu', 'k8s-beta', 'bsdjail']
 
 
+def get_random_string(length):
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
+
+
 @app.route('/create/<image>')
 def create_vps(image):
 
@@ -18,7 +27,7 @@ def create_vps(image):
         name = getStar()
         inc = 0
 
-        while find_host(name):
+        while get_hostdata(name):
             inc += 1
             name = getStar() + '-' + str(inc)
 
@@ -26,7 +35,8 @@ def create_vps(image):
             "name": name
         }
 
-        add_host(name, '135.125.129.128/26', 'password', 'init')
+        #135.125.129.128/26
+        add_host(name, '0.0.0.0', get_random_string(12), 'init', image)
 
         result = {
             "host": name,
@@ -60,10 +70,24 @@ def status(host):
 @app.route('/topup/<host>/<int:sats>')
 def topup(host, sats):
 
-    result = {
-        "host": host,
-        "invoice": generate_invoice(sats, host)['bolt11']
-    }
+    hostdata = get_hostdata(host)
+
+    if hostdata:
+        status = hostdata['status']
+        if status == 'subscribed':
+            result = {
+                "host": host,
+                "invoice": generate_invoice(sats, host)['bolt11']
+            }
+        else:
+            result = {
+                "error": "host is expired or not yet initialized"
+            }
+
+    else:
+        result = {
+            "error": "no such host",
+        }
 
     return jsonify(result)
 
