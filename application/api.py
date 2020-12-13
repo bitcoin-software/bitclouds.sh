@@ -1,22 +1,23 @@
 from flask import Flask, jsonify
 from wallet import generate_invoice
 from stars import getStar
-from database import find_host
+from database import find_host, add_host
 
 app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
+ALL_IMAGES = ['ubuntu-eu', 'k8s-beta', 'bsdjail']
+
 
 @app.route('/create/<image>')
 def create_vps(image):
 
-    all_images = ['ubuntu-eu']
-
-    if image in all_images:
+    if image in ALL_IMAGES:
         name = getStar()
         inc = 0
+
         while find_host(name):
             inc += 1
             name = getStar() + '-' + str(inc)
@@ -25,9 +26,11 @@ def create_vps(image):
             "name": name
         }
 
+        add_host(name, '135.125.129.128/26', 'password', 'init')
+
         result = {
             "host": name,
-            "paytostart": generate_invoice(99,name)['bolt11']
+            "paytostart": generate_invoice(99, name)['bolt11']
         }
 
         return jsonify(result)
@@ -38,7 +41,7 @@ def create_vps(image):
 @app.route('/images')
 def images():
     result = {
-        "images": ['ubuntu-eu']
+        "images": ALL_IMAGES
     }
 
     return jsonify(result)
@@ -53,12 +56,13 @@ def status(host):
     return result
 
 
-@app.route('/topup/<host>', defaults={'sats': 1})
+@app.route('/topup/<host>', defaults={'sats': 99})
 @app.route('/topup/<host>/<int:sats>')
 def topup(host, sats):
 
     result = {
-        "topup-"+host: sats
+        "host": host,
+        "invoice": generate_invoice(sats, host)['bolt11']
     }
 
     return jsonify(result)

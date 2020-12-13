@@ -9,7 +9,7 @@ dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
 
 def find_hosts():
-    hosts = mongo.hosts.find()
+    hosts = mongo.cloud.find()
 
     if hosts:
         return hosts
@@ -18,7 +18,7 @@ def find_hosts():
 
 
 def find_host(address):
-    ex_user = mongo.hosts.find_one({"address": address})
+    ex_user = mongo.cloud.find_one({"address": address})
 
     if ex_user:
         return ex_user
@@ -26,17 +26,49 @@ def find_host(address):
         return False
 
 
-def add_host(name, ipv4, pwd, plan="1sat"):
+def add_host(name, ipv4, pwd, status, plan="1sat"):
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
     hostdata = {"created_date": dtime,
                 "name": name,
+                "balance": 0,
                 "plan": plan,
                 "ipv4": ipv4,
                 "pwd": pwd,
-                "status": "pending"
+                "status": status
                 }
 
-    _ = mongo.hetzner.insert_one(hostdata)
+    _ = mongo.cloud.insert_one(hostdata)
     return hostdata
 
+
+def subscribe_host(name, sats):
+    host = mongo.cloud.find_one({"name": name})
+    balance = host['balance']
+
+    mongo.cloud.update_one(
+        {"name": name},
+        {
+            "$set":
+                {
+                    "status": "subscribed",
+                    "balance": balance + sats
+                }
+        }
+    )
+
+
+def deactivate_host(name):
+    host = mongo.cloud.find_one({"name": name})
+    balance = host['balance']
+
+    mongo.cloud.update_one(
+        {"name": name},
+        {
+            "$set":
+                {
+                    "status": "inactive",
+                    "balance": 0
+                }
+        }
+    )
