@@ -9,7 +9,7 @@
   - name: create cloned jail {{ iname }}
     shell: "cbsd jclone old=btcd_tmpl new={{ iname }} host_hostname='{{ dname }}.bitclouds.sh' ip4_addr=DHCP"
 
-  - name: start bitcoin1 {{ hname }}
+  - name: start {{ iname }}
     shell: cbsd jstart btcd_tmpl
 
   - name: start cloned bitcoin jail {{ iname }}

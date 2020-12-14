@@ -33,23 +33,18 @@ def create_host(name):
 
 
 def delete_host(name):
-    hostdata = get_hostdata(instance_name)
+    hostdata = get_hostdata(name)
     image = hostdata['image']
-    pwd = hostdata['pwd']
-    pub_key = hostdata['init_pub']
     if image == 'ubuntu-eu':
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
-                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
-                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\'"')
-        subscribe_host(name, 99)
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/remove_vm.yml '
+                  '--extra-vars="iname=u_' + name.replace('-', '_') + '"')
+        deactivate_host(name)
     elif image == 'bitcoind':
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
-                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
-                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\'"')
-        subscribe_host(name, 99)
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/remove_jail.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + '"')
+        deactivate_host(name)
     else:
         return False
-
 
 
 def decreaser():
@@ -57,11 +52,11 @@ def decreaser():
 
     hosts = find_hosts()
     for host in hosts:
-        if host['balance'] > 0:
+        print(host)
+        if host['balance'] > 90:
             subscribe_host(host['name'], -1)
         elif host['status'] == 'subscribed':
-            deactivate_host(host['name'])
-        print(host)
+            delete_host(host['name'])
 
 
 def extract_name(label):
