@@ -1,5 +1,7 @@
 import pymongo
 import datetime
+import os
+
 
 dbclient = pymongo.MongoClient('localhost')
 mongo_db = "cloud"
@@ -27,6 +29,20 @@ def get_hostdata(name):
 
 
 def add_host(name, ipv4, pwd, status, image):
+    os.system('ssh-keygen -f /tmp/' + name + '.key -t ed25519 -N ""')
+
+    prv_keyfile = '/tmp/' + name + '.key'
+    pub_keyfile = '/tmp/' + name + '.key.pub'
+
+    with open(prv_keyfile, 'r') as file:
+        prv_key = file.read()
+
+    with open(pub_keyfile, 'r') as file:
+        pub_key = file.read()
+
+    os.remove(prv_keyfile)
+    os.remove(pub_keyfile)
+
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
     hostdata = {"created_date": dtime,
@@ -35,7 +51,9 @@ def add_host(name, ipv4, pwd, status, image):
                 "image": image,
                 "ipv4": ipv4,
                 "pwd": pwd,
-                "status": status
+                "status": status,
+                "init_pub": pub_key.replace('\n', ''),
+                "init_priv": prv_key
                 }
 
     _ = mongo.cloud.insert_one(hostdata)

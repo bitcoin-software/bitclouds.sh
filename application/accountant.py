@@ -5,13 +5,51 @@ import json
 import threading
 import re
 from database import subscribe_host, find_hosts, deactivate_host, get_hostdata
-
 # the sparko endpoint, i.e. 'http://192.168.0.7:9737'
 sparko = os.environ['SPARKO_ENDPOINT']
 
 messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO_RO']})
 
 BTCPRICE = 0
+
+
+def create_host(name):
+    hostdata = get_hostdata(instance_name)
+    image = hostdata['image']
+    pwd = hostdata['pwd']
+    pub_key = hostdata['init_pub']
+    if image == 'ubuntu-eu':
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\'"')
+        subscribe_host(name, 99)
+    elif image == 'bitcoind':
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\'"')
+        subscribe_host(name, 99)
+    else:
+        return False
+
+
+def delete_host(name):
+    hostdata = get_hostdata(instance_name)
+    image = hostdata['image']
+    pwd = hostdata['pwd']
+    pub_key = hostdata['init_pub']
+    if image == 'ubuntu-eu':
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\'"')
+        subscribe_host(name, 99)
+    elif image == 'bitcoind':
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\'"')
+        subscribe_host(name, 99)
+    else:
+        return False
+
 
 
 def decreaser():
@@ -34,19 +72,6 @@ def extract_name(label):
     except Exception as e:
         print("NAME EXTRACT ERROR: " + name)
         return False
-
-
-def create_host(name):
-    hostdata = get_hostdata(instance_name)
-    image = hostdata['image']
-    pwd = hostdata['pwd']
-    if image == 'ubuntu-eu':
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
-           '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name + ' pwd=' + pwd + '"')
-        subscribe_host(name, 99)
-    else:
-        return False
-
 
 decreaser()
 

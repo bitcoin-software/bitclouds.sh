@@ -1,0 +1,32 @@
+- hosts: bitbsd
+  remote_user: root
+  gather_facts: no
+
+  tasks:
+  - name: stop bitcoind template
+    shell: cbsd jstop btcd_tmpl
+
+  - name: create cloned jail {{ iname }}
+    shell: "cbsd jclone old=btcd_tmpl new={{ iname }} host_hostname='{{ dname }}.bitclouds.sh' ip4_addr=DHCP"
+
+  - name: start bitcoin1 {{ hname }}
+    shell: cbsd jstart btcd_tmpl
+
+  - name: start cloned bitcoin jail {{ iname }}
+    shell: "cbsd jstart {{ iname }}"
+
+  - name: Setup ssh on start on bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/etc/rc.conf"
+      regexp: "^sshd_enable"
+      line: "sshd_enable=YES"
+
+  - name: stop cloned bitcoin jail {{ iname }}
+    shell: "cbsd jstop {{ iname }}"
+
+  - name: start cloned bitcoin jail {{ iname }}
+    shell: "cbsd jstart {{ iname }}"
+
+
+
+

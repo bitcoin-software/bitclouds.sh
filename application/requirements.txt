@@ -2,3 +2,4 @@ pymongo
 sseclient
 flask
 requests
+paramiko

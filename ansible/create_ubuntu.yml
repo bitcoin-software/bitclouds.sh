@@ -60,8 +60,14 @@
       regexp: "^ci_user_pw_root='bitclouds';"
       line: "ci_user_pw_root='{{ pwd }}';"
 
+  - name: Edit VM CI details (user key)
+    lineinfile:
+      dest: "/tmp/{{ iname }}.bhyve"
+      regexp: "^ci_user_pubkey_user='';"
+      line: "ci_user_pubkey_user='{{ pubkey }}';"
+
   - name: create {{ iname }}
     shell: "cbsd bcreate jconf=/tmp/{{ iname }}.bhyve"
 
-  - name: start cloned bitcoin jail {{ hname }}
+  - name: start VM {{ iname }}
     shell: "cbsd bstart u_{{ iname }}"

@@ -11,7 +11,8 @@ app = Flask(__name__)
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
-ALL_IMAGES = ['ubuntu-eu', 'k8s-beta', 'bsdjail']
+#, 'k8s-beta'
+ALL_IMAGES = ['ubuntu-eu', 'bitcoind', 'bsdjail']
 
 
 def get_random_string(length):
