@@ -6,7 +6,7 @@
 
   - name: create jconf with pubkey
     copy:
-      content: "ci_user_pubkey_user='{{ pub_key }}';"
+      content: "ci_user_pubkey_ubuntu='{{ pub_key }}';"
       dest: "/tmp/{{ dname }}.pubkey"
       force: no
 
@@ -15,7 +15,7 @@
       cbsd bcreate
       jname={{ iname }}
       vm_os_type=linux
-      vm_os_profile=cloud-ubuntuserver-amd64-20.04
+      vm_os_profile=cloud-bt-ubuntuserver-amd64-20.04
       vm_cpus=1
       vm_ram=2g
       imgsize=40g

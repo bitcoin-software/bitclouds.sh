@@ -63,10 +63,10 @@ def get_free_wan():
 
 
 def free_ip(ip):
-    ip = mongo.ips.find_one({"ip4": ip})
+    host = mongo.ips.find_one({"ip4": ip})
 
     mongo.ips.update_one(
-        {"ip4": ip},
+        {"ip4": host['ip4']},
         {
             "$set":
                 {

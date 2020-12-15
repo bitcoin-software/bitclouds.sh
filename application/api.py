@@ -148,9 +148,8 @@ def topup(host, sats):
 
     hostdata = get_hostdata(host)
 
-    invoice = generate_invoice(sats, host)['bolt11']
-
     if hostdata:
+        invoice = generate_invoice(sats, host)['bolt11']
         register_payment(hostdata['name'], invoice, "topup", get_req_ip())
 
         host_status = hostdata['status']
@@ -159,7 +158,6 @@ def topup(host, sats):
                 "host": host,
                 "invoice": invoice
             }
-            register_payment()
         else:
             result = {
                 "error": "host is expired or not yet initialized"
@@ -183,6 +181,8 @@ def getkey(host):
             return hostdata['init_priv']
         else:
             return status(host)
+    else:
+        return False
 
 
 if __name__ == '__main__':
