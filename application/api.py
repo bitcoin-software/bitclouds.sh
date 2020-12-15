@@ -30,6 +30,17 @@ def get_random_string(length):
     return result_str
 
 
+def get_username(image):
+    if image in ALL_IMAGES:
+        if image in ['ubuntu-eu']:
+            return 'user'
+        elif image in ['bitcoind', 'cln', 'bsdjail']:
+            return 'root'
+
+    else:
+        return False
+
+
 @app.route('/create/<image>')
 def create_vps(image):
 
@@ -42,7 +53,7 @@ def create_vps(image):
             name = getStar() + '-' + str(inc)
 
         #135.125.129.128/26
-        add_host(name, '0.0.0.0', get_random_string(12), 'init', image)
+        add_host(name, '0.0.0.0', get_random_string(12), 'init', image, get_username(image))
 
         invoice = generate_invoice(99, name)['bolt11']
 
@@ -69,8 +80,11 @@ def images():
 
 @app.route('/status/<host>')
 def status(host):
+    hostdata = get_hostdata()
+
     result = {
-        "status": "we are still on the way"
+        "ip4": hostdata['wan_ip']
+
     }
 
     return result

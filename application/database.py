@@ -76,7 +76,7 @@ def free_ip(ip):
     )
 
 
-def add_host(name, ipv4, pwd, status, image):
+def add_host(name, ipv4, pwd, status, image, username='user'):
     os.system('ssh-keygen -f /tmp/' + name + '.key -t ed25519 -N ""')
 
     prv_keyfile = '/tmp/' + name + '.key'
@@ -97,6 +97,7 @@ def add_host(name, ipv4, pwd, status, image):
                 "name": name,
                 "balance": 0,
                 "image": image,
+                "username": username,
                 "pwd": pwd,
                 "status": status,
                 "init_pub": pub_key.replace('\n', ''),
@@ -151,6 +152,8 @@ def deactivate_host(name):
                 }
         }
     )
+
+    free_ip(host['wan_ip'])
 
 
 def register_payment(name, invoice, status, ip):
