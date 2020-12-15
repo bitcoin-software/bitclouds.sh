@@ -1,7 +1,7 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, request
 from wallet import generate_invoice
 from stars import getStar
-from database import get_hostdata, add_host
+from database import get_hostdata, add_host, register_payment
 import random
 import string
 
@@ -13,6 +13,15 @@ app.url_map.strict_slashes = False
 
 #, 'k8s-beta'
 ALL_IMAGES = ['ubuntu-eu', 'bitcoind', 'bsdjail']
+
+
+def get_req_ip():
+    if request.headers.getlist("X-Forwarded-For"):
+        ip = request.headers.getlist("X-Forwarded-For")[0]
+    else:
+        ip = request.remote_addr
+
+    return ip
 
 
 def get_random_string(length):
@@ -32,17 +41,17 @@ def create_vps(image):
             inc += 1
             name = getStar() + '-' + str(inc)
 
-        result = {
-            "name": name
-        }
-
         #135.125.129.128/26
         add_host(name, '0.0.0.0', get_random_string(12), 'init', image)
 
+        invoice = generate_invoice(99, name)['bolt11']
+
         result = {
             "host": name,
-            "paytostart": generate_invoice(99, name)['bolt11']
+            "paytostart": invoice
         }
+
+        register_payment(name, invoice, "new", get_req_ip())
 
         return jsonify(result)
     else:
@@ -73,13 +82,18 @@ def topup(host, sats):
 
     hostdata = get_hostdata(host)
 
+    invoice = generate_invoice(sats, host)['bolt11']
+
     if hostdata:
-        status = hostdata['status']
-        if status == 'subscribed':
+        register_payment(hostdata['name'], invoice, "topup", get_req_ip())
+
+        host_status = hostdata['status']
+        if host_status == 'subscribed':
             result = {
                 "host": host,
-                "invoice": generate_invoice(sats, host)['bolt11']
+                "invoice": invoice
             }
+            register_payment()
         else:
             result = {
                 "error": "host is expired or not yet initialized"
@@ -93,5 +107,13 @@ def topup(host, sats):
     return jsonify(result)
 
 
+@app.route('/key/<host>')
+def getkey(host):
+    hostdata = get_hostdata(host)
+
+    return hostdata['init_priv']
+
+
 if __name__ == '__main__':
     app.run(debug=False, port=16444)
+

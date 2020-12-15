@@ -4,10 +4,8 @@ import os
 
 
 dbclient = pymongo.MongoClient('localhost')
-mongo_db = "cloud"
+mongo_db = "bitclouds"
 mongo = dbclient[mongo_db]
-
-dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
 
 def find_hosts():
@@ -26,6 +24,56 @@ def get_hostdata(name):
         return ex_user
     else:
         return False
+
+
+def find_ips():
+    ips = mongo.ips.find()
+
+    if ips:
+        return ips
+    else:
+        return False
+
+
+def bind_ip(name, ip):
+    mongo.ips.update_one(
+        {"ip4": ip},
+        {
+            "$set":
+                {
+                    "status": name
+                }
+        }
+    )
+
+
+def get_wan_address(name):
+    ip = mongo.ips.find_one({"status": name})
+
+    return ip
+
+
+def get_free_wan():
+    ip = mongo.ips.find_one({"status": "free"})
+
+    if ip:
+        return ip['ip4']
+    else:
+        return False
+
+
+def free_ip(ip):
+    ip = mongo.ips.find_one({"ip4": ip})
+
+    mongo.ips.update_one(
+        {"ip4": ip},
+        {
+            "$set":
+                {
+                    "status": "free"
+                }
+        }
+    )
 
 
 def add_host(name, ipv4, pwd, status, image):
@@ -49,7 +97,6 @@ def add_host(name, ipv4, pwd, status, image):
                 "name": name,
                 "balance": 0,
                 "image": image,
-                "ipv4": ipv4,
                 "pwd": pwd,
                 "status": status,
                 "init_pub": pub_key.replace('\n', ''),
@@ -58,6 +105,20 @@ def add_host(name, ipv4, pwd, status, image):
 
     _ = mongo.cloud.insert_one(hostdata)
     return hostdata
+
+
+def init_host(name, lan_ip, wan_ip):
+    mongo.cloud.update_one(
+        {"name": name},
+        {
+            "$set":
+                {
+                    "status": "init",
+                    "lan_ip": lan_ip,
+                    "wan_ip": wan_ip
+                }
+        }
+    )
 
 
 def subscribe_host(name, sats):
@@ -78,7 +139,6 @@ def subscribe_host(name, sats):
 
 def deactivate_host(name):
     host = mongo.cloud.find_one({"name": name})
-    balance = host['balance']
 
     mongo.cloud.update_one(
         {"name": name},
@@ -90,3 +150,17 @@ def deactivate_host(name):
                 }
         }
     )
+
+
+def register_payment(name, invoice, status, ip):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    txdata = {
+        "name": name,
+        "timestamp": dtime,
+        "invoice": invoice,
+        "status": status,
+        "from": ip
+    }
+
+    _ = mongo.payments.insert_one(txdata)

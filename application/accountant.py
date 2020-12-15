@@ -4,7 +4,8 @@ import datetime
 import json
 import threading
 import re
-from database import subscribe_host, find_hosts, deactivate_host, get_hostdata
+from database import subscribe_host, find_hosts, deactivate_host, \
+    get_hostdata, get_free_wan, init_host, register_payment, bind_ip
 # the sparko endpoint, i.e. 'http://192.168.0.7:9737'
 sparko = os.environ['SPARKO_ENDPOINT']
 
@@ -14,14 +15,31 @@ BTCPRICE = 0
 
 
 def create_host(name):
-    hostdata = get_hostdata(instance_name)
-    image = hostdata['image']
-    pwd = hostdata['pwd']
-    pub_key = hostdata['init_pub']
+    newhost_data = get_hostdata(name)
+    print("create host output: \n" + str(newhost_data))
+    image = newhost_data['image']
+    pwd = newhost_data['pwd']
+    pub_key = newhost_data['init_pub']
+    print("check image for " + name)
     if image == 'ubuntu-eu':
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
+        print("get lan ip for " + name)
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        print(lan_ip)
+        print("get wan ip for " + name)
+        wan_ip = get_free_wan()
+        print(wan_ip)
+        print("bind ip for " + name)
+        bind_ip(name, wan_ip)
+        print("run ansible for " + name)
+        print('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
-                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\'"')
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\'"')
+        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/app/ansible/create_ubuntu.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\'"')
+        print("init " + name)
+        init_host(name, lan_ip, wan_ip)
+        print("subscribe " + name)
         subscribe_host(name, 99)
     elif image == 'bitcoind':
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
@@ -53,7 +71,7 @@ def decreaser():
     hosts = find_hosts()
     for host in hosts:
         print(host)
-        if host['balance'] > 90:
+        if host['balance'] > 0:
             subscribe_host(host['name'], -1)
         elif host['status'] == 'subscribed':
             delete_host(host['name'])
@@ -94,9 +112,12 @@ for msg in messages:
 
             if get_hostdata(instance_name):
                 hostdata = get_hostdata(instance_name)
+                print("host status: " + hostdata['status'])
                 if hostdata['status'] == 'init':
+                    print("creating host " + instance_name)
                     create_host(instance_name)
                 elif hostdata['status'] == 'subscribed':
+                    print("subscribing host " + instance_name)
                     subscribe_host(instance_name, sats)
             else:
                 print('non-existent host topped up')
