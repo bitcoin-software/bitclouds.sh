@@ -6,3 +6,31 @@
   - name: remove cloned jail
     shell: "cbsd bremove {{ iname }}"
 
+  - name: remove pf rules for {{ iname }}
+    file:
+      state: absent
+      path: "/root/pf_bitclouds/fwd-{{iname}}.conf"
+
+  - name: remove pf nat rules for {{ iname }}
+    file:
+      state: absent
+      path: "/root/pf_bitclouds/nat-{{iname}}.conf"
+
+  - name: rule delete from NAT rules
+    lineinfile:
+      path: "/root/pf_bitclouds/nat.conf"
+      line: "include \"/root/pf_bitclouds/nat-{{iname}}.conf\""
+      state: absent
+
+  - name: rule delete from RDR rules
+    lineinfile:
+      path: "/root/pf_bitclouds/fwd.conf"
+      line: "include \"/root/pf_bitclouds/fwd-{{iname}}.conf\""
+      state: absent
+
+  - name: remove alias {{ wan_ip }}
+    shell: "ifconfig igb0 inet {{ wan_ip }} netmask 0xffffffff delete"
+
+  - name: reload pf rules
+    shell: pfctl -f /etc/pf.conf
+

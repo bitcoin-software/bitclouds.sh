@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from wallet import generate_invoice
 from stars import getStar
-from database import get_hostdata, add_host, register_payment
+from database import get_hostdata, add_host, register_payment, hide_key
 import random
 import string
 
@@ -111,7 +111,12 @@ def topup(host, sats):
 def getkey(host):
     hostdata = get_hostdata(host)
 
-    return hostdata['init_priv']
+    if hostdata:
+        if hostdata['key_requested'] is False:
+            hide_key(host)
+            return hostdata['init_priv']
+        else:
+            return hostdata['key_requested']
 
 
 if __name__ == '__main__':

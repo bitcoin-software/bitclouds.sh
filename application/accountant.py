@@ -33,10 +33,10 @@ def create_host(name):
         print("run ansible for " + name)
         print('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
-                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\'"')
-        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/app/ansible/create_ubuntu.yml '
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
-                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\'"')
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         print("init " + name)
         init_host(name, lan_ip, wan_ip)
         print("subscribe " + name)
@@ -51,15 +51,16 @@ def create_host(name):
 
 
 def delete_host(name):
-    hostdata = get_hostdata(name)
-    image = hostdata['image']
+    todelete_hostdata = get_hostdata(name)
+    image = todelete_hostdata['image']
+    wan_ip = todelete_hostdata['wan_ip']
     if image == 'ubuntu-eu':
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/remove_vm.yml '
-                  '--extra-vars="iname=u_' + name.replace('-', '_') + '"')
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
     elif image == 'bitcoind':
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/remove_jail.yml '
-                  '--extra-vars="iname=' + name.replace('-', '_') + '"')
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
     else:
         return False
@@ -70,7 +71,7 @@ def decreaser():
 
     hosts = find_hosts()
     for host in hosts:
-        print(host)
+        #print(host)
         if host['balance'] > 0:
             subscribe_host(host['name'], -1)
         elif host['status'] == 'subscribed':

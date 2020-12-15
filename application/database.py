@@ -100,7 +100,8 @@ def add_host(name, ipv4, pwd, status, image):
                 "pwd": pwd,
                 "status": status,
                 "init_pub": pub_key.replace('\n', ''),
-                "init_priv": prv_key
+                "init_priv": prv_key,
+                "key_requested": False
                 }
 
     _ = mongo.cloud.insert_one(hostdata)
@@ -164,3 +165,16 @@ def register_payment(name, invoice, status, ip):
     }
 
     _ = mongo.payments.insert_one(txdata)
+
+
+def hide_key(name):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+    mongo.cloud.update_one(
+        {"name": name},
+        {
+            "$set":
+                {
+                    "key_requested": dtime
+                }
+        }
+    )

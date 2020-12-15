@@ -3,7 +3,14 @@
   gather_facts: no
 
   tasks:
-  - name: create {{ iname }}
+
+  - name: create jconf with pubkey
+    copy:
+      content: "ci_user_pubkey_user='{{ pub_key }}';"
+      dest: "/tmp/{{ dname }}.pubkey"
+      force: no
+
+  - name: create {{ iname }} instance
     shell: >
       cbsd bcreate
       jname={{ iname }}
@@ -17,5 +24,34 @@
       ci_fqdn={{ dname }}.bitclouds.sh
       ci_user_add=user
       ci_user_pw_user={{ pwd }}
-      ci_user_pubkey_user='{{ pub_key }}'
       ci_user_pw_root={{ pwd }}
+      jconf=/tmp/{{ dname }}.pubkey
+
+  - name: create pf rules for {{ iname }}
+    copy:
+      content: "rdr pass on $IF_PUBLIC proto {tcp, udp} from any to {{ wan_ip }}/32 -> {{ lan_ip }}/32"
+      dest: "/root/pf_bitclouds/fwd-{{iname}}.conf"
+      force: yes
+
+  - name: create pf nat rules for {{ dname }}
+    copy:
+      content: "nat pass on $IF_PUBLIC from {{ lan_ip }}/32 to !$JAIL_IP_POOL -> {{ wan_ip }}"
+      dest: "/root/pf_bitclouds/nat-{{iname}}.conf"
+      force: yes
+
+  - name: rule insert into NAT rules
+    lineinfile:
+      path: "/root/pf_bitclouds/nat.conf"
+      line: "include \"/root/pf_bitclouds/nat-{{iname}}.conf\""
+
+  - name: rule insert into RDR rules
+    lineinfile:
+      path: "/root/pf_bitclouds/fwd.conf"
+      line: "include \"/root/pf_bitclouds/fwd-{{iname}}.conf\""
+
+
+  - name: add alias
+    shell: "ifconfig igb0 inet {{ wan_ip }} netmask 0xffffffff alias"
+
+  - name: reload pf rules
+    shell: pfctl -f /etc/pf.conf
