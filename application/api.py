@@ -14,6 +14,7 @@ app.url_map.strict_slashes = False
 #, 'k8s-beta'
 ALL_IMAGES = ['ubuntu-eu', 'bitcoind', 'bsdjail']
 
+
 def get_tip():
     tips = [
         '$ cd -',
@@ -25,6 +26,7 @@ def get_tip():
         'use *bsd!'
     ]
     return random.choice(tips)
+
 
 def get_req_ip():
     if request.headers.getlist("X-Forwarded-For"):
@@ -136,7 +138,6 @@ def status(host):
                    + "\n-----END OPENSSH PRIVATE KEY-----",
             "status": 'subscribed'
         }
-
 
     return result
 
