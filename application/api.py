@@ -44,7 +44,7 @@ def get_random_string(length):
 def get_username(image):
     if image in ALL_IMAGES:
         if image in ['ubuntu-eu']:
-            return 'user'
+            return 'ubuntu'
         elif image in ['bitcoind', 'cln', 'bsdjail']:
             return 'root'
 
