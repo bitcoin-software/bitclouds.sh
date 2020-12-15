@@ -14,6 +14,17 @@ app.url_map.strict_slashes = False
 #, 'k8s-beta'
 ALL_IMAGES = ['ubuntu-eu', 'bitcoind', 'bsdjail']
 
+def get_tip():
+    tips = [
+        '$ cd -',
+        '$ cd ~',
+        '$ history | grep',
+        '$ cmd1 | cmd2_pass_cmd1_output',
+        '$ tmux',
+        'buy bitcoin!',
+        'use *bsd!'
+    ]
+    return random.choice(tips)
 
 def get_req_ip():
     if request.headers.getlist("X-Forwarded-For"):
@@ -80,12 +91,52 @@ def images():
 
 @app.route('/status/<host>')
 def status(host):
-    hostdata = get_hostdata()
+    hostdata = get_hostdata(host)
 
-    result = {
-        "ip4": hostdata['wan_ip']
+    if hostdata:
+        if not hostdata['key_requested']:
+            key_req = 'call /key/host-name'
+        else:
+            key_req = 'already requested'
 
-    }
+        if hostdata['status'] == 'subscribed':
+            result = {
+                "ip4": hostdata['wan_ip'],
+                "user": hostdata['username'],
+                "key": key_req,
+                "tip": get_tip(),
+                "status": hostdata['status'],
+                "balance": hostdata['balance']
+            }
+        elif hostdata['status'] == 'inactive':
+            result = {
+                "ip4": ".".join(map(str, (random.randint(0, 255)
+                        for _ in range(4)))),
+                "user": hostdata['username'],
+                "key": key_req,
+                "tip": get_tip(),
+                "status": 'inactive'
+            }
+        elif hostdata['status'] == 'init':
+            result = {
+                "status": 'unpaid'
+            }
+    else:
+        result = {
+            "ip4": ".".join(map(str, (random.randint(0, 255)
+                        for _ in range(4)))),
+            "user": 'anonymous',
+            "tip": get_tip(),
+            "key": "-----BEGIN OPENSSH PRIVATE KEY-----\n"
+                   + get_random_string(70) + "\n"
+                   + get_random_string(70) + "\n"
+                   + get_random_string(70) + "\n"
+                   + get_random_string(70) + "\n"
+                   + get_random_string(50) + "\n"
+                   + "\n-----END OPENSSH PRIVATE KEY-----",
+            "status": 'subscribed'
+        }
+
 
     return result
 
@@ -130,7 +181,7 @@ def getkey(host):
             hide_key(host)
             return hostdata['init_priv']
         else:
-            return hostdata['key_requested']
+            return status(host)
 
 
 if __name__ == '__main__':

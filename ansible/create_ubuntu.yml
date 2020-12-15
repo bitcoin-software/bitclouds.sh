@@ -22,8 +22,7 @@
       runasap=1
       ci_gw4=192.168.3.1 ci_ip4_addr={{ lan_ip }}
       ci_fqdn={{ dname }}.bitclouds.sh
-      ci_user_add=user
-      ci_user_pw_user={{ pwd }}
+      ci_user_pw_ubuntu={{ pwd }}
       ci_user_pw_root={{ pwd }}
       jconf=/tmp/{{ dname }}.pubkey
 
