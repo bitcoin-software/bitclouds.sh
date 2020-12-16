@@ -41,7 +41,7 @@ def create_host(name):
         print("bind ip for " + name)
         bind_ip(name, wan_ip)
         print("run ansible for " + name)
-        print('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
+        print('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
@@ -55,7 +55,7 @@ def create_host(name):
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
         bind_ip(name, wan_ip)
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_freebsd.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_freebsd.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
@@ -70,7 +70,7 @@ def create_host(name):
             'rpcuser': get_random_string(10),
             'rpc_pwd': get_random_string(10),
         }
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_bitcoind.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' rpcuser=' + bitcoin_data['rpcuser'] + ' rpc_pwd=' + bitcoin_data['rpc_pwd']
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
@@ -89,7 +89,7 @@ def create_host(name):
             'pwd_ro': get_random_string(10),
         }
 
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_clightning.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_clightning.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' sparko_login=' + sparko_data['login'] + ' sparko_pwd_web=' + sparko_data['pwd_web']
                   + ' sparko_pwd_rw=' + sparko_data['pwd_rw'] + ' sparko_pwd_ro=' + sparko_data['pwd_ro']
