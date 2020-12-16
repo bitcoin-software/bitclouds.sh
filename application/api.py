@@ -12,7 +12,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
 #, 'k8s-beta'
-ALL_IMAGES = ['ubuntu-eu', 'bitcoind', 'bsdjail']
+ALL_IMAGES = ['ubuntu-eu', 'bitcoind', 'clightning', 'bsdjail', 'freebsd']
 
 
 def get_tip():
@@ -46,9 +46,11 @@ def get_random_string(length):
 
 def get_username(image):
     if image in ALL_IMAGES:
-        if image in ['ubuntu-eu']:
+        if image == 'ubuntu-eu':
             return 'ubuntu'
-        elif image in ['bitcoind', 'cln', 'bsdjail']:
+        if image == 'freebsd':
+            return 'freebsd'
+        elif image in ['bitcoind', 'clightning', 'bsdjail']:
             return 'root'
 
     else:
