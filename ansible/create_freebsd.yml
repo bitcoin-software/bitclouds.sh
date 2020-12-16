@@ -15,7 +15,7 @@
       cbsd bcreate
       jname={{ iname }}
       vm_os_type=freebsd
-      vm_os_profile=cloud-FreeBSD-zfs-x64-12.2
+      vm_os_profile=cloud-bt-FreeBSD-zfs-x64-12.2
       vm_cpus=1
       vm_ram=2g
       imgsize=40g
