@@ -120,7 +120,7 @@ def create_host(name):
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' sparko_login=' + sparko_data['login'] + ' sparko_pwd_web=' + sparko_data['pwd_web']
                   + ' sparko_pwd_rw=' + sparko_data['pwd_rw'] + ' sparko_pwd_ro=' + sparko_data['pwd_ro']
-                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
 
         init_host(name, lan_ip, wan_ip)
         init_sparko(name, sparko_data)
@@ -132,7 +132,7 @@ def create_host(name):
 
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_jail.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
-                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
 
         init_host(name, lan_ip, wan_ip)
         subscribe_host(name, 99)
