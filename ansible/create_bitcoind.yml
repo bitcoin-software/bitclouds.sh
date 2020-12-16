@@ -65,7 +65,7 @@
       dest: "/crdata/jails/jails/{{ iname }}/root/.bitcoin/bitcoin.conf"
       line: "rpcuser={{ rpcuser }}"
 
-  - name: set bitcoin-cli config (user) for root in bitcoin jail {{ iname }}
+  - name: set bitcoin-cli config (password) for root in bitcoin jail {{ iname }}
     lineinfile:
       dest: "/crdata/jails/jails/{{ iname }}/root/.bitcoin/bitcoin.conf"
       line: "rpcpassword={{ rpc_pwd }}"

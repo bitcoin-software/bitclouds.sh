@@ -1,6 +1,6 @@
 from sseclient import SSEClient
 from database import subscribe_host, find_hosts, deactivate_host, \
-    get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko, init_bitcoin
+    get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko, init_bitcoind
 
 import os
 import datetime
@@ -71,12 +71,12 @@ def create_host(name):
             'rpcuser': get_random_string(10),
             'rpc_pwd': get_random_string(10),
         }
-
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' rpcuser=' + bitcoin_data['rpcuser'] + ' rpc_pwd=' + bitcoin_data['rpc_pwd']
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
+        init_bitcoind(name, bitcoin_data)
         subscribe_host(name, 99)
     elif image == 'clightning':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
