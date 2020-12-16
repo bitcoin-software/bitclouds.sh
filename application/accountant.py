@@ -57,7 +57,7 @@ def create_host(name):
         wan_ip = get_free_wan()
         bind_ip(name, wan_ip)
 
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_clightning.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)

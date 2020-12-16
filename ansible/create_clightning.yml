@@ -25,6 +25,9 @@
       dest: "/crdata/jails/jails/{{ iname }}/etc/ssh/sshd_config"
       line: "PermitRootLogin without-password"
 
+  - name: Create .ssh dir
+    shell: mkdir /crdata/jails/jails/{{ iname }}/root/.ssh
+
   - name: Setup ssh on (add authorized_keys) start on cln jail {{ iname }}
     lineinfile:
       dest: "/crdata/jails/jails/{{ iname }}/root/.ssh/authorized_keys"
