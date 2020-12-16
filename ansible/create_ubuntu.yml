@@ -25,7 +25,7 @@
       ci_fqdn={{ dname }}.bitclouds.sh
       ci_user_pw_ubuntu={{ pwd }}
       ci_user_pw_root={{ pwd }}
-      jconf='/tmp/{{ dname }}.jconf'
+      jconf=/tmp/{{ dname }}.jconf
 
   - name: create pf rules for {{ iname }}
     copy:

@@ -7,7 +7,7 @@
   - name: create jconf with pubkey
     copy:
       content: "ci_user_pubkey_freebsd='{{ pub_key }}';"
-      dest: "/tmp/{{ dname }}.pubkey"
+      dest: "/tmp/{{ dname }}.jconf"
       force: yes
 
   - name: create {{ iname }} instance
@@ -25,7 +25,7 @@
       ci_fqdn={{ dname }}.bitclouds.sh
       ci_user_pw_freebsd={{ pwd }}
       ci_user_pw_root={{ pwd }}
-      jconf=/tmp/{{ dname }}.pubkey
+      jconf=/tmp/{{ dname }}.jconf
 
   - name: create pf rules for {{ iname }}
     copy:
