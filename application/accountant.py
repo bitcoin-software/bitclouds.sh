@@ -10,7 +10,6 @@ import re
 import string
 import random
 
-
 # the sparko endpoint, i.e. 'http://192.168.0.7:9737'
 sparko = os.environ['SPARKO_ENDPOINT']
 
@@ -32,7 +31,7 @@ def create_host(name):
     pwd = newhost_data['pwd']
     pub_key = newhost_data['init_pub']
     print("check image for " + name)
-    if image == 'ubuntu-eu':
+    if image == 'ubuntu':
         print("get lan ip for " + name)
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         print(lan_ip)
@@ -119,7 +118,7 @@ def delete_host(name):
     todelete_hostdata = get_hostdata(name)
     image = todelete_hostdata['image']
     wan_ip = todelete_hostdata['wan_ip']
-    if image in ['ubuntu-eu', 'freebsd']:
+    if image in ['ubuntu', 'freebsd']:
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/remove_vm.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)

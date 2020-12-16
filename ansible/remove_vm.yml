@@ -3,7 +3,7 @@
   gather_facts: no
 
   tasks:
-  - name: remove cloned jail
+  - name: remove VM {{ iname }}
     shell: "cbsd bremove {{ iname }}"
 
   - name: remove pf rules for {{ iname }}

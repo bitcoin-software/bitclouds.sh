@@ -12,7 +12,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
 #, 'k8s-beta'
-ALL_IMAGES = ['ubuntu-eu', 'bitcoind', 'clightning', 'bsdjail', 'freebsd']
+ALL_IMAGES = ['ubuntu', 'bitcoind', 'clightning', 'bsdjail', 'freebsd']
 
 
 def get_tip():
@@ -46,7 +46,7 @@ def get_random_string(length):
 
 def get_username(image):
     if image in ALL_IMAGES:
-        if image == 'ubuntu-eu':
+        if image == 'ubuntu':
             return 'ubuntu'
         if image == 'freebsd':
             return 'freebsd'
@@ -69,7 +69,7 @@ def create_vps(image):
             name = getStar() + '-' + str(inc)
 
         #135.125.129.128/26
-        add_host(name, '0.0.0.0', get_random_string(12), 'init', image, get_username(image))
+        add_host(name, get_random_string(12), 'init', image, get_username(image))
 
         invoice = generate_invoice(99, name)['bolt11']
 
@@ -108,9 +108,9 @@ def status(host):
 
     if hostdata:
         if not hostdata['key_requested']:
-            key_req = 'call /key/host-name'
+            key_req = 'https://bitclouds.sh/key/' + host
         else:
-            key_req = 'already requested'
+            key_req = 'issued'
 
         if hostdata['status'] == 'subscribed':
             result = {

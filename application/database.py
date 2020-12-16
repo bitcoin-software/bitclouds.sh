@@ -1,11 +1,22 @@
 import pymongo
 import datetime
 import os
+import requests
 
 
 dbclient = pymongo.MongoClient('localhost')
 mongo_db = "bitclouds"
 mongo = dbclient[mongo_db]
+
+
+def notify(bot_message):
+   bot_token = os.environ['TG_TOKEN']
+   bot_chatID = os.environ['TG_CHAT']
+   send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+
+   response = requests.get(send_text, timeout=3)
+
+   return response.json()
 
 
 def find_hosts():
@@ -85,7 +96,7 @@ def free_ip(ip):
     )
 
 
-def add_host(name, ipv4, pwd, status, image, username='user'):
+def add_host(name, pwd, status, image, username='user'):
     os.system('ssh-keygen -f /tmp/' + name + '.key -t ed25519 -N ""')
 
     prv_keyfile = '/tmp/' + name + '.key'
@@ -130,6 +141,11 @@ def init_host(name, lan_ip, wan_ip):
                 }
         }
     )
+
+    try:
+        notify('New host ' + name + ' initialized')
+    except Exception as e:
+        print("notify error")
 
 
 def init_sparko(name, sparko_data):
@@ -187,6 +203,11 @@ def deactivate_host(name):
     )
 
     free_ip(host['wan_ip'])
+
+    try:
+        notify('Host ' + name + ' deactivated')
+    except Exception as e:
+        print("notify error")
 
 
 def register_payment(name, invoice, status, ip):
