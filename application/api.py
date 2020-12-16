@@ -78,8 +78,8 @@ def create_vps(image):
             "price": "<1 sat/min",
             "perf": "1xXeon-2GB-40GB",
             "paytostart": invoice,
-            "disclaimer": "If you pay the LN invoice, you agree with our terms that abuse usage is prohibited."
-                          " Your instance may be stopped and destroyed at any time without any reason. Do backups."
+            "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited."
+                          " Your instance may be stopped and/or destroyed at any time without any reason. Do backups."
                           " Your data is securely encrypted and instances hosted in enterprise-grade datacenters."
                           " Your IP and payment information is logged for authorization purposes."
                           " Bitclouds never use your data for any purpose except mentioned above.",
