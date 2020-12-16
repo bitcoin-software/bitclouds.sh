@@ -17,6 +17,15 @@ def find_hosts():
         return False
 
 
+def get_payments():
+    p = mongo.payments.find()
+
+    if p:
+        return p
+    else:
+        return False
+
+
 def get_hostdata(name):
     ex_user = mongo.cloud.find_one({"name": name})
 
