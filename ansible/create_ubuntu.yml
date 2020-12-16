@@ -6,7 +6,7 @@
 
   - name: create jconf with pubkey
     copy:
-      content: "ci_user_pubkey_ubuntu='{{ pub_key }}'; ci_nameserver_address='208.67.220.220';"
+      content: "ci_user_pubkey_ubuntu='{{ pub_key }}';"
       dest: "/tmp/{{ dname }}.jconf"
       force: yes
 
