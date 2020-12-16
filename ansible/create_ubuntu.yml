@@ -8,7 +8,7 @@
     copy:
       content: "ci_user_pubkey_ubuntu='{{ pub_key }}';"
       dest: "/tmp/{{ dname }}.jconf"
-      force: no
+      force: yes
 
   - name: create {{ iname }} instance
     shell: >
