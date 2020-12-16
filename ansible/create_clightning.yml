@@ -75,7 +75,7 @@
   - name: stop cloned cln jail {{ iname }}
     shell: "cbsd jstop {{ iname }}"
 
-  - name: start cloned bitcoin jail {{ iname }}
+  - name: start cloned cln jail {{ iname }}
     shell: "cbsd jstart {{ iname }}"
 
   - name: create pf rules for {{ iname }}
