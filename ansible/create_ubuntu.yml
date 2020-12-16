@@ -6,7 +6,7 @@
 
   - name: create jconf with pubkey
     copy:
-      content: "ci_user_pubkey_ubuntu='{{ pub_key }}';"
+      content: "ci_user_pubkey_ubuntu='{{ pub_key }}';\n"
       dest: "/tmp/{{ dname }}.pubkey"
       force: yes
 
@@ -25,7 +25,7 @@
       ci_fqdn={{ dname }}.bitclouds.sh
       ci_user_pw_ubuntu={{ pwd }}
       ci_user_pw_root={{ pwd }}
-      jconf=/tmp/{{ dname }}.pubkey
+      jconf='/tmp/{{ dname }}.pubkey'
 
   - name: create pf rules for {{ iname }}
     copy:

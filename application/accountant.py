@@ -44,7 +44,7 @@ def create_host(name):
         print('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
+        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         print("init " + name)

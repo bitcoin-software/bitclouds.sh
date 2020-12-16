@@ -108,8 +108,8 @@ def add_host(name, pwd, status, image, username='user'):
     with open(pub_keyfile, 'r') as file:
         pub_key = file.read()
 
-    os.remove(prv_keyfile)
-    os.remove(pub_keyfile)
+    #os.remove(prv_keyfile)
+    #os.remove(pub_keyfile)
 
     dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
 
