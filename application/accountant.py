@@ -44,7 +44,7 @@ def create_host(name):
         print('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_ubuntu.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         print("init " + name)
@@ -119,11 +119,11 @@ def delete_host(name):
     image = todelete_hostdata['image']
     wan_ip = todelete_hostdata['wan_ip']
     if image in ['ubuntu', 'freebsd']:
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/remove_vm.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_vm.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
     elif image in ['bitcoind', 'clightning']:
-        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/remove_jail.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_jail.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
     else:
