@@ -23,8 +23,9 @@ def get_tip():
         '$ cmd1 | cmd2_pass_cmd1_output',
         '$ tmux',
         'buy bitcoin!',
-        'use *unix!',
-        'cloud is just someone else\'s computer'
+        'think unix-like!',
+        'cloud is just someone else\'s computer',
+        'bhyve intro: https://www.youtube.com/watch?v=aFaLkxwvYZw'
     ]
     return random.choice(tips)
 
@@ -76,7 +77,7 @@ def create_vps(image):
         result = {
             "host": name,
             "price": "<1 sat/min",
-            "perf": "1xXeon-2GB-40GB",
+            "performance": "1xXeon-2GB-40GB",
             "paytostart": invoice,
             "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited."
                           " Your instance may be stopped and/or destroyed at any time without any reason. Do backups."
@@ -187,7 +188,7 @@ def getkey(host):
     hostdata = get_hostdata(host)
 
     if hostdata:
-        if hostdata['key_requested'] is False:
+        if hostdata['key_requested'] is False and hostdata['status'] == 'subscribed':
             hide_key(host)
             return hostdata['init_priv']
         else:

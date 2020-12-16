@@ -23,7 +23,6 @@
       ci_gw4=192.168.3.1 ci_ip4_addr={{ lan_ip }}
       ci_nameserver_address='208.67.220.220';
       ci_fqdn={{ dname }}.bitclouds.sh
-      ci_user_add_
       ci_user_pw_ubuntu={{ pwd }}
       ci_user_pw_root={{ pwd }}
       jconf=/tmp/{{ dname }}.jconf
