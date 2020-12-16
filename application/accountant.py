@@ -44,7 +44,7 @@ def create_host(name):
         print('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
-        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_ubuntu.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         print("init " + name)
@@ -55,7 +55,7 @@ def create_host(name):
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
         bind_ip(name, wan_ip)
-        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/bitclouds.sh/ansible/create_centos.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_centos.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
@@ -64,7 +64,7 @@ def create_host(name):
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
         bind_ip(name, wan_ip)
-        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/bitclouds.sh/ansible/create_debian.yml '
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_debian.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
