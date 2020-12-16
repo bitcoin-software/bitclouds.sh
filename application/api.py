@@ -12,7 +12,7 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
 #, 'k8s-beta'
-ALL_IMAGES = ['ubuntu', 'bitcoind', 'clightning', 'bsdjail', 'freebsd']
+ALL_IMAGES = ['ubuntu', 'bitcoind', 'centos', 'clightning', 'bsdjail', 'freebsd', 'debian', 'freebsd-ufs']
 
 
 def get_tip():

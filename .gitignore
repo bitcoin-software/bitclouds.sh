@@ -1,4 +1,5 @@
 drafter.py
 cron.py
 .idea
+venv
 __pycache__
