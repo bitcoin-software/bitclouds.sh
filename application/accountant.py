@@ -1,11 +1,16 @@
 from sseclient import SSEClient
+from database import subscribe_host, find_hosts, deactivate_host, \
+    get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko
+
 import os
 import datetime
 import json
 import threading
 import re
-from database import subscribe_host, find_hosts, deactivate_host, \
-    get_hostdata, get_free_wan, init_host, register_payment, bind_ip
+import string
+import random
+
+
 # the sparko endpoint, i.e. 'http://192.168.0.7:9737'
 sparko = os.environ['SPARKO_ENDPOINT']
 
@@ -13,6 +18,10 @@ messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO
 
 BTCPRICE = 0
 
+def get_random_string(length):
+    letters = string.ascii_lowercase
+    result_str = ''.join(random.choice(letters) for i in range(length))
+    return result_str
 
 def create_host(name):
     newhost_data = get_hostdata(name)
@@ -57,10 +66,21 @@ def create_host(name):
         wan_ip = get_free_wan()
         bind_ip(name, wan_ip)
 
+        sparko_data = {
+            'login': get_random_string(10),
+            'pwd_web': get_random_string(10),
+            'pwd_rw': get_random_string(10),
+            'pwd_ro': get_random_string(10),
+        }
+
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_clightning.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' sparko_login=' + sparko_data['login'] + ' sparko_pwd_web=' + sparko_data['pwd_web']
+                  + ' sparko_pwd_rw=' + sparko_data['pwd_rw'] + ' sparko_pwd_ro=' + sparko_data['pwd_ro']
                   + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+
         init_host(name, lan_ip, wan_ip)
+        init_sparko(name, sparko_data)
         subscribe_host(name, 99)
 
     else:

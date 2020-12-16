@@ -132,6 +132,18 @@ def init_host(name, lan_ip, wan_ip):
     )
 
 
+def init_sparko(name, sparko_data):
+    mongo.cloud.update_one(
+        {"name": name},
+        {
+            "$set":
+                {
+                    "sparko": sparko_data
+                }
+        }
+    )
+
+
 def subscribe_host(name, sats):
     host = mongo.cloud.find_one({"name": name})
     balance = host['balance']
