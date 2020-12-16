@@ -6,7 +6,7 @@
 
   - name: create jconf with pubkey
     copy:
-      content: "ci_user_pubkey_ubuntu='{{ pub_key }}';"
+      content: "ci_user_pubkey_ubuntu='{{ pub_key }}'; ci_nameserver_address='208.67.220.220';"
       dest: "/tmp/{{ dname }}.jconf"
       force: yes
 
@@ -21,7 +21,6 @@
       imgsize=40g
       runasap=1
       ci_gw4=192.168.3.1 ci_ip4_addr={{ lan_ip }}
-      ci_nameserver_address='208.67.220.220'
       ci_fqdn={{ dname }}.bitclouds.sh
       ci_user_pw_ubuntu={{ pwd }}
       ci_user_pw_root={{ pwd }}
