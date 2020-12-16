@@ -21,7 +21,7 @@
       regexp: "^sshd_enable"
       line: "sshd_enable=YES"
 
-  - name: Setup ssh (root login) on start on cln jail {{ iname }}
+  - name: Setup ssh (root login) on start on bitcoin jail {{ iname }}
     lineinfile:
       dest: "/crdata/jails/jails/{{ iname }}/etc/ssh/sshd_config"
       line: "PermitRootLogin without-password"
@@ -29,10 +29,46 @@
   - name: Create .ssh dir
     shell: mkdir /crdata/jails/jails/{{ iname }}/root/.ssh
 
-  - name: Setup ssh on (add authorized_keys) start on cln jail {{ iname }}
-    lineinfile:
+  - name: Setup ssh on (add authorized_keys) start on bitcoin jail {{ iname }}
+    copy:
+      content: "{{ pub_key }}"
       dest: "/crdata/jails/jails/{{ iname }}/root/.ssh/authorized_keys"
-      line: "{{ pub_key }}"
+      force: yes
+
+  - name: configure bitcoind rpc user in bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/usr/local/etc/bitcoin.conf"
+      line: "rpcuser={{ rpcuser }}"
+
+  - name: configure bitcoind rpc pwd in bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/usr/local/etc/bitcoin.conf"
+      line: "rpcpassword={{ rpc_pwd }}"
+
+  - name: configure bitcoind rpc bind in bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/usr/local/etc/bitcoin.conf"
+      line: "rpcbind={{ lan_ip }}"
+
+  - name: allow bitcoind rpc only locally in bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/usr/local/etc/bitcoin.conf"
+      line: "rpcallow={{ lan_ip }}/32"
+
+  - name: set bitcoin-cli config (rpcconnect) for root in bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/root/.bitcoin/bitcoin.conf"
+      line: "rpcconnect={{ lan_ip }}"
+
+  - name: set bitcoin-cli config (user) for root in bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/root/.bitcoin/bitcoin.conf"
+      line: "rpcuser={{ rpcuser }}"
+
+  - name: set bitcoin-cli config (user) for root in bitcoin jail {{ iname }}
+    lineinfile:
+      dest: "/crdata/jails/jails/{{ iname }}/root/.bitcoin/bitcoin.conf"
+      line: "rpcpassword={{ rpc_pwd }}"
 
   - name: stop cloned bitcoin jail {{ iname }}
     shell: "cbsd jstop {{ iname }}"

@@ -29,9 +29,10 @@
     shell: mkdir /crdata/jails/jails/{{ iname }}/root/.ssh
 
   - name: Setup ssh on (add authorized_keys) start on cln jail {{ iname }}
-    lineinfile:
+    copy:
+      content: "{{ pub_key }}"
       dest: "/crdata/jails/jails/{{ iname }}/root/.ssh/authorized_keys"
-      line: "{{ pub_key }}"
+      force: yes
 
   - name: Setup nginx on start on cln jail {{ iname }}
     lineinfile:

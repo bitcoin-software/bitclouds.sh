@@ -1,6 +1,6 @@
 from sseclient import SSEClient
 from database import subscribe_host, find_hosts, deactivate_host, \
-    get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko
+    get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko, init_bitcoin
 
 import os
 import datetime
@@ -52,15 +52,30 @@ def create_host(name):
         init_host(name, lan_ip, wan_ip)
         print("subscribe " + name)
         subscribe_host(name, 99)
+    if image == 'freebsd':
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        wan_ip = get_free_wan()
+        bind_ip(name, wan_ip)
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_freebsd.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        init_host(name, lan_ip, wan_ip)
+        subscribe_host(name, 99)
     elif image == 'bitcoind':
 
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
         bind_ip(name, wan_ip)
 
+        bitcoin_data = {
+            'rpcuser': get_random_string(10),
+            'rpc_pwd': get_random_string(10),
+        }
+
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/app/ansible/create_bitcoind.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
-                  + ' pwd=' + pwd + ' pubkey=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+                  + ' rpcuser=' + bitcoin_data['rpcuser'] + ' rpc_pwd=' + bitcoin_data['rpc_pwd']
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
         subscribe_host(name, 99)
     elif image == 'clightning':
