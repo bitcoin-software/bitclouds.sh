@@ -4,7 +4,7 @@ from stars import getStar
 from database import get_hostdata, add_host, register_payment, hide_key
 import random
 import string
-
+import os
 
 app = Flask(__name__)
 
@@ -17,10 +17,10 @@ ALL_IMAGES = ['ubuntu', 'bitcoind', 'centos', 'clightning', 'bsdjail', 'freebsd'
 
 def get_tip():
     tips = [
-        '$ cd -',
-        '$ cd ~',
+        os.environ['BC_1'],
+        os.environ['BC_2'],
         '$ history | grep',
-        '$ cmd1 | cmd2_pass_cmd1_output',
+        os.environ['BC_3'],
         '$ tmux',
         'buy bitcoin!',
         'think unix-like!',
