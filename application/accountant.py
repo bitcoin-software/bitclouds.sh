@@ -51,11 +51,38 @@ def create_host(name):
         init_host(name, lan_ip, wan_ip)
         print("subscribe " + name)
         subscribe_host(name, 99)
-    if image == 'freebsd':
+    elif image == 'centos':
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        wan_ip = get_free_wan()
+        bind_ip(name, wan_ip)
+        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/bitclouds.sh/ansible/create_centos.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        init_host(name, lan_ip, wan_ip)
+        subscribe_host(name, 99)
+    elif image == 'debian':
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        wan_ip = get_free_wan()
+        bind_ip(name, wan_ip)
+        os.system('/usr/local/bin/ansible-playbook -vvvv /home/bitclouds/bitclouds.sh/ansible/create_debian.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        init_host(name, lan_ip, wan_ip)
+        subscribe_host(name, 99)
+    elif image == 'freebsd':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
         bind_ip(name, wan_ip)
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_freebsd.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        init_host(name, lan_ip, wan_ip)
+        subscribe_host(name, 99)
+    elif image == 'freebsd-ufs':
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        wan_ip = get_free_wan()
+        bind_ip(name, wan_ip)
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_freebsd-ufs.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
@@ -118,11 +145,11 @@ def delete_host(name):
     todelete_hostdata = get_hostdata(name)
     image = todelete_hostdata['image']
     wan_ip = todelete_hostdata['wan_ip']
-    if image in ['ubuntu', 'freebsd']:
+    if image in ['ubuntu', 'freebsd', 'freebsd-ufs', 'debian', 'centos']:
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_vm.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
-    elif image in ['bitcoind', 'clightning']:
+    elif image in ['bitcoind', 'clightning', 'bsdjail']:
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_jail.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
