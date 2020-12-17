@@ -50,6 +50,14 @@ def get_hostdata(name):
         return False
 
 
+def check_k8s():
+    k8s = mongo.market.find_one({"status": 'free', "type": 'k8s'})
+
+    if k8s:
+        return True
+    else:
+        return False
+
 def get_k8s():
     k8s = mongo.market.find_one({"status": 'free', "type": 'k8s'})
 

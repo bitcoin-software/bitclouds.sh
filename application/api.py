@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from wallet import generate_invoice
 from stars import getStar
-from database import get_hostdata, add_host, register_payment, hide_key
+from database import get_hostdata, add_host, register_payment, hide_key, check_k8s
 import random
 import string
 import os
@@ -67,6 +67,9 @@ def get_username(image):
 def create_vps(image):
 
     if image in MARKET:
+        if not check_k8s():
+            return jsonify({"error": 'out of stock'})
+
         name = 'm-' + getStar()
         inc = 0
 
@@ -122,7 +125,7 @@ def create_vps(image):
 
         return jsonify(result)
     else:
-        return {'error': 'no such image'}
+        return {"error": 'no such image'}
 
 
 @app.route('/images')
