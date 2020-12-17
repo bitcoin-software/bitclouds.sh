@@ -200,11 +200,14 @@ def decreaser():
 
 
 def extract_name(label):
-    match = re.search('[0-9]{6}-([m-]{2}[a-z]+-?[0-9]*)|([a-z]+-?[0-9]*)', label)
-    try:
-        name = match.group(0)
+    match = re.search('[0-9]{8}-[0-9]{6}-([m-]{2}[a-z]+-?[0-9]*)|[0-9]{8}-[0-9]{6}-([a-z]+-?[0-9]*)', label)
+    if match.group(1):
+        name = match.group(1)
         return name
-    except Exception as e:
+    elif match.group(2):
+        name = match.group(2)
+        return name
+    else:
         print("NAME EXTRACT ERROR FROM LABEL: " + str(label))
 
 
