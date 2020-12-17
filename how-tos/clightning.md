@@ -2,7 +2,7 @@
 
 You can order a fully operational `c-lightning` node
 
-c-lightning in FreeBSD jail with `root` access and completely dedicated datadir (but shared bitcoind)
+[c-lightning](https://github.com/ElementsProject/lightning) in FreeBSD jail with `root` access and completely dedicated datadir (but shared bitcoind)
 
 After first login, consider to replace default issued ssh access key and set password for user *freebsd* and/or root if required.
 
@@ -10,102 +10,110 @@ SSH password authentication is disabled by default
 
 Inside instance you can execute `lightning-cli` commands
 
-`aladfar:/root@[13:08] # bitcoin-cli getblockchaininfo`
+Before you start, you may want to install text editor with `pkg install -y nano`
+
+`muphrid:/root@[13:28] # lightning-cli getinfo`
 
 ```
 {
-  "chain": "main",
-  "blocks": 661744,
-  "headers": 661744,
-  "bestblockhash": "000000000000000000020f29eb5c90e6e48ce687b546d3fb499ab6d977af1c07",
-  "difficulty": 18670168558399.59,
-  "mediantime": 1608206293,
-  "verificationprogress": 0.9999949501179342,
-  "initialblockdownload": false,
-  "chainwork": "000000000000000000000000000000000000000016f90c9acb758a775a014c77",
-  "size_on_disk": 359058733092,
-  "pruned": false,
-  "softforks": {
-    "bip34": {
-      "type": "buried",
-      "active": true,
-      "height": 227931
-    },
-    "bip66": {
-      "type": "buried",
-      "active": true,
-      "height": 363725
-    },
-    "bip65": {
-      "type": "buried",
-      "active": true,
-      "height": 388381
-    },
-    "csv": {
-      "type": "buried",
-      "active": true,
-      "height": 419328
-    },
-    "segwit": {
-      "type": "buried",
-      "active": true,
-      "height": 481824
-    }
-  },
-  "warnings": ""
+   "id": "02a6db7b91ba805687eb668d3d776b1ef5c4b90118992feb172e6a7b297179410d",
+   "alias": "clightning@bitclouds.sh",
+   "color": "02a6db",
+   "num_peers": 0,
+   "num_pending_channels": 0,
+   "num_active_channels": 0,
+   "num_inactive_channels": 0,
+   "address": [
+      {
+         "type": "ipv4",
+         "address": "85.241.9.25",
+         "port": 9735
+      }
+   ],
+   "binding": [],
+   "version": "0.8.2.1",
+   "blockheight": 661746,
+   "network": "bitcoin",
+   "msatoshi_fees_collected": 0,
+   "fees_collected_msat": "0msat",
+   "lightning-dir": "/var/db/c-lightning/bitcoin"
 }
-
 ```
 
-And edit the configuration of `bitcoind` in `
+Edit the with text editor (i.e. `nano`) your configuration of `lightningd` in 
 
-`aladfar:/root@[13:08] # ls -la /usr/local/etc/`
-
+`muphrid:/root@[13:28] # ls -la /usr/local/etc/`
 ```
 ...
--rw-r--r--   1 root  wheel  1232 Dec 17 13:06 bitcoin.conf
--rw-r--r--   1 root  wheel   704 Oct  4 21:15 bitcoin.conf.sample
+-r--------   1 c-lightning  c-lightning  2155 Dec 17 13:27 lightningd-bitcoin.conf
+-r--------   1 c-lightning  c-lightning   730 Dec 12 05:25 lightningd-bitcoin.conf.sample
 ...
 ```
 
-To apply configuration, stop and start `bitcoind`
+To apply configuration, stop and start `lightningd`
 
 ```
-aladfar:/root@[13:09] # bitcoin-cli stop
-Bitcoin Core stopping
+muphrid:/root@[13:29] # lightning-cli stop
+"Shutdown complete"
 ```
 
 ```
-aladfar:/root@[13:10] # service bitcoind start
-Performing sanity check on bitcoind configuration:
-Bitcoind is not running
-Starting bitcoind:
+muphrid:/root@[13:33] # service lightningd start
+Waiting for bitcoind to start serving RPC, lightningd cannot start without it 20
+...
+Waiting for bitcoind to start serving RPC, lightningd cannot start without it 1
+eval: bitcoin-cli: not found
+Failed: bitcoind did not start serving RPC, starting lightningd anyway
+Starting lightningd.
+plugin-sparko  initialized plugin v2.5
+plugin-sparko  Login credentials read: qzuoulyjtm:rghpxycumm (full-access key: cUNipCvymI5SVgC9u0C1rGYOS0qb9S22xBUMaMwuM)
+plugin-sparko 2 keys read: skdoukezwd (full-access), pzkebdmluz (3 permission)
+plugin-sparko  HTTP server on http://0.0.0.0:9737/
 ```
 
-Check status:
+Your `c-lightning` node is powered with [Sparko plugin](https://github.com/fiatjaf/sparko), 
+so you have HTTP API for `c-lighning` out of the box.
+Simply `curl` you public IP from your local terminal:
+
+`you@laptop # curl -k https://85.241.9.25/rpc -d '{"method": "getinfo"}' -H 'X-Access: cUNipCvymI5SVgC9u0C1rGYOS0qb9S22xBUMaMwuM'`
 
 ```
-aladfar:/root@[13:11] # ps -aux | grep bitcoin
-bitcoin 32845 172.3  1.3 2529252 855236  -  SNsJ 13:11   0:15.17 
-/usr/local/bin/bitcoind -conf=/usr/local/etc/bitcoin.conf -datadir=/var/db/bitcoin
+{
+    "id":"02a6db7b91ba805687eb668d3d776b1ef5c4b90118992feb172e6a7b297179410d",
+    "alias":"clightning@bitclouds.sh",
+    "color":"02a6db",
+    "num_peers":0,
+    "num_pending_channels":0,
+    "num_active_channels":0,
+    "num_inactive_channels":0,
+    "address":[
+    {
+        "type":"ipv4",
+        "address":"85.241.9.25",
+        "port":9735}
+    ],
+    "binding":[],
+    "version":"0.8.2.1",
+    "blockheight":661746,
+    "network":"bitcoin",
+    "msatoshi_fees_collected":0,
+    "fees_collected_msat":"0msat",
+    "lightning-dir":"/var/db/c-lightning/bitcoin"
+}
 ```
 
-Access `bitcoind` datadir
+You may want to use your own dedicated bitcoin RPC, to do so, order a bitclouds `bitcoind`
+or point your `lightnind` to existing `bitcoind` node:
 
-`aladfar:/root@[13:11] # ls -la /var/db/bitcoin/`
+`muphrid:/root@[13:47] # nano /usr/local/etc/lightningd-bitcoin.conf`
 
 ```
--rw-------   1 bitcoin  bitcoin         0 Nov  3 17:14 .lock
--rw-------   1 bitcoin  bitcoin         0 Nov  3 17:15 .walletlock
--rw-------   1 bitcoin  bitcoin        37 Nov  3 17:15 banlist.dat
--rw-------   1 bitcoin  bitcoin         6 Dec 17 13:11 bitcoind.pid
-drwx------   3 bitcoin  bitcoin      4735 Dec 17 08:10 blocks
-drwx------   2 bitcoin  bitcoin      2142 Dec 17 13:11 chainstate
-drwx------   2 bitcoin  bitcoin         3 Dec 17 13:11 database
--rw-------   1 bitcoin  bitcoin         0 Nov  3 17:15 db.log
--rw-------   1 bitcoin  bitcoin  10312426 Dec 17 13:12 debug.log
--rw-------   1 bitcoin  bitcoin    247985 Dec 17 13:10 fee_estimates.dat
--rw-------   1 bitcoin  bitcoin  32179889 Dec 17 13:10 mempool.dat
--rw-------   1 bitcoin  bitcoin   4140208 Dec 17 13:10 peers.dat
--rw-------   1 bitcoin  bitcoin   1490944 Dec 17 13:11 wallet.dat
+...
+bitcoin-rpcconnect=10.15.0.1
+bitcoin-rpcpassword=Hszd_4vr53634345vvsdFLLNnfw422f5a2f6=
+bitcoin-rpcport=8332
+bitcoin-rpcuser=845Fd332
+...
+
 ```
+

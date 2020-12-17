@@ -8,6 +8,8 @@ After first login, consider to replace default issued ssh access key and set pas
 
 SSH password authentication is disabled by default
 
+Before you start, you may want to install text editor with `pkg install -y nano`
+
 Inside instance you can execute `bitcoin-cli` commands
 
 `aladfar:/root@[13:08] # bitcoin-cli getblockchaininfo`
@@ -57,7 +59,7 @@ Inside instance you can execute `bitcoin-cli` commands
 
 ```
 
-And edit the configuration of `bitcoind` in `
+Edit with text editor (i.e. `nano`) the configuration of `bitcoind` in `
 
 `aladfar:/root@[13:08] # ls -la /usr/local/etc/`
 
