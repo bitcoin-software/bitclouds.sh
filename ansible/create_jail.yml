@@ -30,9 +30,9 @@
     shell: mkdir /crdata/jails/jails-data/{{ iname }}-data/root/.ssh
 
   - name: Setup ssh on (add authorized_keys) start on bsd jail {{ iname }}
-    lineinfile:
+    copy:
+      content: "{{ pub_key }}"
       dest: "/crdata/jails/jails-data/{{ iname }}-data/root/.ssh/authorized_keys"
-      line: "{{ pub_key }}"
       force: yes
 
   - name: stop cloned bsd jail {{ iname }}
