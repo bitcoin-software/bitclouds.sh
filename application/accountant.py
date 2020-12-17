@@ -159,7 +159,7 @@ def create_host(name):
             init_k8s(name, k8s_data)
             subscribe_host(name, 99)
         else:
-            return  False
+            return False
     else:
         return False
 
@@ -200,13 +200,19 @@ def decreaser():
 
 
 def extract_name(label):
-    match = re.search('([a-z]+-?[0-9]*)', label)
+    match = re.search('([m-]{2}[a-z]+-?[0-9]*)|([a-z]+-?[0-9]*)', label)
     try:
-        name = match.group(0)
+        #standart image
+        name = match.group(1)
         return name
     except Exception as e:
-        print("NAME EXTRACT ERROR: " + name)
-        return False
+        try:
+            # MARKET image
+            name = match.group(0)
+            return name
+        except Exception as e:
+            print("NAME EXTRACT ERROR: " + name)
+
 
 decreaser()
 
