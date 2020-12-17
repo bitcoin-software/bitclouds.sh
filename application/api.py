@@ -151,9 +151,6 @@ def status(host):
                 "status": hostdata['status'],
                 "balance": hostdata['balance']
             }
-
-            if hostdata['image'] in MARKET:
-                result[hostdata['image'] + '_data'] = hostdata[hostdata['image']]
         elif hostdata['status'] == 'inactive':
             result = {
                 "ip4": ".".join(map(str, (random.randint(0, 255)
@@ -222,7 +219,11 @@ def getkey(host):
     if hostdata:
         if hostdata['key_requested'] is False and hostdata['status'] == 'subscribed':
             hide_key(host)
-            return hostdata['init_priv']
+            if hostdata['image'] not in MARKET:
+                return hostdata['init_priv']
+            else:
+                if hostdata['image'] == 'k8s':
+                    return hostdata['k8s']['kubeconfig']
         else:
             return status(host)
     else:
