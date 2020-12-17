@@ -73,6 +73,12 @@
   - name: generate nginx certs in {{ iname }}
     shell: "jexec {{ iname }} openssl req -x509 -nodes -days 1500 -newkey rsa:2048 -keyout /usr/local/etc/nginx/selfsigned.key -out /usr/local/etc/nginx/selfsigned.crt -subj \"/C=US/ST=Denial/L=Springfield/O=Dis/CN=www.example.com\""
 
+  - name: create c-ln homedir for root in {{ iname }}
+    shell: "jexec {{ iname }} mkdir /root/.lightning"
+
+  - name: map c-ln homedir to datadir for {{ iname }}
+    shell: "jexec {{ iname }} ln -s /var/db/c-lightning/bitcoin /root/.lightning/bitcoin"
+
   - name: stop cloned cln jail {{ iname }}
     shell: "cbsd jstop {{ iname }}"
 
