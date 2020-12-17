@@ -10,13 +10,17 @@ mongo = dbclient[mongo_db]
 
 
 def notify(bot_message):
-   bot_token = os.environ['TG_TOKEN']
-   bot_chatID = os.environ['TG_CHAT']
-   send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+    bot_token = os.environ['TG_TOKEN']
+    bot_chatID = os.environ['TG_CHAT']
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + \
+                bot_chatID + '&parse_mode=Markdown&text=' + bot_message
 
-   response = requests.get(send_text, timeout=3)
-
-   return response.json()
+    try:
+        response = requests.get(send_text, timeout=3)
+        return response.json()
+    except Exception as e:
+        print("NOTIFY ERROR: " + str(e))
+        return {'error': str(e)}
 
 
 def find_hosts():
@@ -164,10 +168,7 @@ def init_host(name, lan_ip, wan_ip):
         }
     )
 
-    try:
-        notify('New host ' + name + ' initialized')
-    except Exception as e:
-        print("notify error")
+    notify('New host ' + name + ' initialized')
 
 
 def init_k8s(name, k8s_data):
@@ -238,10 +239,7 @@ def deactivate_host(name):
 
     free_ip(host['wan_ip'])
 
-    try:
-        notify('Host ' + name + ' deactivated')
-    except Exception as e:
-        print("notify error")
+    notify('Host ' + name + ' deactivated')
 
 
 def register_payment(name, invoice, status, ip):

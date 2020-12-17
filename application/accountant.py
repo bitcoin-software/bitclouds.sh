@@ -10,6 +10,7 @@ import threading
 import re
 import string
 import random
+import requests
 
 # the sparko endpoint, i.e. 'http://192.168.0.7:9737'
 sparko = os.environ['SPARKO_ENDPOINT']
@@ -19,6 +20,19 @@ messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO
 BTCPRICE = 0
 
 MARKET = ['k8s']
+
+
+def notify(bot_message):
+    bot_token = os.environ['TG_TOKEN']
+    bot_chatID = os.environ['TG_CHAT']
+    send_text = 'https://api.telegram.org/bot' + bot_token + '/sendMessage?chat_id=' + \
+               bot_chatID + '&parse_mode=Markdown&text=' + bot_message
+
+    try:
+        response = requests.get(send_text, timeout=3)
+        return response.json()
+    except Exception as e:
+        return {'error': str(e)}
 
 
 def get_random_string(length):
@@ -161,6 +175,13 @@ def delete_host(name):
     elif image in ['bitcoind', 'clightning', 'bsdjail']:
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_jail.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
+        deactivate_host(name)
+    elif image in MARKET:
+        if image == 'k8s':
+            try:
+                requests.get(os.environ['K8S_LINK'] + '/api/v1/destroy/' + todelete_hostdata['k8s_data']['id'])
+            except Exception:
+                notify('failed to delete k8s cluster')
         deactivate_host(name)
     else:
         return False
