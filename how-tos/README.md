@@ -5,7 +5,7 @@ List available images:
 `$ curl https://bitclouds.sh/images`
 
 ```
-_{
+{
   "images": [
     ...
     "ubuntu",
