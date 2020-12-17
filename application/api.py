@@ -29,6 +29,7 @@ def get_tip():
         'think unix-way!',
         'with great power comes great responsibility',
         'cloud is just someone else\'s computer',
+        'was your recent backup restore succesfull?',
         'bhyve intro: https://www.youtube.com/watch?v=aFaLkxwvYZw'
     ]
     return random.choice(tips)
