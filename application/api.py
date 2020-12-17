@@ -151,6 +151,9 @@ def status(host):
                 "status": hostdata['status'],
                 "balance": hostdata['balance']
             }
+
+            if hostdata['image'] in MARKET:
+                result[hostdata['image'] + '_data'] = hostdata['data']
         elif hostdata['status'] == 'inactive':
             result = {
                 "ip4": ".".join(map(str, (random.randint(0, 255)
