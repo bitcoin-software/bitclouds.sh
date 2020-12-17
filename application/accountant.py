@@ -1,6 +1,7 @@
 from sseclient import SSEClient
 from database import subscribe_host, find_hosts, deactivate_host, \
-    get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko, init_bitcoind
+    get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko, init_bitcoind, \
+    get_k8s, init_k8s
 
 import os
 import datetime
@@ -16,6 +17,8 @@ sparko = os.environ['SPARKO_ENDPOINT']
 messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO_RO']})
 
 BTCPRICE = 0
+
+MARKET = ['k8s']
 
 
 def get_random_string(length):
@@ -136,7 +139,13 @@ def create_host(name):
 
         init_host(name, lan_ip, wan_ip)
         subscribe_host(name, 99)
-
+    elif image in MARKET:
+        if image == 'k8s':
+            k8s_data = get_k8s()['data']
+            init_k8s(name, k8s_data)
+            subscribe_host(name, 99)
+        else:
+            return  False
     else:
         return False
 

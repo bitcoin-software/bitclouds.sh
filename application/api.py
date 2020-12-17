@@ -12,7 +12,10 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
 #, 'k8s-beta'
-ALL_IMAGES = ['ubuntu', 'bitcoind', 'centos', 'clightning', 'bsdjail', 'freebsd', 'debian', 'freebsd-ufs']
+MARKET = ['k8s']
+
+ALL_IMAGES = ['ubuntu', 'bitcoind', 'centos', 'clightning',
+              'bsdjail', 'freebsd', 'debian', 'freebsd-ufs'] + MARKET
 
 
 def get_tip():
@@ -61,7 +64,34 @@ def get_username(image):
 @app.route('/create/<image>')
 def create_vps(image):
 
-    if image in ALL_IMAGES:
+    if image in MARKET:
+        name = 'm-' + getStar()
+        inc = 0
+
+        while get_hostdata(name):
+            inc += 1
+            name = 'm-' + getStar() + '-' + str(inc)
+
+        add_host(name, get_random_string(12), 'init', image, get_username(image))
+
+        invoice = generate_invoice(9999, name)['bolt11']
+
+        result = {
+            "host": name,
+            "price": "<1 sat/min",
+            "setup_fee": "9900 sats",
+            "paytostart": invoice,
+            "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited."
+                          " Your instance may be stopped and/or destroyed at any time without any reason. Do backups."
+                          " Your data is securely encrypted and instances hosted in enterprise-grade datacenters."
+                          " Your IP and payment information is logged for authorization purposes."
+                          " Bitclouds never use your data for any purpose except mentioned above.",
+            "support": "https://support.bitclouds.sh"
+        }
+
+        register_payment(name, invoice, "new", get_req_ip())
+        return jsonify(result)
+    elif image in ALL_IMAGES:
         name = getStar()
         inc = 0
 
@@ -69,7 +99,6 @@ def create_vps(image):
             inc += 1
             name = getStar() + '-' + str(inc)
 
-        #135.125.129.128/26
         add_host(name, get_random_string(12), 'init', image, get_username(image))
 
         invoice = generate_invoice(99, name)['bolt11']

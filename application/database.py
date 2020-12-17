@@ -46,6 +46,28 @@ def get_hostdata(name):
         return False
 
 
+def get_k8s():
+    k8s = mongo.market.find_one({"status": 'free', "type": 'k8s'})
+
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    if k8s:
+        mongo.market.update_one(
+            {"name": k8s['name']},
+            {
+                "$set":
+                    {
+                        "subscribed": dtime,
+                        "status": "subscribed"
+                    }
+            }
+        )
+
+        return k8s
+    else:
+        return False
+
+
 def find_ips():
     ips = mongo.ips.find()
 
@@ -146,6 +168,18 @@ def init_host(name, lan_ip, wan_ip):
         notify('New host ' + name + ' initialized')
     except Exception as e:
         print("notify error")
+
+
+def init_k8s(name, k8s_data):
+    mongo.cloud.update_one(
+        {"name": name},
+        {
+            "$set":
+                {
+                    "k8s": k8s_data
+                }
+        }
+    )
 
 
 def init_sparko(name, sparko_data):
