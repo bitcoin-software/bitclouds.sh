@@ -177,7 +177,8 @@ def init_k8s(name, k8s_data):
         {
             "$set":
                 {
-                    "k8s": k8s_data
+                    "k8s": k8s_data,
+                    "wan_ip": False
                 }
         }
     )
@@ -237,7 +238,8 @@ def deactivate_host(name):
         }
     )
 
-    free_ip(host['wan_ip'])
+    if host['wan_ip'] is not False:
+        free_ip(host['wan_ip'])
 
     notify('Host ' + name + ' deactivated')
 
