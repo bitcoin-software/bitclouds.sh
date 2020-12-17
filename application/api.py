@@ -26,7 +26,8 @@ def get_tip():
         os.environ['BC_3'],
         '$ tmux',
         'buy bitcoin!',
-        'think unix-like!',
+        'think unix-way!',
+        'with great power comes great responsibility',
         'cloud is just someone else\'s computer',
         'bhyve intro: https://www.youtube.com/watch?v=aFaLkxwvYZw'
     ]
