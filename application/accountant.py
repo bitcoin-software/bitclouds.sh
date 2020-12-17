@@ -202,16 +202,10 @@ def decreaser():
 def extract_name(label):
     match = re.search('([m-]{2}[a-z]+-?[0-9]*)|([a-z]+-?[0-9]*)', label)
     try:
-        #standart image
-        name = match.group(1)
+        name = match.group(0)
         return name
     except Exception as e:
-        try:
-            # MARKET image
-            name = match.group(0)
-            return name
-        except Exception as e:
-            print("NAME EXTRACT ERROR: " + name)
+        print("NAME EXTRACT ERROR FROM LABEL: " + str(label))
 
 
 decreaser()
