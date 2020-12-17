@@ -33,6 +33,7 @@
     lineinfile:
       dest: "/crdata/jails/jails-data/{{ iname }}-data/root/.ssh/authorized_keys"
       line: "{{ pub_key }}"
+      force: yes
 
   - name: stop cloned bsd jail {{ iname }}
     shell: "cbsd jstop {{ iname }}"
