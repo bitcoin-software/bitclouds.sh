@@ -179,7 +179,7 @@ def delete_host(name):
     elif image in MARKET:
         if image == 'k8s':
             try:
-                requests.get(os.environ['K8S_LINK'] + '/api/v1/destroy/' + todelete_hostdata['k8s_data']['id'])
+                requests.get(os.environ['K8S_LINK'] + '/api/v1/destroy/' + todelete_hostdata['k8s']['id'])
             except Exception:
                 notify('failed to delete k8s cluster')
         deactivate_host(name)
