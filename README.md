@@ -1,4 +1,4 @@
-### BitClouds.sh - open-source programmable VPS platform ###
+### BitClouds.sh - open-source programmable cloud platform ###
 
 #### Pay with bitcoin fair price for instances with good performance. 
 
