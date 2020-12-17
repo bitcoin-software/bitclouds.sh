@@ -53,7 +53,7 @@
   - name: allow bitcoind rpc only locally in bitcoin jail {{ iname }}
     lineinfile:
       dest: "/crdata/jails/jails/{{ iname }}/usr/local/etc/bitcoin.conf"
-      line: "rpcallow={{ lan_ip }}/32"
+      line: "rpcallowip={{ lan_ip }}/32"
 
   - name: set bitcoin-cli config (rpcconnect) for root in bitcoin jail {{ iname }}
     lineinfile:
