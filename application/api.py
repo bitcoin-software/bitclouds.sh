@@ -14,7 +14,7 @@ app.url_map.strict_slashes = False
 #, 'k8s-beta'
 MARKET = ['k8s']
 
-ALL_IMAGES = ['ubuntu', 'bitcoind', 'centos', 'clightning',
+ALL_IMAGES = ['bitcoind', 'centos', 'clightning',
               'bsdjail', 'freebsd', 'debian', 'freebsd-ufs'] + MARKET
 
 
