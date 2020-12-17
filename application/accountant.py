@@ -200,7 +200,7 @@ def decreaser():
 
 
 def extract_name(label):
-    match = re.search('([m-]{2}[a-z]+-?[0-9]*)|([a-z]+-?[0-9]*)', label)
+    match = re.search('[0-9]{6}-([m-]{2}[a-z]+-?[0-9]*)|([a-z]+-?[0-9]*)', label)
     try:
         name = match.group(0)
         return name
