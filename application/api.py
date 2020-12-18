@@ -189,7 +189,7 @@ def status(host):
             "status": 'subscribed'
         }
 
-    return result
+    return jsonify(result)
 
 
 @app.route('/topup/<host>', defaults={'sats': 99})
@@ -225,6 +225,7 @@ def topup(host, sats):
 def getkey(host):
     hostdata = get_hostdata(host)
 
+
     if hostdata:
         if hostdata['key_requested'] is False and hostdata['status'] == 'subscribed':
             hide_key(host)
@@ -236,7 +237,7 @@ def getkey(host):
         else:
             return status(host)
     else:
-        return False
+        return jsonify(False)
 
 
 if __name__ == '__main__':
