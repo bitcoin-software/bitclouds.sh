@@ -10,6 +10,7 @@ mongo = dbclient[mongo_db]
 
 
 def notify(bot_message):
+
     def tgsend():
         tg_bot_token = os.environ['TG_TOKEN']
         tg_bot_chatID = os.environ['TG_CHAT']
