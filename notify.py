@@ -29,7 +29,7 @@ def notify(bot_message):
 
         data = '{"text": "' + bot_message + '"}'
 
-        response = requests.post(os.environ['MSG_ENDPOINT'] + '/msg',
+        response = requests.post(os.environ['MSG_ENDPOINT'] + '/bcmon',
                                  headers=headers, data=data, verify=False, timeout=9)
 
         if response.status_code == 200:
