@@ -30,10 +30,10 @@ def generate_invoice(amount_sats, desc):
     return response.json()
 
 
-@app.route('/ticket', methods=['GET'])
+@app.route('/ticket')
 def handle_data():
-    print(request.form['textfield'])
-    print(request.form['textfield2'])
+    print(request.values.get('textfield'))
+    print(request.values.get('textfield2'))
 
 
 if __name__ == '__main__':
