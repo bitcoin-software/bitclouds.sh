@@ -40,6 +40,5 @@ def handle_data():
     return jsonify(params)
 
 
-
 if __name__ == '__main__':
     app.run(debug=False, port=6677)
