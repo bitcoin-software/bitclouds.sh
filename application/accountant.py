@@ -150,6 +150,24 @@ def create_host(name):
         init_host(name, lan_ip, wan_ip)
         init_bitcoind(name, bitcoin_data)
         subscribe_host(name, 99)
+
+    elif image == 'lnd':
+
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        wan_ip = get_free_wan()
+        bind_ip(name, wan_ip)
+
+        bitcoin_data = {
+            'rpcuser': get_random_string(10),
+            'rpc_pwd': get_random_string(10),
+        }
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_lnd.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' rpcuser=' + bitcoin_data['rpcuser'] + ' rpc_pwd=' + bitcoin_data['rpc_pwd']
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        init_host(name, lan_ip, wan_ip)
+        init_bitcoind(name, bitcoin_data)
+        subscribe_host(name, 99)
     elif image == 'clightning':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()

@@ -15,7 +15,7 @@ app.url_map.strict_slashes = False
 MARKET = ['k8s']
 
 ALL_IMAGES = ['ubuntu', 'bitcoind', 'centos', 'clightning',
-              'bsdjail', 'freebsd', 'debian', 'freebsd-ufs'] + MARKET
+              'bsdjail', 'lnd', 'freebsd', 'debian', 'freebsd-ufs'] + MARKET
 
 
 def get_tip():
