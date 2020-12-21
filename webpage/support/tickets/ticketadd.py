@@ -36,6 +36,7 @@ def html(bolt):
       height: inherit;
     }
     div .bolt {
+        word-break: break-all;
         max-width: 400px;
         min-width: 100px;
         background-color: powderblue;
@@ -80,7 +81,8 @@ def html(bolt):
     <div class="w3-twothird w3-container">
       <h3 class="w3-text-teal">...message is ready to be sent</h1>
       <h1 class="w3-text-teal">please, pay the LN invoice to submit your ticket >>> </h1>
-      <p class="bolt">bolt11: <i>""" + bolt +  """</i></p>
+      <p>bolt11:</p>
+      <p class="bolt"> <i>""" + bolt + """</i></p>
       <p>you can close this windows after invoice is paid</p>
     </div>
     <div class="w3-third w3-container">
