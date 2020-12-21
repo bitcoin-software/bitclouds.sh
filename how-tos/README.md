@@ -36,7 +36,7 @@ Create instance:
 
 ```
 {
-  "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited. Your instance may be stopped and/or destroyed at any time without any reason. Do backups. Your data is securely encrypted and instances hosted in enterprise-grade datacenters. Your IP and payment information is logged for authorization purposes. Bitclouds never use your data for any purpose except mentioned above.", 
+  "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited. Your instance may be stopped and/or destroyed at any time without any reason. Do backups. Your data is securely encrypted and instances hosted in enterprise-grade datacenters. Your digital identifiers are logged for authorization purposes. Bitclouds never use your data for any purpose except mentioned above.", 
   "host": "hassaleh", 
   "paytostart": "lnbc990n1p0ak494m560c4gya4t74vptuz39qpp5nhfplt6rzr4wmxd4nprkd3jkssrzd96xxmr0w4j8xxqyjw5qcqpjsp5rw6pu3va62cgajy53qc0dldla93g5rzvxsvzgwxj9xjjysc2sclqrzjqt3xwz3vyes6nm4p8d70mnwh74f0tydeaesw2eut02l80dle29hevzw4suqqgqgqqyqqqqlgqqqqqqgq9q9qy9qsqtg8qrt82t9fy0la0j30rw5g044pt9rfshdcrhzms47jcdp2m6nkkxhvgkfufhtvl3hd3tz7duet5gm46mc2cpmwls47gpvpysrqj5sspa2u99k", 
   "performance": "1xXeon-2GB-40GB", 

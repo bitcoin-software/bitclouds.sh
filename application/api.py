@@ -94,7 +94,7 @@ def create_vps(image):
             "paytostart": invoice,
             "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited."
                           " Your instance may be stopped and/or destroyed at any time without any reason. Do backups."
-                          " Your data is securely encrypted and instances hosted in enterprise-grade datacenters."
+                          " Your data is securely encrypted and instances hosted in enterprise datacenters."
                           " Your digital identifiers are saved for authorization purposes."
                           " Bitclouds never use your data for any purpose except mentioned above.",
             "support": "https://support.bitclouds.sh"
