@@ -75,7 +75,8 @@ def html(bolt):
     <div class="w3-twothird w3-container">
       <h3 class="w3-text-teal">...message is ready to be sent</h1>
       <h1 class="w3-text-teal">please, pay the LN invoice to submit your ticket >>> </h1>
-      <p>You can close this windows after invoice is paid</p>
+      <p>bolt11: <i>""" + bolt +  """</i></p>
+      <p>you can close this windows after invoice is paid</p>
     </div>
     <div class="w3-third w3-container">
   <div class="w3-border w3-padding-large w3-padding-32 w3-center" id="qrcode"></div>
