@@ -60,6 +60,8 @@ def get_username(image):
             return 'debian'
         if image == 'centos':
             return 'ubuntu'
+        if image == 'lnd':
+            return 'lnd'
         elif image in ['bitcoind', 'clightning', 'bsdjail']:
             return 'root'
 

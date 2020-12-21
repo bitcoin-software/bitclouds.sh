@@ -35,13 +35,22 @@
       mode: a+x
       force: yes
 
-  - name: Create .ssh dir
+  - name: Create .ssh dir for root
     shell: mkdir /crdata/jails/jails/{{ iname }}/root/.ssh
 
-  - name: Setup ssh on (add authorized_keys) start on LND jail {{ iname }}
+  - name: Setup ssh (add authorized_keys) on LND jail {{ iname }}
     copy:
       content: "{{ pub_key }}"
       dest: "/crdata/jails/jails/{{ iname }}/root/.ssh/authorized_keys"
+      force: yes
+
+  - name: Create .ssh dir for lnd
+    shell: mkdir /crdata/jails/jails/{{ iname }}/usr/home/lnd/.ssh
+
+  - name: Setup lnd user ssh (add authorized_keys) on LND jail {{ iname }}
+    copy:
+      content: "{{ pub_key }}"
+      dest: "/crdata/jails/jails/{{ iname }}/usr/home/lnd/.ssh/authorized_keys"
       force: yes
 
   - name: configure bitcoind rpc user in bitcoin jail {{ iname }}
