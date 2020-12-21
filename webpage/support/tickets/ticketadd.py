@@ -27,13 +27,18 @@ def html(bolt):
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <style>
-    html,body,h1,h2,h3,h4,h5,h6,p {font-family: "Roboto", sans-serif;}
+    html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     .w3-sidebar {
       z-index: 3;
       width: 250px;
       top: 43px;
       bottom: 0;
       height: inherit;
+    }
+    div .bolt {
+        max-width: 400px;
+        min-width: 100px;
+        background-color: powderblue;
     }
     </style>
    <script type="text/javascript" src="https://support.bitclouds.sh/js/qrcode.js">
@@ -75,7 +80,7 @@ def html(bolt):
     <div class="w3-twothird w3-container">
       <h3 class="w3-text-teal">...message is ready to be sent</h1>
       <h1 class="w3-text-teal">please, pay the LN invoice to submit your ticket >>> </h1>
-      <p>bolt11: <i>""" + bolt +  """</i></p>
+      <p class="bolt">bolt11: <i>""" + bolt +  """</i></p>
       <p>you can close this windows after invoice is paid</p>
     </div>
     <div class="w3-third w3-container">
