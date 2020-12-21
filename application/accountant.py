@@ -96,7 +96,7 @@ def create_host(name):
         print("init " + name)
         init_host(name, lan_ip, wan_ip)
         print("subscribe " + name)
-        subscribe_host(name, 99)
+        subscribe_host(name, 99-33)
     elif image == 'centos':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
@@ -105,7 +105,7 @@ def create_host(name):
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
-        subscribe_host(name, 99)
+        subscribe_host(name, 99-33)
     elif image == 'debian':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
@@ -114,7 +114,7 @@ def create_host(name):
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
-        subscribe_host(name, 99)
+        subscribe_host(name, 99-33)
     elif image == 'freebsd':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
@@ -167,7 +167,7 @@ def create_host(name):
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
         init_bitcoind(name, bitcoin_data)
-        subscribe_host(name, 99)
+        subscribe_host(name, 99-66)
     elif image == 'clightning':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
@@ -290,6 +290,20 @@ for msg in messages:
                     create_host(instance_name)
                 elif hostdata['status'] == 'subscribed':
                     print("subscribing host " + instance_name)
+                    subscribed_data = get_hostdata(instance_name)
+                    # remember paid sats and manipulate sats to be added
+                    paid_sats = sats
+                    if subscribed_data['image'] == 'lnd':
+                        sats = int(paid_sats * 0.5)
+                    elif subscribed_data['image'] == 'bitcoind':
+                        sats = int(paid_sats * 0.7)
+                    elif subscribed_data['image'] in ['debian', 'centos']:
+                        sats = int(paid_sats * 1.3)
+                    elif subscribed_data['image'] in ['clightning', 'freebsd', 'freebsd-ufs']:
+                        sats = int(paid_sats * 1.5)
+                    elif subscribed_data['image'] == 'bsdjail':
+                        sats = int(paid_sats * 2)
+
                     subscribe_host(instance_name, sats)
                     notify(instance_name + " top up for " + str(sats))
             else:

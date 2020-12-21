@@ -72,7 +72,11 @@ def get_username(image):
 @app.route('/create/<image>')
 def create_vps(image):
 
+    setup_fee = 0
+
     if image in MARKET:
+        setup_fee = 9900
+
         if not check_k8s():
             return jsonify({"error": 'out of stock'})
 
@@ -85,12 +89,12 @@ def create_vps(image):
 
         add_host(name, get_random_string(12), 'init', image, get_username(image))
 
-        invoice = generate_invoice(9999, name)['bolt11']
+        invoice = generate_invoice(setup_fee+99, name)['bolt11']
 
         result = {
             "host": name,
             "price": "<1 sat/min",
-            "setup_fee": "9900 sats",
+            "setup_fee": setup_fee,
             "paytostart": invoice,
             "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited."
                           " Your instance may be stopped and/or destroyed at any time without any reason. Do backups."
@@ -112,11 +116,19 @@ def create_vps(image):
 
         add_host(name, get_random_string(12), 'init', image, get_username(image))
 
-        invoice = generate_invoice(99, name)['bolt11']
+        if image == 'lnd':
+            setup_fee = 19900
+        elif image == 'bitcoind':
+            setup_fee = 9900
+        elif image in ['debian', 'ubuntu', 'centos']:
+            setup_fee = 900
+
+        invoice = generate_invoice(setup_fee+99, name)['bolt11']
 
         result = {
             "host": name,
             "price": "<1 sat/min",
+            "setup_fee": setup_fee,
             "performance": "1xXeon-2GB-40GB",
             "paytostart": invoice,
             "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited."
