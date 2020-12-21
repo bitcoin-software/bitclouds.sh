@@ -131,7 +131,7 @@ function updateQRCode(text) {
 
       }
 
-      updateQRCode('""" + bolt + """"');
+      updateQRCode('""" + bolt + """');
 
 
 </script>
