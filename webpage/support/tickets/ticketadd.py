@@ -97,7 +97,7 @@ def html(bolt):
       <h1 class="w3-text-teal">please, pay the LN invoice to submit your ticket >>> </h1>
       <p>bolt11:</p>
       <p class="bolt"> <i>""" + bolt + """</i></p>
-      <p><b>you can close this windows after invoice is paid</b></p>
+      <p><b>you can close this page after invoice is paid</b></p>
     </div>
     <div class="w3-third w3-container">
   <div class="w3-border w3-padding-large w3-padding-32 w3-center" id="qrcode"></div>
