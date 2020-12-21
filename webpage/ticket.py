@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from sseclient import SSEClient
 import pymongo
 import requests
+import json
 import os
 import datetime
 
@@ -13,6 +14,9 @@ app = Flask(__name__)
 
 app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
+
+sparko = os.environ['SPARKO_ENDPOINT']
+messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO_RO']})
 
 
 def notify(bot_message):
@@ -88,3 +92,13 @@ def handle_data():
 
 if __name__ == '__main__':
     app.run(debug=False, port=6677)
+    for msg in messages:
+        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+        try:
+            data = json.loads(msg.data)
+            # check if price update
+            print(dtime + ":\n" + str(data))
+            if data['status'] == 'paid':
+                print(data)
+        except Exception:
+            print('no data')
