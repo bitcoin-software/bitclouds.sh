@@ -3,7 +3,6 @@ import os
 import datetime
 import json
 from sseclient import SSEClient
-from ticket import app
 
 
 sparko = os.environ['SPARKO_ENDPOINT']
