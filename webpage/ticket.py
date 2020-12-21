@@ -32,9 +32,8 @@ def generate_invoice(amount_sats, desc):
 
 @app.route('/ticket', methods=['POST'])
 def handle_data():
-    projectpath = request.form['projectFilepath']
-    # your code
-    # return a response
+    print(request.form['textfield'])
+    print(request.form['textfield2'])
 
 
 if __name__ == '__main__':
