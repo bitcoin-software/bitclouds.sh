@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, current_app
 import pymongo
 import requests
 import os
@@ -40,7 +40,8 @@ def handle_data():
 
     }
 
-    return jsonify(params)
+    #return jsonify(params)
+    return current_app.send_static_file('')
 
 
 if __name__ == '__main__':
