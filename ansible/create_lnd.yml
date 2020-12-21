@@ -30,7 +30,7 @@
     copy:
       content: |
         #!/bin/sh
-        su - lnd -c "/usr/local/bin/lnd --bitcoin.active --bitcoin.mainnet --bitcoin.node=bitcoind --bitcoind.dir=/home/lnd/node --bitcoind.rpchost={{ lan_ip }} --bitcoind.rpcuser={{ rpcuser }} --bitcoind.rpcpass={{ rpc_pwd }} --bitcoind.zmqpubrawblock={{ lan_ip }}:29000 --bitcoind.zmqpubrawtx={{ lan_ip }}:39000 &"
+        su - lnd -c "/usr/local/bin/lnd --bitcoin.active --bitcoin.mainnet --alias=lnd@bitclouds.sh --bitcoin.node=bitcoind --bitcoind.dir=/home/lnd/node --bitcoind.rpchost={{ lan_ip }} --bitcoind.rpcuser={{ rpcuser }} --bitcoind.rpcpass={{ rpc_pwd }} --bitcoind.zmqpubrawblock={{ lan_ip }}:29000 --bitcoind.zmqpubrawtx={{ lan_ip }}:39000 &"
       dest: "/crdata/jails/jails/{{ iname }}/usr/local/etc/rc.d/lnd.sh"
       mode: a+x
       force: yes
