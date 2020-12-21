@@ -29,7 +29,7 @@
   - name: Create .ssh dir
     shell: mkdir /crdata/jails/jails/{{ iname }}/root/.ssh
 
-  - name: Setup ssh on (add authorized_keys) start on bitcoin jail {{ iname }}
+  - name: Setup ssh (add authorized_keys) on bitcoin jail {{ iname }}
     copy:
       content: "{{ pub_key }}"
       dest: "/crdata/jails/jails/{{ iname }}/root/.ssh/authorized_keys"
