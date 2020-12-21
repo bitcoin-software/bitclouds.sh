@@ -296,7 +296,7 @@ for msg in messages:
                     if subscribed_data['image'] == 'lnd':
                         sats = int(paid_sats * 0.5)
                     elif subscribed_data['image'] == 'bitcoind':
-                        sats = int(paid_sats * 0.7)
+                        sats = int(paid_sats * 1.0)
                     elif subscribed_data['image'] in ['debian', 'centos']:
                         sats = int(paid_sats * 1.3)
                     elif subscribed_data['image'] in ['clightning', 'freebsd', 'freebsd-ufs']:
