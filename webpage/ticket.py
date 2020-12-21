@@ -35,3 +35,7 @@ def handle_data():
     projectpath = request.form['projectFilepath']
     # your code
     # return a response
+
+
+if __name__ == '__main__':
+    app.run(debug=False, port=6677)
