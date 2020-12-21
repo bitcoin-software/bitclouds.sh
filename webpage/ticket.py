@@ -32,8 +32,13 @@ def generate_invoice(amount_sats, desc):
 
 @app.route('/ticket')
 def handle_data():
-    print(request.values.get('textfield'))
-    print(request.values.get('textfield2'))
+    params = {
+        'field1': request.values.get('textfield'),
+        'field2': request.values.get('textfield2')
+    }
+
+    return jsonify(params)
+
 
 
 if __name__ == '__main__':
