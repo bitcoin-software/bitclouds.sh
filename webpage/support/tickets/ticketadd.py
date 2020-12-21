@@ -179,19 +179,18 @@ def generate_invoice(amount_sats, label, desc):
 
 @app.route('/ticket')
 def handle_data():
-    invoice = generate_invoice(99, str(request.values.get('instance'))+"-support")
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y%m%d-%H%M%S')
 
     name = request.values.get('instance')
     email = request.values.get('email')
     msg = request.values.get('msg')
 
-    #return jsonify(params)
-    #return current_app.send_static_file('reply.html')
-
-    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y%m%d-%H%M%S')
     label = dtime + "-" + name
     desc = name + "-support@bitclouds.sh"
-    register_ticket(name, email, msg, label, desc)
+
+    invoice = generate_invoice(99, label, desc)
+
+    register_ticket(name, email, msg, label)
 
     return html(invoice['bolt11'])
 
