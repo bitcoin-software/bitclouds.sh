@@ -86,6 +86,7 @@ def check_k8s():
     else:
         return False
 
+
 def get_k8s():
     k8s = mongo.market.find_one({"status": 'free', "type": 'k8s'})
 

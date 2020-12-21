@@ -3,10 +3,23 @@ import os
 import datetime
 import json
 from sseclient import SSEClient
-
+import pymongo
 
 sparko = os.environ['SPARKO_ENDPOINT']
 messages = SSEClient(sparko + '/stream', headers={'X-Access': os.environ['SPARKO_RO']})
+
+dbclient = pymongo.MongoClient('localhost')
+mongo_db = "tickets"
+mongo = dbclient[mongo_db]
+
+
+def find_ticket(label):
+    tkt = mongo.new.find_one({"label": label})
+
+    if tkt:
+        return tkt
+    else:
+        return False
 
 
 def notify(bot_message):
@@ -58,6 +71,9 @@ for msg in messages:
         # check if price update
         print(dtime + ":\n" + str(data))
         if data['status'] == 'paid':
-            print(data)
+            ticket = find_ticket(data['label'])
+            if ticket:
+                notify("New message from " + ticket['name'] + ". Reply to: " + ticket['email'])
+                notify(ticket['msg'])
     except Exception:
         print('no data')

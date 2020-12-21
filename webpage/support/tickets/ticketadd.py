@@ -14,6 +14,20 @@ app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 app.url_map.strict_slashes = False
 
 
+def register_ticket(name, email, msg, label):
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+
+    ticket_data = {
+        "name": name,
+        "timestamp": dtime,
+        "email": email,
+        "msg": msg,
+        "label": label
+    }
+
+    _ = mongo.new.insert_one(ticket_data)
+
+
 def html(bolt):
     return """
 <!DOCTYPE html>
@@ -83,7 +97,7 @@ def html(bolt):
       <h1 class="w3-text-teal">please, pay the LN invoice to submit your ticket >>> </h1>
       <p>bolt11:</p>
       <p class="bolt"> <i>""" + bolt + """</i></p>
-      <p>you can close this windows after invoice is paid</p>
+      <p><b>you can close this windows after invoice is paid</b></p>
     </div>
     <div class="w3-third w3-container">
   <div class="w3-border w3-padding-large w3-padding-32 w3-center" id="qrcode"></div>
@@ -150,15 +164,13 @@ function updateQRCode(text) {
     """
 
 
-def generate_invoice(amount_sats, desc):
-    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y%m%d-%H%M%S')
-
+def generate_invoice(amount_sats, label, desc):
     headers = {
         'X-Access': os.environ['SPARKO_RO'],
     }
 
     data = '{"method": "invoice",' \
-           ' "params": ["' + str(amount_sats*1000) + '", "' + dtime + '-' + desc + '", "' + desc + '@bitclouds"]}'
+           ' "params": ["' + str(amount_sats*1000) + '", "' + label + '", "' + desc + '"]}'
 
     response = requests.post(os.environ['SPARKO_ENDPOINT'] + '/rpc', headers=headers, data=data, verify=False)
 
@@ -167,19 +179,21 @@ def generate_invoice(amount_sats, desc):
 
 @app.route('/ticket')
 def handle_data():
-    invoice = generate_invoice(99, str(request.values.get('instance'))+"-support")['bolt11']
+    invoice = generate_invoice(99, str(request.values.get('instance'))+"-support")
 
-    params = {
-        'instance': request.values.get('instance'),
-        'email': request.values.get('email'),
-        'msg': request.values.get('msg'),
-        'invoice': invoice
-
-    }
+    name = request.values.get('instance')
+    email = request.values.get('email')
+    msg = request.values.get('msg')
 
     #return jsonify(params)
     #return current_app.send_static_file('reply.html')
-    return html(invoice)
+
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y%m%d-%H%M%S')
+    label = dtime + "-" + name
+    desc = name + "-support@bitclouds.sh"
+    register_ticket(name, email, msg, label, desc)
+
+    return html(invoice['bolt11'])
 
 
 if __name__ == '__main__':
