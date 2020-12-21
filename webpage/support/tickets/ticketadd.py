@@ -40,8 +40,8 @@ def handle_data():
 
     }
 
-    #return jsonify(params)
-    return current_app.send_static_file('reply.html')
+    return jsonify(params)
+    #return current_app.send_static_file('reply.html')
 
 
 if __name__ == '__main__':
