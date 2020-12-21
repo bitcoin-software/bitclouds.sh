@@ -291,6 +291,7 @@ for msg in messages:
                 elif hostdata['status'] == 'subscribed':
                     print("subscribing host " + instance_name)
                     subscribe_host(instance_name, sats)
+                    notify(instance_name + " top up for " + str(sats))
             else:
                 print('non-existent host topped up')
 
