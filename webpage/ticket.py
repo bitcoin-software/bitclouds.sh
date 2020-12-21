@@ -90,15 +90,17 @@ def handle_data():
     return jsonify(params)
 
 
+for msg in messages:
+    dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
+    try:
+        data = json.loads(msg.data)
+        # check if price update
+        print(dtime + ":\n" + str(data))
+        if data['status'] == 'paid':
+            print(data)
+    except Exception:
+        print('no data')
+
 if __name__ == '__main__':
     app.run(debug=False, port=6677)
-    for msg in messages:
-        dtime = datetime.datetime.strftime(datetime.datetime.now(), '%Y-%m-%d %H:%M:%S')
-        try:
-            data = json.loads(msg.data)
-            # check if price update
-            print(dtime + ":\n" + str(data))
-            if data['status'] == 'paid':
-                print(data)
-        except Exception:
-            print('no data')
+
