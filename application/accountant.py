@@ -219,7 +219,7 @@ def delete_host(name):
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_vm.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
-    elif image in ['bitcoind', 'clightning', 'bsdjail']:
+    elif image in ['bitcoind', 'clightning', 'bsdjail', 'lnd']:
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_jail.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
