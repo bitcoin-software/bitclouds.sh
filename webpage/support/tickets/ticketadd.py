@@ -16,25 +16,31 @@ app.url_map.strict_slashes = False
 
 def html(bolt):
     return """
-    <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
-<title>support.bitclouds.sh - cloud support portal</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<style>
-html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
-.w3-sidebar {
-  z-index: 3;
-  width: 250px;
-  top: 43px;
-  bottom: 0;
-  height: inherit;
-}
-</style>
+<head>
+    <title>support.bitclouds.sh - cloud support portal</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+    <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+    html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
+    .w3-sidebar {
+      z-index: 3;
+      width: 250px;
+      top: 43px;
+      bottom: 0;
+      height: inherit;
+    }
+    </style>
+   <script type="text/javascript" src="https://support.bitclouds.sh/js/qrcode.js">
+</script>
+    <script type="text/javascript" src="https://support.bitclouds.sh/js/html5-qrcode.js">
+</script>
+</head>
 <body>
 
 <!-- Navbar -->
@@ -52,7 +58,8 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
     <i class="fa fa-remove"></i>
   </a>
   <h4 class="w3-bar-item"><b>resources</b></h4>
-  <a class="w3-bar-item w3-button w3-hover-black" href="https://www.bitclouds.sh">www</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="https://support.bitclouds.sh">submit a ticket</a>
+  <a class="w3-bar-item w3-button w3-hover-black" href="https://github.com/bitcoin-software/bitclouds.sh/tree/master/how-tos">github</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="https://twitter.com/bitcoinsoftwar1">twitter</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="https://t.me/s/BitClouds">telegram</a>
   <a class="w3-bar-item w3-button w3-hover-black" href="https://app.element.io/?pk_vid=1608239257ed7273#/room/#chat:matrix.bitclouds.sh">#chat:matrix.bitclouds.sh</a>
@@ -66,11 +73,13 @@ html,body,h1,h2,h3,h4,h5,h6 {font-family: "Roboto", sans-serif;}
 
   <div class="w3-row w3-padding-64">
     <div class="w3-twothird w3-container">
-      <h1 class="w3-text-teal">submitted!t</h1>
+      <h1 class="w3-text-teal">saved!</h1>
 
+      <p>please, pay the LN invoice to submit your message -->> </p>
     </div>
     <div class="w3-third w3-container">
-      <p class="w3-border w3-padding-large w3-padding-32 w3-center">invoice will appear here</p>
+      <p class="w3-border w3-padding-large w3-padding-32 w3-center">    <div id="qrcode"></div>
+</p>
     </div>
   </div>
 
@@ -109,10 +118,26 @@ function w3_close() {
   mySidebar.style.display = "none";
   overlayBg.style.display = "none";
 }
+
+function updateQRCode(text) {
+
+        var element = document.getElementById("qrcode");
+
+        var bodyElement = document.body;
+        if(element.lastChild)
+          element.replaceChild(showQRCode(text), element.lastChild);
+        else
+          element.appendChild(showQRCode(text));
+
+      }
+
+      updateQRCode('""" + bolt + """"');
+
 </script>
 
 </body>
 </html>
+
     """
 
 
@@ -134,6 +159,7 @@ def generate_invoice(amount_sats, desc):
 @app.route('/ticket')
 def handle_data():
     invoice = generate_invoice(99, str(request.values.get('instance'))+"-support")['bolt11']
+
     params = {
         'instance': request.values.get('instance'),
         'email': request.values.get('email'),
@@ -144,7 +170,7 @@ def handle_data():
 
     #return jsonify(params)
     #return current_app.send_static_file('reply.html')
-    return html("test")
+    return html(invoice)
 
 
 if __name__ == '__main__':
