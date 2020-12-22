@@ -59,7 +59,7 @@ def get_username(image):
         if image == 'debian':
             return 'debian'
         if image == 'centos':
-            return 'ubuntu'
+            return 'centos'
         if image == 'lnd':
             return 'lnd'
         elif image in ['bitcoind', 'clightning', 'bsdjail']:
