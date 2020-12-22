@@ -18,7 +18,7 @@
       vm_os_profile=cloud-bt-FreeBSD-zfs-x64-12.2
       vm_cpus=1
       vm_ram=2g
-      imgsize=40g
+      imgsize=70g
       runasap=1
       ci_gw4=192.168.3.1 ci_ip4_addr={{ lan_ip }}
       ci_nameserver_address='208.67.220.220'
