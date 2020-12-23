@@ -305,7 +305,7 @@ for msg in messages:
                         sats = int(paid_sats * 2)
 
                     subscribe_host(instance_name, sats)
-                    notify(instance_name + " top up for " + str(sats))
+                    notify(instance_name + " top up for " + str(sats) + " (paid " + str(paid_sats) + " sats)")
             else:
                 print('non-existent host topped up')
 
