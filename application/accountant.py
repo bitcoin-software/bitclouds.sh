@@ -294,15 +294,15 @@ for msg in messages:
                     # remember paid sats and manipulate sats to be added
                     paid_sats = sats
                     if subscribed_data['image'] == 'lnd':
-                        sats = int(paid_sats * 0.5)
+                        sats = int(paid_sats * 0.7)
                     elif subscribed_data['image'] == 'bitcoind':
-                        sats = int(paid_sats * 1.0)
+                        sats = int(paid_sats * 1.2)
                     elif subscribed_data['image'] in ['debian', 'centos']:
-                        sats = int(paid_sats * 1.3)
-                    elif subscribed_data['image'] in ['clightning', 'freebsd', 'freebsd-ufs']:
                         sats = int(paid_sats * 1.5)
-                    elif subscribed_data['image'] == 'bsdjail':
+                    elif subscribed_data['image'] in ['clightning', 'freebsd', 'freebsd-ufs']:
                         sats = int(paid_sats * 2)
+                    elif subscribed_data['image'] == 'bsdjail':
+                        sats = int(paid_sats * 2.5)
 
                     subscribe_host(instance_name, sats)
                     notify(instance_name + " top up for " + str(sats) + " (paid " + str(paid_sats) + " sats)")

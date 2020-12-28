@@ -15,7 +15,7 @@ app.url_map.strict_slashes = False
 MARKET = ['k8s']
 
 ALL_IMAGES = ['ubuntu', 'bitcoind', 'centos', 'clightning',
-              'bsdjail', 'lnd', 'freebsd', 'debian', 'freebsd-ufs'] + MARKET
+              'bsdjail', 'lnd', 'freebsd', 'debian', 'freebsd-ufs']
 
 
 def get_tip():
@@ -117,9 +117,9 @@ def create_vps(image):
         add_host(name, get_random_string(12), 'init', image, get_username(image))
 
         if image == 'lnd':
-            setup_fee = 19900
+            setup_fee = 900
         elif image == 'bitcoind':
-            setup_fee = 9900
+            setup_fee = 900
         elif image in ['debian', 'ubuntu', 'centos']:
             setup_fee = 900
 
@@ -238,7 +238,6 @@ def topup(host, sats):
 @app.route('/key/<host>')
 def getkey(host):
     hostdata = get_hostdata(host)
-
 
     if hostdata:
         if hostdata['key_requested'] is False and hostdata['status'] == 'subscribed':
