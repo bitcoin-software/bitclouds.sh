@@ -121,7 +121,7 @@ def create_vps(image):
         elif image == 'bitcoind':
             setup_fee = 900
         elif image in ['debian', 'ubuntu', 'centos']:
-            setup_fee = 900
+            setup_fee = 0
 
         invoice = generate_invoice(setup_fee+99, name)['bolt11']
 
