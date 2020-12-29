@@ -131,11 +131,12 @@ def create_vps(image):
             "setup_fee": setup_fee,
             "performance": "1xXeon-2GB-40GB",
             "paytostart": invoice,
-            "disclaimer": "If you pay the LN invoice, you agree with terms of service: any abuse usage is prohibited."
+            "disclaimer": " If you pay the LN invoice, you agree to our terms of service:"
+                          " Any usage that can be considered abuse is prohibited."
                           " Your instance may be stopped and/or destroyed at any time without any reason. Do backups."
-                          " Your data is securely encrypted and instances hosted in enterprise datacenters."
-                          " Your digital identifiers are saved for authorization purposes."
-                          " Bitclouds never use your data for any purpose except mentioned above.",
+                          " Your data is securely encrypted and your instances are hosted in enterprise datacenters."
+                          " Your digital identifiers are saved for authorization purposes only."
+                          " Bitclouds will never use your data for any purpose except mentioned above.",
             "support": "https://support.bitclouds.sh"
         }
 
