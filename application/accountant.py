@@ -96,7 +96,7 @@ def create_host(name):
         print("init " + name)
         init_host(name, lan_ip, wan_ip)
         print("subscribe " + name)
-        subscribe_host(name, 99-33)
+        subscribe_host(name, 99)
     elif image == 'centos':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
@@ -105,7 +105,7 @@ def create_host(name):
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
-        subscribe_host(name, 99-33)
+        subscribe_host(name, 99)
     elif image == 'debian':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
@@ -114,7 +114,7 @@ def create_host(name):
                   '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
-        subscribe_host(name, 99-33)
+        subscribe_host(name, 99)
     elif image == 'freebsd':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
@@ -167,7 +167,7 @@ def create_host(name):
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
         init_bitcoind(name, bitcoin_data)
-        subscribe_host(name, 99-66)
+        subscribe_host(name, 99)
     elif image == 'clightning':
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
         wan_ip = get_free_wan()
