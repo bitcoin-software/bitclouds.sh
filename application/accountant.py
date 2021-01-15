@@ -297,7 +297,7 @@ for msg in messages:
                         sats = int(paid_sats * 0.7)
                     elif subscribed_data['image'] == 'bitcoind':
                         sats = int(paid_sats * 1.2)
-                    elif subscribed_data['image'] in ['debian', 'centos']:
+                    elif subscribed_data['image'] in ['debian', 'centos', 'ubuntu']:
                         sats = int(paid_sats * 1.5)
                     elif subscribed_data['image'] in ['clightning', 'freebsd', 'freebsd-ufs']:
                         sats = int(paid_sats * 2)
