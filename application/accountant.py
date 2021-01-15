@@ -133,6 +133,24 @@ def create_host(name):
                   + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
         init_host(name, lan_ip, wan_ip)
         subscribe_host(name, 99)
+    elif image == 'netbsd':
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        wan_ip = get_free_wan()
+        bind_ip(name, wan_ip)
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_netbsd.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        init_host(name, lan_ip, wan_ip)
+        subscribe_host(name, 99)
+    elif image == 'openbsd':
+        lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
+        wan_ip = get_free_wan()
+        bind_ip(name, wan_ip)
+        os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/create_openbsd.yml '
+                  '--extra-vars="iname=' + name.replace('-', '_') + ' dname=' + name
+                  + ' pwd=' + pwd + ' pub_key=\'' + pub_key + '\' lan_ip=\'' + lan_ip + '\' wan_ip=\'' + wan_ip + '\'"')
+        init_host(name, lan_ip, wan_ip)
+        subscribe_host(name, 99)
     elif image == 'bitcoind':
 
         lan_ip = os.popen('ssh nvme cbsd dhcpd').read().rstrip("\n")
