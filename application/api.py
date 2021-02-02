@@ -56,10 +56,16 @@ def get_username(image):
             return 'ubuntu'
         if image == 'freebsd':
             return 'freebsd'
+        if image == 'netbsd':
+            return 'netbsd'
+        if image == 'openbsd':
+            return 'openbsd'
         if image == 'debian':
             return 'debian'
         if image == 'centos':
             return 'centos'
+        if image == 'opnsense':
+            return 'opnsense'
         if image == 'lnd':
             return 'lnd'
         elif image in ['bitcoind', 'clightning', 'bsdjail']:
