@@ -233,7 +233,7 @@ def delete_host(name):
     todelete_hostdata = get_hostdata(name)
     image = todelete_hostdata['image']
     wan_ip = todelete_hostdata['wan_ip']
-    if image in ['ubuntu', 'freebsd', 'freebsd-ufs', 'debian', 'centos']:
+    if image in ['ubuntu', 'freebsd', 'freebsd-ufs', 'debian', 'centos', 'netbsd', 'openbsd']:
         os.system('/usr/local/bin/ansible-playbook /home/bitclouds/bitclouds.sh/ansible/remove_vm.yml '
                   '--extra-vars="iname=' + name.replace('-', '_') + ' wan_ip=\'' + wan_ip + '\'"')
         deactivate_host(name)
