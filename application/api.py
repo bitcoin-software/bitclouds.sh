@@ -292,7 +292,7 @@ def pay(keyid, sats):
 
 
 @app.route('/balance/<keyid>')
-def status(keyid):
+def balance(keyid):
     keydata = get_keydata(keyid)
 
     return keydata
