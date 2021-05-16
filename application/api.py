@@ -2,6 +2,7 @@ from flask import Flask, jsonify, request
 from wallet import generate_invoice
 from stars import getStar
 from database import get_hostdata, add_host, register_payment, hide_key, check_k8s
+from nubedb import get_keydata, add_key
 import random
 import string
 import os
@@ -261,6 +262,44 @@ def getkey(host):
         return jsonify(False)
 
 
+@app.route('/pay/<keyid>', defaults={'sats': 99})
+@app.route('/pay/<keyid>/<int:sats>')
+def pay(keyid, sats):
+
+    keydata = get_keydata(keyid)
+
+    if keydata:
+        invoice = generate_invoice(sats, keyid)['bolt11']
+        register_payment(keyid, invoice, "inc", get_req_ip())
+
+        key_status = keydata['status']
+        if key_status in ['subscribed', 'new']:
+            result = {
+                "cid": keyid,
+                "invoice": invoice
+            }
+        else:
+            result = {
+                "error": "error message - key status new or not subscribed"
+            }
+    else:
+        result = {
+            "error": "no such key",
+            "action": "key record created"
+        }
+
+    return jsonify(result)
+
+
+@app.route('/balance/<keyid>')
+def status(keyid):
+    keydata = get_keydata(keyid)
+
+    return keydata
+
+
 if __name__ == '__main__':
     app.run(debug=False, port=16444)
+
+
 

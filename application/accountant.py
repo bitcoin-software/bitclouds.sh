@@ -2,6 +2,7 @@ from sseclient import SSEClient
 from database import subscribe_host, find_hosts, deactivate_host, \
     get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko, init_bitcoind, \
     get_k8s, init_k8s
+from nubedb import get_keydata, subscribe_key
 
 import os
 import datetime
@@ -275,6 +276,14 @@ def extract_name(label):
     else:
         print("NAME EXTRACT ERROR FROM LABEL: " + str(label))
 
+def extract_cid(label):
+    match = re.search('[0-9]{8}-[0-9]{6}-([a-z0-9]+)', label)
+    if match.group(1):
+        cid = match.group(1)
+        return cid
+    else:
+        print("NAME EXTRACT ERROR FROM LABEL: " + str(label))
+
 
 decreaser()
 
@@ -324,8 +333,13 @@ for msg in messages:
 
                     subscribe_host(instance_name, sats)
                     notify(instance_name + " top up for " + str(sats) + " (paid " + str(paid_sats) + " sats)")
+            elif get_keydata(extract_cid(data['label'])):
+                cid = extract_cid(data['label'])
+                keydata = get_keydata(cid)
+                subscribe_key(cid, sats)
             else:
                 print('non-existent host topped up')
+
 
         print("paid invoice for:" + data['label'])
 
