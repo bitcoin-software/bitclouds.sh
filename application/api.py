@@ -296,7 +296,10 @@ def pay(keyid, sats):
 def balance(keyid):
     keydata = get_keydata(keyid)
 
-    return keydata
+    result = {
+        "balance": keydata['balance']
+    }
+    return result
 
 
 if __name__ == '__main__':
