@@ -273,20 +273,21 @@ def pay(keyid, sats):
         register_payment(keyid, invoice, "inc", get_req_ip())
 
         key_status = keydata['status']
-        if key_status in ['subscribed', 'new']:
+        if key_status in ['subscribed']:
             result = {
                 "cid": keyid,
                 "invoice": invoice
             }
         else:
             result = {
-                "error": "error message - key status new or not subscribed"
+                "error": "error message - key status is not subscribed"
             }
     else:
         result = {
             "error": "no such key",
             "action": "key record created"
         }
+        add_key(keyid)
 
     return jsonify(result)
 
