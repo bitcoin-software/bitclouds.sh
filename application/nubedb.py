@@ -6,6 +6,15 @@ mongo_db = "nube"
 mongo = dbclient[mongo_db]
 
 
+def find_keys():
+    hosts = mongo.keys.find()
+
+    if hosts:
+        return hosts
+    else:
+        return False
+
+
 def get_keydata(keyid):
     ex_user = mongo.keys.find_one({"cid": keyid})
 
@@ -59,3 +68,5 @@ def deactivate_key(keyid):
                     }
             }
         )
+
+

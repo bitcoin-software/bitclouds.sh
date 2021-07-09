@@ -2,7 +2,7 @@ from sseclient import SSEClient
 from database import subscribe_host, find_hosts, deactivate_host, \
     get_hostdata, get_free_wan, init_host, register_payment, bind_ip, init_sparko, init_bitcoind, \
     get_k8s, init_k8s
-from nubedb import get_keydata, subscribe_key
+from nubedb import get_keydata, subscribe_key, find_keys, deactivate_key
 
 import os
 import datetime
@@ -264,6 +264,13 @@ def decreaser():
         elif host['status'] == 'subscribed':
             delete_host(host['name'])
 
+    for key in find_keys():
+        #print(host)
+        if key['balance'] > 0:
+            subscribe_key(key['cid'], -1)
+        elif host['status'] == 'subscribed':
+            deactivate_key(key['cid'])
+
 
 def extract_name(label):
     match = re.search('[0-9]{8}-[0-9]{6}-([m-]{2}[a-z]+-?[0-9]*)|[0-9]{8}-[0-9]{6}-([a-z]+-?[0-9]*)', label)
@@ -275,6 +282,7 @@ def extract_name(label):
         return name
     else:
         print("NAME EXTRACT ERROR FROM LABEL: " + str(label))
+
 
 def extract_cid(label):
     match = re.search('[0-9]{8}-[0-9]{6}-([a-z0-9]+)', label)
