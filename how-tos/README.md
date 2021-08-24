@@ -64,7 +64,7 @@ Check instance status:
 
 Get instance access key:
 
-`$ curl https://bitclouds.sh/key/hassaleh > ssh.key`
+`$ curl https://bitclouds.sh/key/hassaleh > ssh.key && chmod 400 ssh.key`
 
 Connect to the instance:
 
